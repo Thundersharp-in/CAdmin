@@ -8,6 +8,11 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
+
+        <item
+            android:id="@+id/nav_work_force"
+            android:icon="@drawable/work"
+            android:title="Work Force" />
         <item
             android:id="@+id/nav_organisation"
             android:icon="@drawable/ic_baseline_account_balance_24"
@@ -22,6 +27,10 @@
             android:icon="@drawable/ic_baseline_menu_book_24"
             android:title="Projects" />
 
+        <item
+            android:id="@+id/nav_finance"
+            android:icon="@drawable/ic_baseline_account_balance_24"
+            android:title="Finance"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_baseline_settings_24"
