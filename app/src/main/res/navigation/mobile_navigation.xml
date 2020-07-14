@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/nav_notes"
         android:name="com.thundersharp.cadmin.ui.fragment.PNotes"
-        android:label="P-notes"
+        android:label="Personal notes"
         tools:layout="@layout/fragment_p_notes" />
 
 
