@@ -39,7 +39,7 @@
         android:id="@+id/nav_finance"
         android:name="com.thundersharp.cadmin.ui.fragment.Finance"
         android:label="Finance"
-        tools:layout="@layout/fragment_finance" />
+        tools:layout="@layout/f" />
 
     <fragment
         android:id="@+id/nav_settings"
