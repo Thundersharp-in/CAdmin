@@ -7,25 +7,39 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.thundersharp.cadmin.ui.home.HomeFragment"
+        android:name="com.thundersharp.cadmin.ui.fragment.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.thundersharp.cadmin.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:id="@+id/nav_organisation"
+        android:name="com.thundersharp.cadmin.ui.fragment.Organisation"
+        android:label="Organisation"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.thundersharp.cadmin.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:id="@+id/nav_cal"
+        android:name="com.thundersharp.cadmin.ui.fragment.Organisation_cal"
+        android:label="Organisation calender"
         tools:layout="@layout/fragment_slideshow" />
 
     <fragment
+        android:id="@+id/nav_proj"
+        android:name="com.thundersharp.cadmin.ui.fragment.Projects"
+        android:label="Projects"
+        tools:layout="@layout/fragment_projects" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.thundersharp.cadmin.ui.settings.SettingsActivity$SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/settings_activity" />
+
+
+
+    <fragment
         android:id="@+id/nav_notes"
-        android:name="com.thundersharp.cadmin.ui.PNotes"
+        android:name="com.thundersharp.cadmin.ui.fragment.PNotes"
         android:label="P-notes"
         tools:layout="@layout/fragment_p_notes" />
 
