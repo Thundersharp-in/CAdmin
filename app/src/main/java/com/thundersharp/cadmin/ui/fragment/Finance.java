@@ -9,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.thundersharp.cadmin.calculators.CalculatorNorm;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
+
+import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class Finance extends Fragment {
 
@@ -24,6 +27,13 @@ public class Finance extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_finance, container, false);
         MainActivity.container.setBackground(null);
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_chat_bubble_outline_24,getActivity().getTheme()));
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"Chat comming soon",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         calci = view.findViewById(R.id.calci);
         calci.setOnClickListener(new View.OnClickListener() {

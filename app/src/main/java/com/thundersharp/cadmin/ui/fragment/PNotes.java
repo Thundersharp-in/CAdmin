@@ -125,9 +125,13 @@ public class PNotes extends Fragment implements NoteEventListener{
 
     @Override
     public void onResume() {
-        super.onResume();
+
         loadNotes();
+        super.onResume();
+
     }
+
+
 
     @Override
     public void onNoteClick(Note note) {

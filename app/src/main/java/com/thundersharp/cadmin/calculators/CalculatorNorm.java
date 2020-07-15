@@ -1,5 +1,6 @@
 package com.thundersharp.cadmin.calculators;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,15 +18,12 @@ public class CalculatorNorm extends AppCompatActivity {
 
 
     /***** Property of THUNDRSHAP inc. shuld not be modified or reproduced without permission *****/
-    Button btnClear;
-    TextView tvProcessor, tvResult;
 
-    Button btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven, btnEight, btnNine, btnZero;
-    String processor;
-    Boolean isSmallBracketOpen;
-    Button btnMultiply, btnMinus, btnPlus, btnDivide, btnDecimal, btnBack, btnSmallBracket, btnEqual, btnPercentage;
-    int developedCounter;
+    TextView input, signBox;
 
+    String sign, value1, value2;
+    Double num1, num2, result;
+    boolean hasDot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,250 +31,320 @@ public class CalculatorNorm extends AppCompatActivity {
         setContentView(R.layout.activity_calc);
 
 
-        isSmallBracketOpen = false;
-        developedCounter = 0;
+        input = (TextView) findViewById(R.id.input);
+        signBox = (TextView) findViewById(R.id.sign);
 
-        btnClear = (Button) findViewById(R.id.btn_delete);
-        tvProcessor = (TextView) findViewById(R.id.tv_process);
-        tvResult = (TextView) findViewById(R.id.tv_result);
-
-        tvProcessor.setText("");
-        tvResult.setText("");
-
-
-        btnOne = (Button) findViewById(R.id.btn_one);
-        btnTwo = (Button) findViewById(R.id.btn_two);
-        btnThree = (Button) findViewById(R.id.btn_three);
-        btnFour = (Button) findViewById(R.id.btn_four);
-        btnFive = (Button) findViewById(R.id.btn_five);
-        btnSix = (Button) findViewById(R.id.btn_six);
-        btnSeven = (Button) findViewById(R.id.btn_seven);
-        btnEight = (Button) findViewById(R.id.btn_eight);
-        btnNine = (Button) findViewById(R.id.btn_nine);
-        btnZero = (Button) findViewById(R.id.btn_zero);
-
-
-        btnMultiply = (Button) findViewById(R.id.btn_multiply);
-        btnMinus = (Button) findViewById(R.id.btn_minus);
-        btnPlus = (Button) findViewById(R.id.btn_plus);
-        btnDivide = (Button) findViewById(R.id.btn_divide);
-
-        btnDecimal = (Button)findViewById(R.id.btn_dot);
-        btnBack = (Button)findViewById(R.id.btn_back);
-
-        btnSmallBracket = (Button)findViewById(R.id.btn_small_bracket);
-        btnEqual = (Button) findViewById(R.id.btn_equal);
-        btnPercentage = (Button) findViewById(R.id.btn_percentage);
-
-        btnClear.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                    tvProcessor.setText("");
-                    tvResult.setText("");
-
-            }
-        });
-
-
-
-        btnOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "1");
-            }
-        });
-        btnTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "2");
-            }
-        });
-        btnThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "3");
-            }
-        });
-        btnFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "4");
-            }
-        });
-        btnFive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "5");
-            }
-        });
-        btnSix.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "6");
-            }
-        });
-        btnSeven.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "7");
-            }
-        });
-        btnEight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "8");
-            }
-        });
-        btnNine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "9");
-            }
-        });
-        btnZero.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "0");
-            }
-        });
+        hasDot = false;
 
 
 
 
-        btnMultiply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "X");
-            }
-        });
-        btnMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "-");
-            }
-        });
-        btnPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "+");
-            }
-        });
-        btnDivide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "/");
-            }
-        });
-        btnDecimal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + ".");
-            }
-        });
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                if(processor.length() > 0){
-                    processor = processor.substring(0, processor.length()-1);
-                    tvProcessor.setText(processor);
-                }else{
-                    tvResult.setText("");
-                }
-            }
-        });
-        btnSmallBracket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                if(isSmallBracketOpen){
-                    processor = tvProcessor.getText().toString();
-                    tvProcessor.setText(processor + ")");
-                    isSmallBracketOpen = false;
-                }else{
-                    processor = tvProcessor.getText().toString();
-                    tvProcessor.setText(processor + "(");
-                    isSmallBracketOpen = true;
-                }
-            }
-        });
 
-        btnPercentage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearScreen();
-                processor = tvProcessor.getText().toString();
-                tvProcessor.setText(processor + "%");
-            }
-        });
-
-
-
-        btnEqual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!tvProcessor.getText().toString().isEmpty()){
-                    clearScreen();
-                    processor = tvProcessor.getText().toString();
-
-                    processor = processor.replaceAll("X", "*");
-                    processor = processor.replaceAll("%", "/100");
-
-                    Context rhino = Context.enter();
-                    rhino.setOptimizationLevel(-1);
-                    String result = "";
-
-                    try{
-                        Scriptable scope = rhino.initStandardObjects();
-                        result = rhino.evaluateString(scope, processor, "JavaScript", 1, null).toString();
-                    }catch (Exception e){
-                        result = "Error";
-                    }
-
-                    tvResult.setText(result);
-                }else {
-                    tvResult.setText("Error! Nothing to process.");
-                }
-
-            }
-        });
     }
 
 
-    public void clearScreen(){
-        processor = tvProcessor.getText().toString();
 
-        developedCounter = 0;
+    @SuppressLint("SetTextI18n")
+    public void btnClick_0(View view) {
+        input.setText(input.getText() + "0");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_1(View view) {
+        input.setText(input.getText() + "1");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_2(View view) {
+        input.setText(input.getText() + "2");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_3(View view) {
+        input.setText(input.getText() + "3");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_4(View view) {
+        input.setText(input.getText() + "4");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_5(View view) {
+        input.setText(input.getText() + "5");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_6(View view) {
+        input.setText(input.getText() + "6");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_7(View view) {
+        input.setText(input.getText() + "7");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_8(View view) {
+        input.setText(input.getText() + "8");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_9(View view) {
+        input.setText(input.getText() + "9");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_dot(View view) {
+        if (!hasDot) {
+            if (input.getText().equals("")) {
+
+                input.setText("0.");
+            } else {
+
+                input.setText(input.getText() + ".");
+            }
+
+            hasDot = true;
+        }
+
+    }
+
+    public void btnClick_add(View view) {
+        sign = "+";
+        value1 = input.getText().toString();
+        input.setText(null);
+        signBox.setText("+");
+        hasDot = false;
+    }
+
+    public void btnClick_subtract(View view) {
+        sign = "-";
+        value1 = input.getText().toString();
+        input.setText(null);
+        signBox.setText("-");
+        hasDot = false;
+    }
+
+    public void btnClick_multiply(View view) {
+        sign = "*";
+        value1 = input.getText().toString();
+        input.setText(null);
+        signBox.setText("×");
+        hasDot = false;
+    }
+
+    public void btnClick_divide(View view) {
+        sign = "/";
+        value1 = input.getText().toString();
+        input.setText(null);
+        signBox.setText("÷");
+        hasDot = false;
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_log(View view) {
+        sign = "log";
+        input.setText(null);
+        signBox.setText("log");
+        hasDot = false;
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_ln(View view) {
+        sign = "ln";
+        input.setText(null);
+        signBox.setText("ln");
+        hasDot = false;
+    }
+
+    public void btnClick_power(View view) {
+        sign = "power";
+        value1 = input.getText().toString();
+        input.setText(null);
+        hasDot = false;
+        signBox.setText("xⁿ");
+    }
+
+    public void btnClick_factorial(View view) {
+        sign = "factorial";
+        input.setText(null);
+        hasDot = false;
+        signBox.setText("!");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_sin(View view) {
+        sign = "sin";
+        input.setText(null);
+        hasDot = false;
+        signBox.setText("sin");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_cos(View view) {
+        sign = "cos";
+        input.setText(null);
+        hasDot = false;
+        signBox.setText("cos");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_tan(View view) {
+        sign = "tan";
+        input.setText(null);
+        hasDot = false;
+        signBox.setText("tan");
+    }
+
+    public void btnClick_root(View view) {
+        sign = "root";
+        input.setText(null);
+        hasDot = false;
+        signBox.setText("√");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void btnClick_equal(View view) {
+        if (sign == null) {
+            signBox.setText("Error!");
+        } else if (input.getText().equals("")) {
+            signBox.setText("Error!");
+        } else if ((sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/")) && value1.equals("")) {
+            signBox.setText("Error!");
+        } else {
+            switch (sign) {
+                default:
+                    break;
+                case "log":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble(value1);
+                    input.setText(Math.log10(num1) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "ln":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble(value1);
+                    input.setText(Math.log(num1) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "power":
+                    num1 = Double.parseDouble((value1));
+                    value2 = input.getText().toString();
+                    num2 = Double.parseDouble(value2);
+                    input.setText(Math.pow(num1, num2) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "root":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble((value1));
+                    input.setText(Math.sqrt(num1) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "factorial":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble((value1));
+                    int i = Integer.parseInt(value1) - 1;
+
+                    while (i > 0) {
+                        num1 = num1 * i;
+                        i--;
+                    }
+
+                    input.setText(num1 + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "sin":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble((value1));
+                    input.setText(Math.sin(num1) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "cos":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble((value1));
+                    input.setText(Math.cos(num1) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "tan":
+                    value1 = input.getText().toString();
+                    num1 = Double.parseDouble((value1));
+                    input.setText(Math.tan(num1) + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "+":
+                    value2 = input.getText().toString();
+                    num1 = Double.parseDouble(value1);
+                    num2 = Double.parseDouble(value2);
+                    result = num1 + num2;
+                    input.setText(result + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "-":
+                    value2 = input.getText().toString();
+                    num1 = Double.parseDouble(value1);
+                    num2 = Double.parseDouble(value2);
+                    result = num1 - num2;
+                    input.setText(result + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "*":
+                    value2 = input.getText().toString();
+                    num1 = Double.parseDouble(value1);
+                    num2 = Double.parseDouble(value2);
+                    result = num1 * num2;
+                    input.setText(result + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+                case "/":
+                    value2 = input.getText().toString();
+                    num1 = Double.parseDouble(value1);
+                    num2 = Double.parseDouble(value2);
+                    result = num1 / num2;
+                    input.setText(result + "");
+                    sign = null;
+                    signBox.setText(null);
+                    break;
+            }
+
+        }
+    }
+
+
+    public void btnClick_delete(View view) {
+        if (input.getText().equals("")) {
+            input.setText(null);
+        } else {
+            int len = input.getText().length();
+            String s = input.getText().toString();
+            if (s.charAt(len - 1) == '.') {
+                hasDot = false;
+                input.setText(input.getText().subSequence(0, input.getText().length() - 1));
+
+            } else {
+                input.setText(input.getText().subSequence(0, input.getText().length() - 1));
+            }
+        }
+    }
+
+    public void btnClick_clear(View view) {
+
+        input.setText(null);
+        signBox.setText(null);
+        value1 = null;
+        value2 = null;
+        sign = null;
+        hasDot = false;
     }
 }
