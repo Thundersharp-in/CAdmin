@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -24,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.thundersharp.cadmin.MainActivity;
+import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.notes.adapters.NotesAdapter;
 import com.thundersharp.cadmin.notes.callbacks.MainActionModeCallback;
@@ -33,14 +31,12 @@ import com.thundersharp.cadmin.notes.db.NotesDB;
 import com.thundersharp.cadmin.notes.db.NotesDao;
 import com.thundersharp.cadmin.notes.model.Note;
 import com.thundersharp.cadmin.notes.utils.NoteUtils;
-import com.thundersharp.cadmin.ui.EditNoteActivity;
+import com.thundersharp.cadmin.ui.activity.EditNoteActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.thundersharp.cadmin.MainActivity.floatingActionButton;
-import static com.thundersharp.cadmin.MainActivity.toolbar;
-import static com.thundersharp.cadmin.ui.EditNoteActivity.NOTE_EXTRA_Key;
+import static com.thundersharp.cadmin.ui.activity.EditNoteActivity.NOTE_EXTRA_Key;
 
 
 public class PNotes extends Fragment implements NoteEventListener{
@@ -64,6 +60,7 @@ public class PNotes extends Fragment implements NoteEventListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root= inflater.inflate(R.layout.fragment_p_notes, container, false);
+        MainActivity.container.setBackground(getResources().getDrawable(R.drawable.bg,getActivity().getTheme()));
         MainActivity.floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_playlist_add_24,getActivity().getTheme()));
         settings = getActivity().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         theme = settings.getInt(THEME_Key, R.style.AppTheme);
@@ -73,7 +70,8 @@ public class PNotes extends Fragment implements NoteEventListener{
 
         // init recyclerView
         recyclerView = root.findViewById(R.id.notes_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(manager);
         // init fab Button
         //fab = (FloatingActionButton) findViewById(R.id.fab);
         MainActivity.floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +101,7 @@ public class PNotes extends Fragment implements NoteEventListener{
         // add swipe helper to recyclerView
 
         swipeToDeleteHelper.attachToRecyclerView(recyclerView);
+        swipeToDeleteHelperright.attachToRecyclerView(recyclerView);
     }
 
     /**
@@ -240,7 +239,7 @@ public class PNotes extends Fragment implements NoteEventListener{
 
     // swipe to right or to left te delete
     private ItemTouchHelper swipeToDeleteHelper = new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                     return false;
@@ -261,6 +260,30 @@ public class PNotes extends Fragment implements NoteEventListener{
                     }
                 }
             });
+
+    private ItemTouchHelper swipeToDeleteHelperright = new ItemTouchHelper(
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT ) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    // TODO: 28/09/2018 delete note when swipe
+
+                    if (notes != null) {
+                        // get swiped note
+                        Note swipedNote = notes.get(viewHolder.getAdapterPosition());
+                        if (swipedNote != null) {
+                            swipeToshare(swipedNote, viewHolder);
+
+                        }
+
+                    }
+                }
+            });
+
 
     private void swipeToDelete(final Note swipedNote, final RecyclerView.ViewHolder viewHolder) {
         new AlertDialog.Builder(getActivity())
@@ -283,6 +306,20 @@ public class PNotes extends Fragment implements NoteEventListener{
                         recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
 
 
+                    }
+                })
+                .setCancelable(false)
+                .create().show();
+
+    }
+
+    private void swipeToshare(final Note swipedNote, final RecyclerView.ViewHolder viewHolder) {
+        new AlertDialog.Builder(getActivity())
+                .setMessage("Share note?")
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        recyclerView.getAdapter().notifyItemChanged(viewHolder.getAdapterPosition());
                     }
                 })
                 .setCancelable(false)

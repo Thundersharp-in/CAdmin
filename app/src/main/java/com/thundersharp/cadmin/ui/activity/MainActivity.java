@@ -1,15 +1,17 @@
-package com.thundersharp.cadmin;
+package com.thundersharp.cadmin.ui.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.thundersharp.cadmin.R;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     public static FloatingActionButton floatingActionButton;
     View fragment;
+    public static RelativeLayout container;
     FrameLayout frame;
 
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_bar);
         fragment = findViewById(R.id.nav_host_fragment);
         floatingActionButton = findViewById(R.id.fab);
+        container=findViewById(R.id.containermain);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(

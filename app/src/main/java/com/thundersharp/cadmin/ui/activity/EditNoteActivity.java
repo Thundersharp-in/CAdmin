@@ -1,4 +1,4 @@
-package com.thundersharp.cadmin.ui;
+package com.thundersharp.cadmin.ui.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
-import com.thundersharp.cadmin.MainActivity;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.notes.db.NotesDB;
 import com.thundersharp.cadmin.notes.db.NotesDao;

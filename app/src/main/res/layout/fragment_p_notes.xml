@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.PNotes">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,6 +11,7 @@
         android:visibility="visible"
         android:id="@+id/notes_list"
         android:layout_width="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         android:layout_height="match_parent" />
 
     <ImageView
