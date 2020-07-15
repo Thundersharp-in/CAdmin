@@ -21,4 +21,12 @@
 
 
 
+    <color name="colorSecondaryDark">#002f6c</color>
+    <color name="colorSecondaryLite">#4f83cc</color>
+    <color name="colorTextonPrimary">#ffffff</color>
+    <color name="colorTextonSecondary">#ffffff</color>
+    <color name="colorPrimaryLite">#4f5b62</color>
+
+
+
 </resources>
