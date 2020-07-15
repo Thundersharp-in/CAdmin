@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
+    /***** Property of THUNDRSHAP inc. shuld not be modified or reproduced without permission *****/
 
     private AppBarConfiguration mAppBarConfiguration;
     public static Toolbar toolbar;

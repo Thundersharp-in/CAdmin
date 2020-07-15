@@ -19,6 +19,8 @@ import com.thundersharp.cadmin.ui.fragment.PNotes;
 
 import java.util.Date;
 
+/***** Property of THUNDRSHAP inc. shuld not be modified or reproduced without permission *****/
+
 public class EditNoteActivity extends AppCompatActivity {
     private EditText inputNote;
     private NotesDao dao;
