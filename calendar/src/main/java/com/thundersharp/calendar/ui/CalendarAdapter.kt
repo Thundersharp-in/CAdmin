@@ -1,4 +1,4 @@
-package com.kizitonwose.calendarview.ui
+package com.thundersharp.calendar.ui;
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -11,11 +11,12 @@ import androidx.annotation.LayoutRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import com.kizitonwose.calendarview.model.*
-import com.kizitonwose.calendarview.utils.NO_INDEX
-import com.kizitonwose.calendarview.utils.inflate
-import com.kizitonwose.calendarview.utils.orZero
+import com.thundersharp.calendar.utils.NO_INDEX
+import com.thundersharp.calendar.utils.inflate
+import com.thundersharp.calendar.utils.orZero
 import com.thundersharp.calendar.CalendarView
+import com.thundersharp.calendar.model.*
+import com.thundersharp.calendar.model.MonthConfig
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -207,7 +208,8 @@ internal class CalendarAdapter(
                     }
                     if (!calWrapsHeight) return // Bug only happens when the CalenderView wraps its height.
                     val visibleVH =
-                        calView.findViewHolderForAdapterPosition(visibleItemPos) as? MonthViewHolder ?: return
+                        calView.findViewHolderForAdapterPosition(visibleItemPos) as? MonthViewHolder
+                                ?: return
                     val newHeight = visibleVH.headerView?.height.orZero() +
                         // visibleVH.bodyLayout.height` won't not give us the right height as it differs
                         // depending on row count in the month. So we calculate the appropriate height

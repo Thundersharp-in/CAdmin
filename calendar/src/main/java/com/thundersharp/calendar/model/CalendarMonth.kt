@@ -1,13 +1,13 @@
-package com.kizitonwose.calendarview.model
+package com.thundersharp.calendar.model
 
 import java.io.Serializable
 import java.time.YearMonth
 
 data class CalendarMonth(
-    val yearMonth: YearMonth,
-    val weekDays: List<List<CalendarDay>>,
-    internal val indexInSameMonth: Int,
-    internal val numberOfSameMonth: Int
+        val yearMonth: YearMonth,
+        val weekDays: List<List<CalendarDay>>,
+        internal val indexInSameMonth: Int,
+        internal val numberOfSameMonth: Int
 ) : Comparable<CalendarMonth>, Serializable {
 
     val year: Int = yearMonth.year

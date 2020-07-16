@@ -1,8 +1,8 @@
-package com.kizitonwose.calendarview.model
+package com.thundersharp.calendar.model
 
-import com.kizitonwose.calendarview.utils.next
-import com.kizitonwose.calendarview.utils.previous
-import com.kizitonwose.calendarview.utils.yearMonth
+import com.thundersharp.calendar.utils.next
+import com.thundersharp.calendar.utils.previous
+import com.thundersharp.calendar.utils.yearMonth
 import java.io.Serializable
 import java.time.LocalDate
 import java.time.YearMonth

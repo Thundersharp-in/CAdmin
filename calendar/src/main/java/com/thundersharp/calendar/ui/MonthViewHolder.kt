@@ -1,18 +1,18 @@
-package com.kizitonwose.calendarview.ui
+package com.thundersharp.calendar.ui
 
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.CalendarMonth
+import com.thundersharp.calendar.model.CalendarDay
+import com.thundersharp.calendar.model.CalendarMonth
 
 internal class MonthViewHolder constructor(
-    adapter: CalendarAdapter,
-    rootLayout: ViewGroup,
-    dayConfig: DayConfig,
-    private var monthHeaderBinder: MonthHeaderFooterBinder<ViewContainer>?,
-    private var monthFooterBinder: MonthHeaderFooterBinder<ViewContainer>?
+        adapter: CalendarAdapter,
+        rootLayout: ViewGroup,
+        dayConfig: DayConfig,
+        private var monthHeaderBinder: MonthHeaderFooterBinder<ViewContainer>?,
+        private var monthFooterBinder: MonthHeaderFooterBinder<ViewContainer>?
 ) : RecyclerView.ViewHolder(rootLayout) {
 
     private val weekHolders = (1..6).map { WeekHolder(dayConfig) }

@@ -1,4 +1,4 @@
-package com.kizitonwose.calendarview.utils
+package com.thundersharp.calendar.utils
 
 import android.graphics.Rect
 import android.view.LayoutInflater

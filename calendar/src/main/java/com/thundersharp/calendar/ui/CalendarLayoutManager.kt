@@ -1,4 +1,4 @@
-package com.kizitonwose.calendarview.ui
+package com.thundersharp.calendar.ui;
 
 import android.content.Context
 import android.graphics.Rect
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.kizitonwose.calendarview.CalendarView
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.ScrollMode
-import com.kizitonwose.calendarview.utils.NO_INDEX
+import com.thundersharp.calendar.model.CalendarDay
+import com.thundersharp.calendar.model.ScrollMode
+import com.thundersharp.calendar.utils.NO_INDEX
+import com.thundersharp.calendar.CalendarView
 import java.time.YearMonth
 
 internal class CalendarLayoutManager(private val calView: CalendarView, @RecyclerView.Orientation orientation: Int) :

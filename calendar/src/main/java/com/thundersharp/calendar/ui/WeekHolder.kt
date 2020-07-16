@@ -1,9 +1,9 @@
-package com.kizitonwose.calendarview.ui
+package com.thundersharp.calendar.ui
 
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.kizitonwose.calendarview.model.CalendarDay
+import com.thundersharp.calendar.model.CalendarDay
 
 internal class WeekHolder(dayConfig: DayConfig) {
 

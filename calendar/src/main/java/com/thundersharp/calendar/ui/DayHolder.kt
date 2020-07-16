@@ -1,4 +1,4 @@
-package com.kizitonwose.calendarview.ui
+package com.thundersharp.calendar.ui
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,8 +6,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.LayoutRes
 import androidx.annotation.Px
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.utils.inflate
+import com.thundersharp.calendar.model.CalendarDay
+import com.thundersharp.calendar.utils.inflate
 
 internal data class DayConfig(
     @Px val width: Int,

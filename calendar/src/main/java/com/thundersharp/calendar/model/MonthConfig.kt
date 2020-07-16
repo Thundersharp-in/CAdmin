@@ -1,19 +1,19 @@
-package com.kizitonwose.calendarview.model
+package com.thundersharp.calendar.model
 
-import com.kizitonwose.calendarview.utils.next
+import com.thundersharp.calendar.utils.next
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.WeekFields
 
 internal data class MonthConfig(
-    val outDateStyle: OutDateStyle,
-    val inDateStyle: InDateStyle,
-    val maxRowCount: Int,
-    val startMonth: YearMonth,
-    val endMonth: YearMonth,
-    val firstDayOfWeek: DayOfWeek,
-    val hasBoundaries: Boolean
+        val outDateStyle: OutDateStyle,
+        val inDateStyle: InDateStyle,
+        val maxRowCount: Int,
+        val startMonth: YearMonth,
+        val endMonth: YearMonth,
+        val firstDayOfWeek: DayOfWeek,
+        val hasBoundaries: Boolean
 ) {
 
     internal val months: List<CalendarMonth> by lazy lazy@{
@@ -38,12 +38,12 @@ internal data class MonthConfig(
          * to fit in the [maxRowCount].
          */
         internal fun generateBoundedMonths(
-            startMonth: YearMonth,
-            endMonth: YearMonth,
-            firstDayOfWeek: DayOfWeek,
-            maxRowCount: Int,
-            inDateStyle: InDateStyle,
-            outDateStyle: OutDateStyle
+                startMonth: YearMonth,
+                endMonth: YearMonth,
+                firstDayOfWeek: DayOfWeek,
+                maxRowCount: Int,
+                inDateStyle: InDateStyle,
+                outDateStyle: OutDateStyle
         ): List<CalendarMonth> {
             val months = mutableListOf<CalendarMonth>()
             var currentMonth = startMonth
@@ -74,12 +74,12 @@ internal data class MonthConfig(
         }
 
         internal fun generateUnboundedMonths(
-            startMonth: YearMonth,
-            endMonth: YearMonth,
-            firstDayOfWeek: DayOfWeek,
-            maxRowCount: Int,
-            inDateStyle: InDateStyle,
-            outDateStyle: OutDateStyle
+                startMonth: YearMonth,
+                endMonth: YearMonth,
+                firstDayOfWeek: DayOfWeek,
+                maxRowCount: Int,
+                inDateStyle: InDateStyle,
+                outDateStyle: OutDateStyle
         ): List<CalendarMonth> {
 
             // Generate a flat list of all days in the given month range

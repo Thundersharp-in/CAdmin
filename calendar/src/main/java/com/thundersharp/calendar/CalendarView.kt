@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.annotation.Px
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.kizitonwose.calendarview.model.*
-import com.kizitonwose.calendarview.ui.*
+import com.thundersharp.calendar.model.*
+import com.thundersharp.calendar.ui.*
+import com.thundersharp.calendar.ui.CalendarLayoutManager
+import com.thundersharp.calendar.ui.CalenderPageSnapHelper
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -656,8 +658,8 @@ open class CalendarView : RecyclerView {
     }
 
     private class MonthRangeDiffCallback(
-        private val oldItems: List<CalendarMonth>,
-        private val newItems: List<CalendarMonth>
+            private val oldItems: List<CalendarMonth>,
+            private val newItems: List<CalendarMonth>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize() = oldItems.size

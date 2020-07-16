@@ -1,8 +1,8 @@
-package com.kizitonwose.calendarview.ui
+package com.thundersharp.calendar.ui
 
 import android.view.View
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.CalendarMonth
+import com.thundersharp.calendar.model.CalendarDay
+import com.thundersharp.calendar.model.CalendarMonth
 
 open class ViewContainer(val view: View)
 
