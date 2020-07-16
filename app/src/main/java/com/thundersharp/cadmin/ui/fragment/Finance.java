@@ -19,7 +19,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class Finance extends Fragment {
 
-    RelativeLayout calci;
+    RelativeLayout calci,calnorm;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,10 +36,18 @@ public class Finance extends Fragment {
         });
 
         calci = view.findViewById(R.id.calci);
+        calnorm=view.findViewById(R.id.calnorm);
         calci.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), CalculatorNorm.class));
+            }
+        });
+
+        calnorm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), Calendar.class));
             }
         });
 
