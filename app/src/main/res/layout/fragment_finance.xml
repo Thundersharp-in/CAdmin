@@ -56,6 +56,31 @@
             app:cardCornerRadius="5dp"
             android:layout_weight="1">
 
+            <RelativeLayout
+                android:id="@+id/salci"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/scccal"
+                    android:src="@drawable/scientificcalculator"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Scientific calculator"
+                    android:textAlignment="center"
+                    android:textSize="15dp"
+                    android:layout_below="@id/scccal"
+                    android:layout_marginTop="15dp"/>
+
+            </RelativeLayout>
+
+
         </androidx.cardview.widget.CardView>
 
 
@@ -85,6 +110,31 @@
             app:cardElevation="5dp"
             app:cardCornerRadius="5dp"
             android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/salci"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/scc"
+                    android:src="@drawable/calendar"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calendar"
+                    android:textAlignment="center"
+                    android:textSize="15dp"
+                    android:layout_below="@id/scc"
+                    android:layout_marginTop="15dp"/>
+
+            </RelativeLayout>
+
 
         </androidx.cardview.widget.CardView>
 
