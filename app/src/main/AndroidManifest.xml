@@ -28,6 +28,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".calculators.CalculatorNorm"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity android:name=".ui.activity.Calendar"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
     </application>
 
 </manifest>
