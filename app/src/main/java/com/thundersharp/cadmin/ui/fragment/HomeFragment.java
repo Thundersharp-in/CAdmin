@@ -14,7 +14,6 @@ import com.thundersharp.cadmin.R;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
-
 public class HomeFragment extends Fragment  {
 
 
@@ -26,9 +25,10 @@ public class HomeFragment extends Fragment  {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Chat comming soon",Toast.LENGTH_SHORT).show();
+                MainActivity.navController.navigate(R.id.nav_chats);
             }
         });
+
 
 
         return root;
