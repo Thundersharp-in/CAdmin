@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+attr? cv_dayViewResource
+attr? cv_hasBoundaries
+attr? cv_inDateStyle
+attr? cv_maxRowCount
+attr? cv_monthFooterResource
+attr? cv_monthHeaderResource
+attr? cv_monthViewClass
+attr? cv_orientation
+attr? cv_outDateStyle
+attr? cv_scrollMode
+attr? cv_wrappedPageHeightAnimationDuration
+id allMonths
+id continuous
+id endOfGrid
+id endOfRow
+id firstMonth
+id horizontal
+id none
+id paged
+id vertical
+string app_name
+styleable CalendarView cv_dayViewResource cv_monthHeaderResource cv_monthFooterResource cv_maxRowCount cv_monthViewClass cv_hasBoundaries cv_orientation cv_outDateStyle cv_inDateStyle cv_scrollMode cv_wrappedPageHeightAnimationDuration
