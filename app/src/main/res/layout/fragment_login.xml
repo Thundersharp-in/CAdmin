@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.loginFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -12,7 +12,7 @@
         android:id="@+id/edittexts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="350dp"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
         android:weightSum="4"
@@ -109,7 +109,7 @@
         android:layout_width="200dp"
         android:layout_marginEnd="20dp"
         android:text="Login"
-        android:textColor="#330D0D"
+        android:textColor="#FFFFFF"
         android:textStyle="bold|italic"
         android:layout_marginStart="20dp"
         android:background="@drawable/loginbuttonpk"
@@ -125,6 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
+        android:layout_marginStart="50dp"
         android:layout_below="@+id/buttons">
 
         <TextView
@@ -132,15 +133,30 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:textColor="#4E4747"
-            android:text="New User?"/>
+            android:text="New User? "/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign Up"
+            android:textAlignment="viewStart"
             android:textColor="#42AA46"
             android:background="@null"/>
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="#8FFF0E"
+        android:src="@drawable/floatbot"
+        android:layout_marginRight="15dp"
+        />
+
+
 
 </RelativeLayout>
