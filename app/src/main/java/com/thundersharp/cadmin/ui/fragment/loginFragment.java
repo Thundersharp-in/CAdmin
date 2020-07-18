@@ -50,7 +50,7 @@ public class loginFragment extends Fragment {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        loginWith(email,password);
+        //loginWith(email,password);
 
 
         return view;
