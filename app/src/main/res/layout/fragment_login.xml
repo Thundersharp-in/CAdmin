@@ -10,12 +10,11 @@
 
     <LinearLayout
         android:id="@+id/edittexts"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
-        android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp"
-        android:weightSum="4"
+        android:layout_marginEnd="25dp"
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -26,11 +25,11 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
-                android:paddingLeft="19dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textColor="#2C2C2C"
                 android:paddingEnd="10dp"
+                android:paddingLeft="19dp"
                 android:inputType="textEmailAddress"
                 android:hint="Email id"
                 />
@@ -40,13 +39,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_10"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password"
-                android:layout_width="300dp"
-                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingLeft="19dp"
                 android:textColor="#2C2C2C"
                 android:inputType="textPassword"
@@ -83,10 +83,11 @@
 
     <Button
         android:id="@+id/forgot"
-        android:layout_marginStart="180dp"
+        android:layout_marginStart="28dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edittexts"
+        android:layout_alignParentStart="true"
         android:background="@null"
         android:text="Forgot Credentials ?"
         android:textSize="12sp"
