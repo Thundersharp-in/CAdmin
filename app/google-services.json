@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "583265428764",
+    "firebase_url": "https://admin-50cc3.firebaseio.com",
+    "project_id": "admin-50cc3",
+    "storage_bucket": "admin-50cc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583265428764:android:65173de459accdcac886d9",
+        "android_client_info": {
+          "package_name": "com.thundersharp.cadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583265428764-bp2malhher0a52lo7dkopbini5nncebd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB74ZP8sAT-W8sudVnDjYajonnVjiJnJbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583265428764-bp2malhher0a52lo7dkopbini5nncebd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
