@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@null">
+
+        <include layout="@layout/data_placeholder_layout"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <com.thundersharp.cadmin.chats.core.recyclerview.GridRecyclerView
+        android:id="@+id/recycler_view_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tttrrr"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="8dp"
+        app:layoutManager="LinearLayoutManager" />
+
+    <RelativeLayout
+        android:id="@+id/tttrrr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="75dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_rect_bg"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/edit_text_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rect_bg"
+            android:hint="Type a message"
+            android:textColor="#000"
+            android:textColorHint="#121212"
+            android:layout_marginEnd="71dp"
+            android:maxLines="5"
+            android:padding="@dimen/padding_small" />
+
+        <ImageButton
+            android:id="@+id/buttonattachCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="7dp"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            android:src="@drawable/ic_camera_black_24dp"
+            android:tint="@color/blue_grey_200" />
+
+
+        <ImageButton
+            android:id="@+id/buttonattach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toStartOf="@+id/buttonattachCamera"
+            android:background="@null"
+            android:src="@drawable/ic_link_black_24dp"
+            android:text="Button"
+            android:tint="@color/blue_grey_200" />
+
+    </RelativeLayout>
+
+
+    <ImageButton
+        android:id="@+id/messageSendChat"
+        android:layout_width="58dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_roundgreen"
+        android:tint="#fff"
+        android:src="@drawable/ic_baseline_send_24" />
+
+</RelativeLayout>

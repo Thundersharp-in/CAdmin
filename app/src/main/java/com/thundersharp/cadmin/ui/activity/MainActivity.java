@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static FloatingActionButton floatingActionButton;
     View fragment;
     public static RelativeLayout container;
+    public static NavController navController;
     FrameLayout frame;
 
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_work_force, R.id.nav_organisation, R.id.nav_cal,R.id.nav_proj,R.id.nav_finance,R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
-        final NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
