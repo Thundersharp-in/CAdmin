@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -21,7 +22,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,13 +42,14 @@ import com.google.firebase.auth.OAuthProvider;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 
 public class loginFragment extends Fragment {
 
-    public String emailstring;
-    public String passwordstring;
+
     TextInputLayout email,password;
     private static final String TAG="FacebookLogin";
     private static final int RC_SIGN_IN=123;
@@ -55,7 +61,9 @@ public class loginFragment extends Fragment {
     RelativeLayout relativeLayout;
     Animation show_fab_1,hide_fab_1;
     AnimationDrawable animationDrawable;
+    GoogleSignInClient mGoogleSignInClient;
     Button forgot,loginbutton,signup;
+    ImageView logingoogle,github;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +83,9 @@ public class loginFragment extends Fragment {
         forgot=view.findViewById(R.id.forgot);
         loginbutton=view.findViewById(R.id.loginbutton);
         signup = view.findViewById(R.id.signupuser);
+        logingoogle=view.findViewById(R.id.logingoogle);
+        github = view.findViewById(R.id.github);
+
 
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,11 +140,115 @@ public class loginFragment extends Fragment {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
         //loginWith(email,password);
 
+        logingoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
+
+        final OAuthProvider.Builder providergit = OAuthProvider.newBuilder("github.com");
+        List<String> scopes =
+                new ArrayList<String>() {
+                    {
+                        add("user:email");
+                    }
+                };
+        providergit.setScopes(scopes);
+
+        github.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Task<AuthResult> pendingResultTask = FirebaseAuth.getInstance().getPendingAuthResult();
+                if (pendingResultTask != null) {
+                    // There's something already here! Finish the sign-in for your user.
+                    pendingResultTask
+                            .addOnSuccessListener(
+                                    new OnSuccessListener<AuthResult>() {
+                                        @Override
+                                        public void onSuccess(AuthResult authResult) {
+                                            // User is signed in.
+                                            // IdP data available in
+                                            // authResult.getAdditionalUserInfo().getProfile().
+                                            // The OAuth access token can also be retrieved:
+                                            // authResult.getCredential().getAccessToken().
+                                            Toast.makeText(getContext(),"pending called",Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                            .addOnFailureListener(
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle failure.
+                                        }
+                                    });
+                } else {
+                    // There's no pending result so you need to start the sign-in flow.
+                    // See below.
+
+                    FirebaseAuth.getInstance()
+                            .startActivityForSignInWithProvider(getActivity(), providergit.build())
+                            .addOnSuccessListener(
+                                    new OnSuccessListener<AuthResult>() {
+                                        @Override
+                                        public void onSuccess(AuthResult authResult) {
+                                            // User is signed in.
+                                            // IdP data available in
+                                            // authResult.getAdditionalUserInfo().getProfile().
+                                            // The OAuth access token can also be retrieved:
+                                            // authResult.getCredential().getAccessToken().
+                                            Toast.makeText(getContext(),"Signin with provider",Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                            .addOnFailureListener(
+                                    new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle failure.
+                                        }
+                                    });
+
+
+                }
+            }
+        });
 
         return view;
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Signed in successfully, show authenticated UI.
+            AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+            firebaseAuthWithGoogle(credential);
+           // updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            //updateUI(null);
+        }
+    }
+
 
     private void loginWith(String email, String password) {
 
@@ -196,20 +311,21 @@ public class loginFragment extends Fragment {
     }
 
     //google
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+    private void firebaseAuthWithGoogle(AuthCredential credential) {
+
         fAuth.signInWithCredential(credential)
                 .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                            Intent intent = new Intent(getActivity(),MainActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
                             Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "failed : "+task.getException().getCause().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

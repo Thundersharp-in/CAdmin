@@ -149,6 +149,7 @@
         android:layout_centerHorizontal="true"
         android:weightSum="4">
         <ImageView
+            android:id="@+id/logingoogle"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:src="@drawable/google"
@@ -170,6 +171,7 @@
             android:layout_weight="1"/>
 
         <ImageView
+            android:id="@+id/github"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:src="@drawable/github"
