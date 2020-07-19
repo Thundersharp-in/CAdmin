@@ -61,6 +61,13 @@
         android:label="Groupie"
         tools:layout="@layout/fragment_user_listing" />
 
+    <fragment
+        android:id="@+id/nav_org"
+        android:name="com.thundersharp.cadmin.ui.fragment.AddOrganisationFragment"
+        android:label="Add a organisation"
+        tools:layout="@layout/fragment_add_organisation" />
+
+
 
 
 </navigation>

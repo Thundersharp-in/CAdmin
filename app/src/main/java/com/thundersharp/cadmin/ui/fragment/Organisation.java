@@ -25,17 +25,10 @@ public class Organisation extends Fragment {
         MainActivity.container.setBackground(null);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp,getActivity().getTheme()));
 
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddOrganisationFragment fragment=new AddOrganisationFragment();
-                FragmentManager manage=getFragmentManager();
-                FragmentTransaction transaction=manage.beginTransaction();
-                transaction.replace(R.id.org,fragment);
-                transaction.commit();
-               // Intent intent=new Intent(getContext(), AddOrganisation.class);
-                //startActivity(intent);
+                MainActivity.navController.navigate(R.id.nav_org);
             }
         });
 

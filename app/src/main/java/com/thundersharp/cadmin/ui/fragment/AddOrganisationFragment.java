@@ -26,10 +26,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.notes.model.org_details_model;
+import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 
 public class AddOrganisationFragment extends Fragment {
@@ -49,6 +52,16 @@ public class AddOrganisationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_add_organisation, container, false);
+        MainActivity.container.setBackground(null);
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.navController.navigate(R.id.nav_organisation);
+            }
+        });
+
         upload_org_logo=view.findViewById(R.id.upload_org_logo);
         upload_org_name=view.findViewById(R.id.upload_org_name);
         upload_org_desc=view.findViewById(R.id.upload_org_desc);
