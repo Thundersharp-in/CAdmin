@@ -6,13 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,8 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.notes.adapters.NotesAdapter;
 import com.thundersharp.cadmin.notes.callbacks.MainActionModeCallback;
@@ -32,6 +30,7 @@ import com.thundersharp.cadmin.notes.db.NotesDao;
 import com.thundersharp.cadmin.notes.model.Note;
 import com.thundersharp.cadmin.notes.utils.NoteUtils;
 import com.thundersharp.cadmin.ui.activity.EditNoteActivity;
+import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +117,6 @@ public class PNotes extends Fragment implements NoteEventListener{
 
     private void onAddNewNote() {
         startActivity(new Intent(getActivity(), EditNoteActivity.class));
-
     }
 
 
