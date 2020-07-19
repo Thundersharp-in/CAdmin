@@ -68,7 +68,6 @@
                 android:textColor="#F8F8F8"
                 android:textColorHint="#ffff" />
 
-
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -83,7 +82,7 @@
         android:layout_marginTop="5dp"
         android:background="@null"
         android:text="Forgot Credentials ?"
-        android:textColor="#B9B8BA"
+        android:textColor="#FFFFFF"
         android:textSize="12sp"
         android:textStyle="italic" />
 
@@ -99,6 +98,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/loginbutton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -130,6 +130,7 @@
             android:textColor="#C6C6C6" />
 
         <Button
+            android:id="@+id/signupuser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -140,13 +141,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@id/signuplay"
         android:layout_marginTop="15dp"
         android:layout_centerHorizontal="true"
-        android:weightSum="3">
+        android:weightSum="4">
         <ImageView
             android:layout_width="0dp"
             android:layout_height="70dp"
@@ -164,10 +165,18 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="70dp"
+            android:src="@drawable/twitter"
+            android:padding="15dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="70dp"
             android:src="@drawable/github"
             android:padding="17dp"
             android:tint="#fff"
             android:layout_weight="1"/>
+
 
     </LinearLayout>
 

@@ -32,4 +32,13 @@
         <item name="boxStrokeWidth">2dp</item>
     </style>
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/blue_grey_900</item>
+        <item name="android:textColor">#fff</item>
+        <item name="iconTint">#fff</item>
+        <item name="android:textColorPrimary">#f3f3f3</item>
+        <item name="android:calendarTextColor">#fff</item>
+        <item name="android:amPmTextColor">#fff</item>
+        <item name="android:colorForeground">#fff</item>
+    </style>
 </resources>
