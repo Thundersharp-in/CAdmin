@@ -179,10 +179,17 @@ public class loginFragment extends Fragment {
                         Toast.makeText(context, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                if(task.isSuccessful()){
+                    Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getActivity(), MainActivity.class));
+                }
+                else{
+                    Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
