@@ -94,6 +94,9 @@ public class loginFragment extends Fragment {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Register register=new Register();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerlog,register).commit();
+
 
             }
         });

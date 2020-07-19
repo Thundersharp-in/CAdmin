@@ -12,7 +12,7 @@ import com.thundersharp.cadmin.ui.fragment.loginFragment;
 
 public class Login_reg extends AppCompatActivity {
 
-    FrameLayout frameLayout;
+   public static FrameLayout frameLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
