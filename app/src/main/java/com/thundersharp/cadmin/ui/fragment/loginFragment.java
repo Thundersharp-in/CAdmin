@@ -1,11 +1,16 @@
 package com.thundersharp.cadmin.ui.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -29,6 +35,7 @@ import java.util.concurrent.Executor;
 
 
 public class loginFragment extends Fragment {
+
     public String email;
     public String password;
     private static final String TAG="FacebookLogin";
@@ -38,14 +45,24 @@ public class loginFragment extends Fragment {
     OAuthProvider.Builder provider;
     OAuthProvider.Builder provider1;
     private AccessToken token;
+    RelativeLayout relativeLayout;
+    Animation show_fab_1,hide_fab_1;
+    AnimationDrawable animationDrawable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        relativeLayout = view.findViewById(R.id.rellogin);
+        animationDrawable =(AnimationDrawable)relativeLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(5000);
+        animationDrawable.setExitFadeDuration(2000);
 
         fAuth=FirebaseAuth.getInstance();
+
+        show_fab_1 = AnimationUtils.loadAnimation(getActivity(),R.anim.fab1_show);
+        hide_fab_1 = AnimationUtils.loadAnimation(getActivity(),R.anim.fab1_hide);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -125,5 +142,11 @@ public class loginFragment extends Fragment {
                 Toast.makeText(context, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        animationDrawable.start();
     }
 }
