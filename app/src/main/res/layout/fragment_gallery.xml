@@ -1,10 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:id="@+id/org"
     tools:context=".ui.fragment.Organisation">
+    <RelativeLayout
+        android:id="@+id/org1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:background="@drawable/up_frame"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/company_logo"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp"
+                app:civ_border_width="5dp"
+                app:civ_border_color="@color/colorTextonPrimary"
+                android:src="@drawable/ic_baseline_person_24"
+                android:background="@android:color/transparent"
+                android:padding="3dp"
+                />
+            <TextView
+                android:id="@+id/company_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/company_logo"
+                android:layout_marginTop="12dp"
+                android:text="Organisation Name"
+                android:padding="3dp"
+                android:textColor="@color/colorTextonPrimary"
+                android:textStyle="bold|italic"
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                />
 
-</RelativeLayout>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/add_project"
+            android:layout_width="90dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="140dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/rounded_rect_bg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="300dp"
+            android:elevation="15dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:src="@drawable/ic_add_black_24dp"
+                android:elevation="10dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add \nProjects"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:elevation="2dp"
+                android:textColor="#000"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/manager_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="organiser name"
+            android:layout_marginTop="355dp"
+            android:textSize="19sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@color/blue_grey_50"
+            android:gravity="center"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="3dp"
+            android:elevation="14dp"
+            android:padding="2dp"
+            />
+        <TextView
+            android:id="@+id/de"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:layout_below="@+id/add_project"
+            android:gravity="center"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:padding="2dp"
+            android:textSize="19sp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="italic"
+            android:textAllCaps="false"
+            />
+        <TextView
+            android:id="@+id/company_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nvnfovjnfonjofbgjdfbogn
+            dfbonjofnmomnofbmnofkmnofkmnofkmnofkjbndfbjfjdfnbjdfbnfjbndfjbndfb"
+            android:layout_below="@+id/de"
+            android:gravity="center"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:padding="2dp"
+            android:textSize="17sp"
+            android:textColor="@color/grey_800"
+            android:textStyle="italic"
+            android:textAllCaps="false"
+            />
+    </RelativeLayout>
+
+</ScrollView>

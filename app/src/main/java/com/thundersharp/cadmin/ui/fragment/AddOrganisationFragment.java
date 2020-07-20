@@ -1,7 +1,9 @@
 package com.thundersharp.cadmin.ui.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -66,7 +68,11 @@ public class AddOrganisationFragment extends Fragment {
         upload_org_name=view.findViewById(R.id.upload_org_name);
         upload_org_desc=view.findViewById(R.id.upload_org_desc);
         btn_upload_org=view.findViewById(R.id.btn_upload_org);
-
+        logo_url="";
+        org_description="";
+        org_name="";
+        organiser_name="";
+        organiser_uid="";
         upload_org_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,21 +84,21 @@ public class AddOrganisationFragment extends Fragment {
         btn_upload_org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ProgressDialog progressDialog=new ProgressDialog(getContext());
-                progressDialog.setMessage("Data Uploading ...");
-                progressDialog.show();
-                mUser=FirebaseAuth.getInstance().getCurrentUser();
+                 final ProgressDialog progressDialog=new ProgressDialog(getContext());
+                 progressDialog.setMessage("Data Uploading ...");
+                 progressDialog.show();
+                 mUser=FirebaseAuth.getInstance().getCurrentUser();
                  organiser_uid=mUser.getUid();
                  organiser_name=mUser.getDisplayName();
-                org_name=upload_org_name.getText().toString();
-                org_description=upload_org_desc.getText().toString();
-               // organiser_name="Name of organiser";
-                //organiser_uid="organiser uid";
-                long l3=1000000000;
-                long l4=9000000000L;
-                Random r = new Random(System.currentTimeMillis());
-                long l= l3 + r.nextInt((int) l4);
-                String l1= String.valueOf(l);
+                 org_name=upload_org_name.getText().toString();
+                 org_description=upload_org_desc.getText().toString();
+                 // organiser_name="Name of organiser";
+                 //organiser_uid="organiser uid";
+                 long l3=1000000000;
+                 long l4=9000000000L;
+                 Random r = new Random(System.currentTimeMillis());
+                 long l= l3 + r.nextInt((int) l4);
+                 final String l1= String.valueOf(l);
 
                 org_details_model_list=new org_details_model(org_description,logo_url,l1,org_name,organiser_name,organiser_uid);
                 mRef= FirebaseDatabase.getInstance().getReference("organisation1");
@@ -102,6 +108,10 @@ public class AddOrganisationFragment extends Fragment {
 
                         if (task.isSuccessful()){
                             Toast.makeText(getContext(), "Data Uploaded", Toast.LENGTH_SHORT).show();
+                            SharedPreferences pref =getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString("id",l1.trim());
+                            editor.apply();
                             progressDialog.dismiss();
                             Organisation fragment=new Organisation();
                             FragmentManager manage=getFragmentManager();

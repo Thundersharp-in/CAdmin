@@ -1,6 +1,8 @@
 package com.thundersharp.cadmin.notes.model;
 
-public class org_details_model {
+import java.io.Serializable;
+
+public class org_details_model implements Serializable {
 
     String company_description;
     String company_logo;
