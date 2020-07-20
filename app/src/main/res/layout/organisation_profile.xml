@@ -112,7 +112,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_dob"
+                android:id="@+id/text_input_org"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -123,9 +123,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="DOB"
+                    android:hint="Organisation"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:inputType="textEmailAddress"/>
+                    android:inputType="text"/>
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -147,6 +147,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/bot_reg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_background"
@@ -156,6 +157,7 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
+            android:id="@+id/already_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Already Have an Account?"
