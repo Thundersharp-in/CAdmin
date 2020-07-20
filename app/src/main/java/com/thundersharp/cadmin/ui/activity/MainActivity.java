@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -42,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         bottomNavigationView = findViewById(R.id.bottom_bar);
         fragment = findViewById(R.id.nav_host_fragment);
         floatingActionButton = findViewById(R.id.fab);
@@ -57,6 +59,19 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View headerview = navigationView.getHeaderView(0);
+        ImageView profile = (ImageView) headerview.findViewById(R.id.imageView);
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!navController.getCurrentDestination().getLabel().toString().equalsIgnoreCase("Your profile")){
+                    navController.navigate(R.id.nav_profile);
+                    drawer.closeDrawers();
+                }
+
+            }
+        });
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
