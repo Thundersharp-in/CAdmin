@@ -35,6 +35,7 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.2.5'
     implementation 'com.google.firebase:firebase-database:19.3.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
     implementation 'androidx.paging:paging-runtime:2.1.2'
     implementation 'com.faendir.rhino:rhino-android:1.4'
