@@ -185,21 +185,28 @@
         <RelativeLayout
             android:id="@+id/signuplay"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="@dimen/padding_10"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/other">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/uparrow"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/arrow"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:drawableTop="@drawable/ic_baseline_keyboard_arrow_up_24"
                 android:fontFamily="@font/bree_serif"
                 android:layout_marginTop="@dimen/padding_10"
                 android:text="Swipe up here to sign-up"
+                android:layout_below="@+id/arrow"
                 android:textColor="#fff"
-                android:textSize="14dp"
+                android:textSize="17dp"
                 android:textStyle="bold" />
 
 

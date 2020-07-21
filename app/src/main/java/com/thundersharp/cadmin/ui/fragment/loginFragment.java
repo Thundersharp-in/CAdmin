@@ -66,7 +66,7 @@ public class loginFragment extends Fragment {
     AnimationDrawable animationDrawable;
     GoogleSignInClient mGoogleSignInClient;
     Button forgot, loginbutton;
-    ImageView logingoogle, github;
+    ImageView logingoogle, github,arrow;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +88,44 @@ public class loginFragment extends Fragment {
         signup = view.findViewById(R.id.signuplay);
         logingoogle = view.findViewById(R.id.logingoogle);
         github = view.findViewById(R.id.github);
+        arrow= view.findViewById(R.id.arrow);
+
+        show_fab_1 = AnimationUtils.loadAnimation(getActivity(),R.anim.fadeout);
+        hide_fab_1 = AnimationUtils.loadAnimation(getActivity(),R.anim.fadein);
+        arrow.startAnimation(show_fab_1);
+        show_fab_1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                arrow.startAnimation(hide_fab_1);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        hide_fab_1.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                arrow.startAnimation(show_fab_1);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
         signup.setOnTouchListener(new OnSwipeTouchListener(getContext()){
             public void onSwipeTop() {
