@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,20 +53,20 @@ import java.util.concurrent.Executor;
 public class loginFragment extends Fragment {
 
 
-    TextInputLayout email,password;
-    private static final String TAG="FacebookLogin";
-    private static final int RC_SIGN_IN=123;
+    TextInputLayout email, password;
+    private static final String TAG = "FacebookLogin";
+    private static final int RC_SIGN_IN = 123;
     private FirebaseAuth fAuth;
     private Context context;
     OAuthProvider.Builder provider;
     OAuthProvider.Builder provider1;
     private AccessToken token;
-    RelativeLayout relativeLayout;
-    Animation show_fab_1,hide_fab_1;
+    RelativeLayout relativeLayout,signup;
+    Animation show_fab_1, hide_fab_1;
     AnimationDrawable animationDrawable;
     GoogleSignInClient mGoogleSignInClient;
-    Button forgot,loginbutton,signup;
-    ImageView logingoogle,github;
+    Button forgot, loginbutton;
+    ImageView logingoogle, github;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,52 +74,61 @@ public class loginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         relativeLayout = view.findViewById(R.id.rellogin);
-        animationDrawable =(AnimationDrawable)relativeLayout.getBackground();
+        animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
         animationDrawable.setExitFadeDuration(2000);
         context = getActivity();
 
 
-        fAuth=FirebaseAuth.getInstance();
+        fAuth = FirebaseAuth.getInstance();
         email = view.findViewById(R.id.email);
         password = view.findViewById(R.id.password);
-        forgot=view.findViewById(R.id.forgot);
-        loginbutton=view.findViewById(R.id.loginbutton);
-        signup = view.findViewById(R.id.signupuser);
-        logingoogle=view.findViewById(R.id.logingoogle);
+        forgot = view.findViewById(R.id.forgot);
+        loginbutton = view.findViewById(R.id.loginbutton);
+        signup = view.findViewById(R.id.signuplay);
+        logingoogle = view.findViewById(R.id.logingoogle);
         github = view.findViewById(R.id.github);
 
+        signup.setOnTouchListener(new OnSwipeTouchListener(getContext()){
+            public void onSwipeTop() {
+                Register register = new Register();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
+                fragmentTransaction.replace(R.id.containerlog, register).commit();
+                //Toast.makeText(getContext(), "top", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeRight() {
+                //Toast.makeText(getContext(), "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                //Toast.makeText(getContext(), "left", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeBottom() {
+                //Toast.makeText(getContext(), "bottom", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (email.getEditText().getText().toString().isEmpty()){
+                if (email.getEditText().getText().toString().isEmpty()) {
                     email.getEditText().setError("Required");
                     email.getEditText().requestFocus();
-                }else if (password.getEditText().getText().toString().isEmpty()){
+                } else if (password.getEditText().getText().toString().isEmpty()) {
                     password.getEditText().setError("Required");
                     password.getEditText().requestFocus();
-                }else {
-                    loginwithemail(email.getEditText().getText().toString(),password.getEditText().getText().toString());
+                } else {
+                    loginwithemail(email.getEditText().getText().toString(), password.getEditText().getText().toString());
                 }
             }
         });
 
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Register register=new Register();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerlog,register).commit();
-
-
-            }
-        });
 
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.MyDialogTheme);
-                View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.forgot_acount,null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
+                View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.forgot_acount, null);
                 builder.setTitle("Find your account");
                 builder.setMessage("Find your account by providing us your email address.");
                 builder.setCancelable(true);
@@ -176,7 +188,7 @@ public class loginFragment extends Fragment {
                                             // authResult.getAdditionalUserInfo().getProfile().
                                             // The OAuth access token can also be retrieved:
                                             // authResult.getCredential().getAccessToken().
-                                            Toast.makeText(getContext(),"pending called",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "pending called", Toast.LENGTH_SHORT).show();
                                         }
                                     })
                             .addOnFailureListener(
@@ -201,7 +213,7 @@ public class loginFragment extends Fragment {
                                             // authResult.getAdditionalUserInfo().getProfile().
                                             // The OAuth access token can also be retrieved:
                                             // authResult.getCredential().getAccessToken().
-                                            Toast.makeText(getContext(),"Signin with provider",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Signin with provider", Toast.LENGTH_SHORT).show();
                                         }
                                     })
                             .addOnFailureListener(
@@ -240,7 +252,7 @@ public class loginFragment extends Fragment {
             // Signed in successfully, show authenticated UI.
             AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
             firebaseAuthWithGoogle(credential);
-           // updateUI(account);
+            // updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -252,9 +264,9 @@ public class loginFragment extends Fragment {
 
     private void loginWith(String email, String password) {
 
-        provider=OAuthProvider.newBuilder("twitter.com");
+        provider = OAuthProvider.newBuilder("twitter.com");
         //twitter
-        fAuth.startActivityForSignInWithProvider(getActivity(),provider.build())
+        fAuth.startActivityForSignInWithProvider(getActivity(), provider.build())
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -286,8 +298,8 @@ public class loginFragment extends Fragment {
 
     }
 
-    private void loginwithemail(@NonNull String username,@NonNull String passwordstring){
-        fAuth.signInWithEmailAndPassword(username,passwordstring)
+    private void loginwithemail(@NonNull String username, @NonNull String passwordstring) {
+        fAuth.signInWithEmailAndPassword(username, passwordstring)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -297,12 +309,11 @@ public class loginFragment extends Fragment {
 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getActivity(), MainActivity.class));
-                }
-                else{
-                    Toast.makeText(getContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -319,13 +330,13 @@ public class loginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Intent intent = new Intent(getActivity(),MainActivity.class);
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
                             startActivity(intent);
                             getActivity().finish();
                             Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(context, "failed : "+task.getException().getCause().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "failed : " + task.getException().getCause().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -340,5 +351,74 @@ public class loginFragment extends Fragment {
     public void onResume() {
         super.onResume();
         animationDrawable.start();
+    }
+
+
+}
+
+
+class OnSwipeTouchListener implements View.OnTouchListener {
+
+    private final GestureDetector gestureDetector;
+
+    public OnSwipeTouchListener(Context ctx) {
+        gestureDetector = new GestureDetector(ctx, new GestureListener());
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
+                        }
+                        result = true;
+                    }
+                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        onSwipeBottom();
+                    } else {
+                        onSwipeTop();
+                    }
+                    result = true;
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+    }
+
+    public void onSwipeRight() {
+    }
+
+    public void onSwipeLeft() {
+    }
+
+    public void onSwipeTop() {
+    }
+
+    public void onSwipeBottom() {
     }
 }

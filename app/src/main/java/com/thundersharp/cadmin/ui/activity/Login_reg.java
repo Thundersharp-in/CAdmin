@@ -2,12 +2,13 @@ package com.thundersharp.cadmin.ui.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.MotionEventCompat;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.ui.fragment.loginFragment;
@@ -46,4 +47,5 @@ public class Login_reg extends AppCompatActivity {
         });
         builder.show();
     }
+
 }

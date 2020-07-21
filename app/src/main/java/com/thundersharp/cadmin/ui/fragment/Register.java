@@ -81,7 +81,7 @@ public class Register extends Fragment {
             checkAndRequestForPermission();
         }
         else {
-            openGallery();
+            //openGallery();
         }
 
         if (male.isChecked()){
@@ -236,8 +236,10 @@ public class Register extends Fragment {
                                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PReqCode);
             }
         }
-        else
-            openGallery();
+        else{
+
+        }
+            //openGallery();
 
     }
 
