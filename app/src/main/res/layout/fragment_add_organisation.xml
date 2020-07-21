@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/org_manager"
+    android:padding="3dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.AddOrganisationFragment">
     <LinearLayout
@@ -11,65 +12,99 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/upload_org_logo"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/ic_baseline_person_24"
-            app:civ_border_width="2dp"
-            />
-        <TextView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Organisation Name"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="12dp"
-            android:padding="1dp"
-            android:textSize="15sp"
-            />
+            android:elevation="3dp"
+            app:cardBackgroundColor="@color/cardview_light_background"
+            android:layout_marginTop="18dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="5dp"
+            app:cardUseCompatPadding="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/upload_org_logo"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_menu_gallery"
+                    app:civ_border_width="3dp"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Organisation Name"
+                        android:padding="2dp"
+                        android:textSize="17sp"
+                        />
 
-        <EditText
-            android:id="@+id/upload_org_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="12dp"
-            android:padding="1dp"
-            android:textSize="19sp"
-            android:layout_marginTop="2dp"
-            android:hint="Organisation Name"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Organisation Description"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="12dp"
-            android:padding="1dp"
-            android:textSize="15sp"
-            />
+                    <EditText
+                        android:id="@+id/upload_org_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:textSize="19sp"
+                        android:textStyle="bold|italic"
+                        android:hint="Organisation Name"
+                        />
+                </LinearLayout>
 
-        <EditText
-            android:id="@+id/upload_org_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="12dp"
-            android:padding="1dp"
-            android:textSize="19sp"
-            android:layout_marginTop="2dp"
-            android:hint="Organisation Description"
-            android:gravity="start"
-            />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:layout_marginStart="12dp"
+           android:layout_marginEnd="12dp"
+           android:orientation="vertical">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Organisation Description"
+               android:padding="2dp"
+               android:textSize="17sp"
+               />
+
+           <EditText
+               android:id="@+id/upload_org_desc"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="12dp"
+               android:layout_gravity="start"
+               android:gravity="start"
+               android:textStyle="italic"
+               android:textSize="19sp"
+               android:hint="Description"
+               />
+
+       </LinearLayout>
 
         <Button
             android:id="@+id/btn_upload_org"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center"
             android:text="Upload"
+            android:padding="1dp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:background="@color/colorTextonSecondary"
+            android:layout_marginBottom="5dp"
             />
 
     </LinearLayout>
