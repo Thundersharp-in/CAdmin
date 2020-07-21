@@ -1,8 +1,12 @@
 package com.thundersharp.cadmin.ui.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.annotation.VisibleForTesting;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -21,6 +25,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class Finance extends Fragment {
 
+    private static final int REQUEST_CODE_CALENDAR = 1;
     RelativeLayout calci,calnorm;
 
     @Override
@@ -49,10 +54,34 @@ public class Finance extends Fragment {
         calnorm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MainActivityCalander.class));
+                if (checkCalendarPermissions()){
+                    startActivity(new Intent(getActivity(), MainActivityCalander.class));
+                }else {
+                    requestCalendarPermissions();
+                }
+
             }
         });
 
         return view;
+    }
+
+    @VisibleForTesting
+    protected boolean checkCalendarPermissions() {
+        return (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CALENDAR) |
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_CALENDAR)) ==
+                PackageManager.PERMISSION_GRANTED;
+    }
+
+
+
+
+    @VisibleForTesting
+    protected void requestCalendarPermissions() {
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR},
+                REQUEST_CODE_CALENDAR);
     }
 }

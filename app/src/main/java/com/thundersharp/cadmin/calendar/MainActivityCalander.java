@@ -117,14 +117,8 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
         mCoordinator.coordinate(mToolbarToggle, mCalendarView, mAgendaView);
-        if (checkCalendarPermissions()) {
-            loadEvents();
-        } else {
-            toggleEmptyView(true);
-        }
-        if (mWeatherEnabled && !checkLocationPermissions()) {
-            explainLocationPermissions();
-        }
+        loadEvents();
+
     }
 
 
@@ -210,21 +204,10 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         switch (requestCode) {
 
             case REQUEST_CODE_CALENDAR:
-                if (checkCalendarPermissions()) {
                     toggleEmptyView(false);
                     loadEvents();
-                } else {
-                    toggleEmptyView(true);
-                }
                 break;
 
-            case REQUEST_CODE_LOCATION:
-                if (checkLocationPermissions()) {
-
-                } else {
-                    explainLocationPermissions();
-                }
-                break;
         }
     }
 
@@ -325,19 +308,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
 
     @SuppressWarnings("ConstantConditions")
     private void toggleEmptyView(boolean visible) {
-        if (visible) {
-            findViewById(R.id.empty).setVisibility(View.VISIBLE);
-            findViewById(R.id.empty).bringToFront();
-            findViewById(R.id.button_permission)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            requestCalendarPermissions();
-                        }
-                    });
-        } else {
-            findViewById(R.id.empty).setVisibility(View.GONE);
-        }
+        findViewById(R.id.empty).setVisibility(View.GONE);
     }
 
     private void changeWeekStart(@IdRes int selection) {
@@ -401,53 +372,6 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                                 CalendarContract.ACCOUNT_TYPE_LOCAL)
                         .build()
                         , cv);
-    }
-
-
-    @VisibleForTesting
-    protected boolean checkCalendarPermissions() {
-        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) |
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)) ==
-                PackageManager.PERMISSION_GRANTED;
-    }
-
-
-    @VisibleForTesting
-    protected boolean checkLocationPermissions() {
-        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) |
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) ==
-                PackageManager.PERMISSION_GRANTED;
-    }
-
-
-    @VisibleForTesting
-    protected void requestCalendarPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{
-                        Manifest.permission.READ_CALENDAR,
-                        Manifest.permission.WRITE_CALENDAR},
-                REQUEST_CODE_CALENDAR);
-    }
-
-
-    @VisibleForTesting
-    protected void requestLocationPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                REQUEST_CODE_LOCATION);
-    }
-
-
-    private void explainLocationPermissions() {
-        Snackbar.make(mCoordinatorLayout, R.string.location_permission_required,
-                Snackbar.LENGTH_LONG)
-                .setAction(R.string.grant_access, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        requestLocationPermissions();
-                    }
-                })
-                .show();
     }
 
 

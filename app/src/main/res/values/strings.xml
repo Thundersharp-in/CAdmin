@@ -1,17 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">CAdmin</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
@@ -57,9 +51,6 @@
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
     <string name="night">Night</string>
-    <string name="fahrenheit">%1$.1f\u00b0F</string>
-    <string name="show_weather">Show weather</string>
-    <string name="updating_weather" tools:ignore="TypographyEllipsis">Updating weather information...</string>
     <string name="location_permission_required">Updating weather requires location access</string>
     <string name="week_start">Week start</string>
     <string name="saturday">Saturday</string>
@@ -68,8 +59,6 @@
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
     <string name="calendars">Calendars</string>
-    <string name="error_location">Unable to determine your location</string>
-
 
 
 </resources>
