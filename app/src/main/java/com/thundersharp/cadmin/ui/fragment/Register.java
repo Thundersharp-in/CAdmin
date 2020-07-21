@@ -151,7 +151,8 @@ public class Register extends Fragment {
                                                                             .setDisplayName(name)
                                                                              .setPhotoUri(uri)
                                                                              .build();
-                                currentUser.updateProfile(profileUpdate).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                currentUser.updateProfile(profileUpdate)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
@@ -207,7 +208,8 @@ public class Register extends Fragment {
         already_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), Login_reg.class));
+                loginFragment loginFragment = new loginFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerlog,loginFragment).commit();
             }
         });
 
@@ -249,4 +251,6 @@ public class Register extends Fragment {
         }
 
     }
+
+
 }
