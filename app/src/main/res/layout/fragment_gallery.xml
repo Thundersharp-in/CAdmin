@@ -13,67 +13,168 @@
         android:layout_height="wrap_content"
         >
         <RelativeLayout
+            android:id="@+id/r1"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/up_frame"
+            android:layout_marginEnd="-2dp"
             >
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/company_logo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="12dp"
-                app:civ_border_width="5dp"
-                app:civ_border_color="@color/colorTextonPrimary"
-                android:src="@drawable/ic_baseline_person_24"
-                android:background="@android:color/transparent"
-                android:padding="3dp"
-                />
             <TextView
-                android:id="@+id/company_name"
+                android:id="@+id/tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/company_logo"
-                android:layout_marginTop="12dp"
-                android:text="Organisation Name"
-                android:padding="3dp"
-                android:textColor="@color/colorTextonPrimary"
-                android:textStyle="bold|italic"
-                android:textSize="20sp"
-                android:textAllCaps="false"
-                />
-            <TextView
-                android:id="@+id/manager_name"
-                android:layout_below="@+id/company_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:padding="1dp"
                 android:textStyle="italic"
-                android:text="organiser name"
-                android:layout_marginTop="2dp"
-
-                android:textSize="15sp"
-                android:textColor="@color/colorTextonPrimary"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:layout_marginEnd="3dp"
-                android:layout_marginBottom="3dp"
-                android:elevation="14dp"
-                android:padding="2dp"
+                android:textColor="#fff"
+                android:elevation="10dp"
+                android:textSize="12sp"
+                android:text="click on the '+' icon to view the details and ave look on the project"
                 />
+            <LinearLayout
+                android:id="@+id/l2"
+                android:layout_below="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true"
+                >
+                <ImageView
+                    android:id="@+id/company_logo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="2dp"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="5dp"
+                    android:src="@drawable/ic_baseline_person_24"
+                    android:background="@drawable/stroke1"
+                    android:padding="3dp"
+                    />
+                <TextView
+                    android:id="@+id/manager_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:text="organiser name"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorTextonPrimary"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="3dp"
+                    android:elevation="14dp"
+                    android:padding="1dp"
+                    />
+                <TextView
+                    android:id="@+id/manager_uid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textStyle="italic"
+                    android:text="organiser uid"
+                    android:layout_marginTop="2dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="3dp"
+                    android:elevation="14dp"
+                    android:padding="1dp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/l2"
+                android:layout_below="@+id/tv"
+                android:gravity="start"
+                android:layout_alignParentStart="true"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/company_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Organisation Name"
+                    android:layout_marginStart="12dp"
+                    android:padding="3dp"
+                    android:textColor="@color/colorTextonPrimary"
+                    android:textStyle="bold|italic"
+                    android:textSize="18sp"
+                    android:textAllCaps="false"
+                    />
+                <TextView
+                    android:id="@+id/company_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Organisation id"
+                    android:layout_marginStart="12dp"
+                    android:padding="1dp"
+                    android:textStyle="bold|italic"
+                    android:textAllCaps="false"
+                    />
+
+
+                <TextView
+                    android:id="@+id/de"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:padding="2dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/white"
+                    android:textStyle="italic"
+                    android:textAllCaps="false"
+                    />
+                <TextView
+                    android:id="@+id/company_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="nvnfovjnfonjofbgjdfbogn
+            dfbonjofnmomnofbmnofkmnofkmnofkmnofkjbndfbjfjdfnbjdfbnfjbndfjbndfb"
+                    android:gravity="center"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:layout_marginBottom="30dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/yellow_50"
+                    android:textStyle="italic"
+                    android:textAllCaps="false"
+                    />
+
+            </LinearLayout>
 
         </RelativeLayout>
-        <LinearLayout
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_black_24dp"
+                android:layout_below="@+id/r1"
+                android:layout_marginTop="-30dp"
+                android:layout_centerHorizontal="true"
+                />
+        <!--  <LinearLayout
             android:id="@+id/add_project"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginEnd="140dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/circle"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="250dp"
+            android:layout_marginTop="150dp"
             android:elevation="15dp"
             android:padding="5dp"
             android:orientation="vertical">
@@ -82,7 +183,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:src="@drawable/ic_add_black_24dp"
                 android:elevation="10dp"
                 />
@@ -90,55 +191,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add \nProjects"
-                android:textSize="16sp"
                 android:layout_gravity="center"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="5dp"
                 android:elevation="2dp"
                 android:textColor="#000"/>
         </LinearLayout>
+ -->
 
-        <TextView
-            android:id="@+id/de"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:layout_below="@+id/add_project"
-            android:gravity="center"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:padding="2dp"
-            android:textSize="17sp"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="italic"
-            android:textAllCaps="false"
-            />
-        <TextView
-            android:id="@+id/company_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="nvnfovjnfonjofbgjdfbogn
-            dfbonjofnmomnofbmnofkmnofkmnofkmnofkjbndfbjfjdfnbjdfbnfjbndfjbndfb"
-            android:layout_below="@+id/de"
-            android:gravity="center"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:padding="2dp"
-            android:textSize="15sp"
-            android:textColor="@color/grey_800"
-            android:textStyle="italic"
-            android:textAllCaps="false"
-            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/project_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/company_detail"
-            android:layout_marginTop="12dp"
+            android:layout_below="@+id/r1"
+            android:layout_marginTop="30dp"
             android:padding="2dp"
             />
-
     </RelativeLayout>
+
+
 
 </ScrollView>
