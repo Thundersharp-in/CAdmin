@@ -1,16 +1,21 @@
 package com.thundersharp.cadmin.ui.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +23,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,6 +60,8 @@ public class Register extends Fragment {
     Button bot_reg;
     TextView already_user;
     RadioButton male, female;
+    NestedScrollView relativeLayout;
+    AnimationDrawable animationDrawable;
     FirebaseAuth mAuth;
     DatabaseReference mReference;
     CircleImageView imageView;
@@ -74,11 +83,14 @@ public class Register extends Fragment {
         text_input_org = view.findViewById(R.id.text_input_org);
         bot_reg=view.findViewById(R.id.bot_reg);
         imageView = view.findViewById(R.id.profile_image);
-        already_user=view.findViewById(R.id.already_user);
         male = view.findViewById(R.id.radio_male);
         female = view.findViewById(R.id.radio_female);
         mAuth=FirebaseAuth.getInstance();
         mReference= FirebaseDatabase.getInstance().getReference();
+        relativeLayout = view.findViewById(R.id.containerreg);
+        animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(3000);
+        animationDrawable.setExitFadeDuration(2000);
 
         if (Build.VERSION.SDK_INT >= 22){
             checkAndRequestForPermission();
@@ -208,11 +220,25 @@ public class Register extends Fragment {
                 });
             }
         });
-        already_user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginFragment loginFragment = new loginFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerlog,loginFragment).commit();
+
+
+        relativeLayout.setOnTouchListener(new OnSwipeTouchListenerreg(getContext()){
+            public void onSwipeTop() {
+
+                //Toast.makeText(getContext(), "top", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeRight() {
+                //Toast.makeText(getContext(), "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                //Toast.makeText(getContext(), "left", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeBottom() {
+                loginFragment register = new loginFragment();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
+                fragmentTransaction.replace(R.id.containerlog, register).commit();
+                //Toast.makeText(getContext(), "bottom", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -257,5 +283,78 @@ public class Register extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        animationDrawable.start();
+    }
 
+
+}
+
+
+class OnSwipeTouchListenerreg implements View.OnTouchListener {
+
+    private final GestureDetector gestureDetector;
+
+    public OnSwipeTouchListenerreg(Context ctx) {
+        gestureDetector = new GestureDetector(ctx, new GestureListener());
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
+                        }
+                        result = true;
+                    }
+                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        onSwipeBottom();
+                    } else {
+                        onSwipeTop();
+                    }
+                    result = true;
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+    }
+
+    public void onSwipeRight() {
+    }
+
+    public void onSwipeLeft() {
+    }
+
+    public void onSwipeTop() {
+    }
+
+    public void onSwipeBottom() {
+    }
 }
