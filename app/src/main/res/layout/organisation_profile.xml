@@ -20,15 +20,14 @@
             android:layout_margin="2dp"
             android:layout_gravity="center"
             app:civ_border_width="2dp"
-            android:src="@drawable/ic_baseline_person_24"
+            android:src="@drawable/twitter"
             />
-        <!--  <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Click to upload"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>   -->
-
+            android:layout_marginTop="10dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_name"

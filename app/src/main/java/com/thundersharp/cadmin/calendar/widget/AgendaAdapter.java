@@ -27,7 +27,6 @@ import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.calendar.CalendarUtils;
 import com.thundersharp.cadmin.calendar.EditActivity;
 import com.thundersharp.cadmin.calendar.content.EventCursor;
-import com.thundersharp.cadmin.calendar.weather.Weather;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +57,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
     private final int mTransparentColor;
     private final int mIconTint;
     private int mColors[];
-    private Weather mWeather;
+    //private Weather mWeather;
     private boolean mLock;
 
     public AgendaAdapter(Context context) {
@@ -96,7 +95,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         bindTitle(item, holder);
         if (item instanceof EventGroup) {
             loadEvents(position);
-            bindWeather((EventGroup) item, (GroupViewHolder) holder);
+            //bindWeather((EventGroup) item, (GroupViewHolder) holder);
         } else {
             bindTime((EventItem) item, (ContentViewHolder) holder);
             bindColor((EventItem) item, (ContentViewHolder) holder);
@@ -153,11 +152,14 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         if (pair != null) {
             pair.first.setCursor(cursor, mEventObserver);
             notifyEventsChanged(pair.first, pair.second);
+
         }
     }
 
-    void setCalendarColors(int[] calendarColors) {
+    void setCalendarColors(int[] calendarColors){
+
         mColors = calendarColors;
+
     }
 
     /**
@@ -192,11 +194,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         return outState;
     }
 
-    /**
-     * Restores adapter's previously saved state
-     * @param savedState    saved state
-     * @see {@link #saveState()}
-     */
+
     void restoreState(Bundle savedState) {
         ArrayList<EventGroup> savedGroups =
                 savedState.getParcelableArrayList(STATE_EVENT_GROUPS);
@@ -204,13 +202,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         mEventGroups.addAll(savedGroups);
     }
 
-    /**
-     * Gets adapter position for given day, prepends or appends days
-     * to the list if out of range
-     * @param context       resources provider
-     * @param timeMillis    time in milliseconds representing given day
-     * @return  adapter position or {@link RecyclerView#NO_POSITION} if not a valid day (no time)
-     */
+
     int getPosition(Context context, long timeMillis) {
         if (timeMillis < mEventGroups.get(0).mTimeMillis) {
             while (timeMillis < mEventGroups.get(0).mTimeMillis) {
@@ -228,11 +220,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         return pair.second;
     }
 
-    /**
-     * Gets {@link AdapterItem} at given position
-     * @param position    adapter position
-     * @return  an {@link EventGroup} or {@link EventItem}
-     */
+
     AdapterItem getAdapterItem(int position) {
         return mEventGroups.getGroupOrItem(position);
     }
@@ -306,14 +294,11 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         notifyItemRangeChanged(0, getItemCount());
     }
 
-    /**
-     * Sets weather information to be displayed
-     * @param weather    weather information to be displayed, or null to disable
-     */
-    void setWeather(@Nullable Weather weather) {
+
+    /*void setWeather(@Nullable Weather weather) {
         mWeather = weather;
         notifyItemRangeChanged(0, getItemCount());
-    }
+    }*/
 
     private void bindTitle(AdapterItem item, RowViewHolder holder) {
         if (item instanceof EventGroup) {
@@ -359,7 +344,7 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         }
     }
 
-    private void bindWeather(EventGroup groupItem, final GroupViewHolder holder) {
+/*    private void bindWeather(EventGroup groupItem, final GroupViewHolder holder) {
         // bind weather for today and tomorrow if exist, hide UI otherwise
         if (groupItem.mTimeMillis == CalendarUtils.today() &&
                 mWeather != null && mWeather.today != null) {
@@ -376,15 +361,15 @@ public abstract class AgendaAdapter extends RecyclerView.Adapter<AgendaAdapter.R
         } else {
             holder.weather.setVisibility(View.GONE);
         }
-    }
+    }*/
 
-    private void bindWeatherInfo(TextView textView, Weather.WeatherInfo info) {
+/*    private void bindWeatherInfo(TextView textView, Weather.WeatherInfo info) {
         Drawable icon = info.getIcon(textView.getContext(), mIconTint);
         textView.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         if (info.temperature != null) {
             textView.setText(textView.getContext().getString(R.string.fahrenheit, info.temperature));
         }
-    }
+    }*/
 
     private Pair<EventGroup, Integer> findGroup(long timeMillis) {
         int position = 0;

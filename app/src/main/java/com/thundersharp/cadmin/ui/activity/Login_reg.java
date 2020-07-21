@@ -1,9 +1,11 @@
 package com.thundersharp.cadmin.ui.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
@@ -23,5 +25,25 @@ public class Login_reg extends AppCompatActivity {
         loginFragment loginFragment = new loginFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.containerlog,loginFragment).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(Login_reg.this);
+        builder.setTitle("Sure to exit !!");
+        builder.setMessage("Do you really want to exit the application !!");
+        builder.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 }
