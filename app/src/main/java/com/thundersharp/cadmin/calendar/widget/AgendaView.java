@@ -20,7 +20,7 @@ import android.view.View;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.calendar.CalendarUtils;
 import com.thundersharp.cadmin.calendar.ViewUtils;
-import com.thundersharp.cadmin.calendar.weather.Weather;
+
 
 public class AgendaView extends RecyclerView {
     private static final String STATE_VIEW = "state:view";
@@ -141,15 +141,6 @@ public class AgendaView extends RecyclerView {
         }
     }
 
-    /**
-     * Sets weather information to be displayed
-     * @param weather    weather information to be displayed, or null to disable
-     */
-    public void setWeather(@Nullable Weather weather) {
-        if (mAdapter != null) {
-            mAdapter.setWeather(weather);
-        }
-    }
 
     /**
      * Clears previous bindings if any, resets view to initial state and triggers rebinding data

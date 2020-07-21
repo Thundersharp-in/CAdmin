@@ -41,7 +41,6 @@ import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.calendar.content.CalendarCursor;
 import com.thundersharp.cadmin.calendar.content.EventCursor;
 import com.thundersharp.cadmin.calendar.content.EventsQueryHandler;
-import com.thundersharp.cadmin.calendar.weather.WeatherSyncService;
 import com.thundersharp.cadmin.calendar.widget.AgendaAdapter;
 import com.thundersharp.cadmin.calendar.widget.AgendaView;
 import com.thundersharp.cadmin.calendar.widget.CalendarSelectionView;
@@ -62,17 +61,6 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
     private static final int LOADER_CALENDARS = 0;
     private static final int LOADER_LOCAL_CALENDAR = 1;
 
-    private final SharedPreferences.OnSharedPreferenceChangeListener mWeatherChangeListener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-                                                      String key) {
-                    if (TextUtils.equals(key, WeatherSyncService.PREF_WEATHER_TODAY) ||
-                            TextUtils.equals(key, WeatherSyncService.PREF_WEATHER_TOMORROW)) {
-                        loadWeather();
-                    }
-                }
-            };
     private final CalendarSelectionView.OnSelectionChangeListener mCalendarSelectionListener
             = new CalendarSelectionView.OnSelectionChangeListener() {
         @Override
@@ -98,6 +86,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
     private View mDrawer;
     private final HashSet<String> mExcludedCalendarIds = new HashSet<>();
     private boolean mWeatherEnabled, mPendingWeatherEnabled;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,15 +127,17 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_weather).setChecked(mWeatherEnabled);
+
         switch (CalendarUtils.sWeekStart) {
             case Calendar.SATURDAY:
                 menu.findItem(R.id.action_week_start_saturday).setChecked(true);
@@ -161,24 +152,17 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         return super.onPrepareOptionsMenu(menu);
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_today) {
             mCoordinator.reset();
             return true;
         }
-        if (item.getItemId() == R.id.action_weather) {
-            mPendingWeatherEnabled = !mWeatherEnabled;
-            if (!mWeatherEnabled && !checkLocationPermissions()) {
-                requestLocationPermissions();
-            } else {
-                toggleWeather();
-            }
-            return true;
-        }
         if (item.getItemId() == R.id.action_week_start_saturday ||
                 item.getItemId() == R.id.action_week_start_sunday ||
                 item.getItemId() == R.id.action_week_start_monday) {
+
             if (!item.isChecked()) {
                 changeWeekStart(item.getItemId());
             }
@@ -187,12 +171,14 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mCoordinator.saveState(outState);
         outState.putBoolean(STATE_TOOLBAR_TOGGLE, mToolbarToggle.isChecked());
     }
+
 
     @Override
     protected void onDestroy() {
@@ -204,9 +190,8 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                 .putString(CalendarUtils.PREF_CALENDAR_EXCLUSIONS,
                         TextUtils.join(SEPARATOR, mExcludedCalendarIds))
                 .apply();
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(mWeatherChangeListener);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -217,11 +202,13 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         }
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
+
             case REQUEST_CODE_CALENDAR:
                 if (checkCalendarPermissions()) {
                     toggleEmptyView(false);
@@ -230,15 +217,17 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                     toggleEmptyView(true);
                 }
                 break;
+
             case REQUEST_CODE_LOCATION:
                 if (checkLocationPermissions()) {
-                    toggleWeather();
+
                 } else {
                     explainLocationPermissions();
                 }
                 break;
         }
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -253,6 +242,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                 CalendarCursor.PROJECTION, selection, selectionArgs,
                 CalendarContract.Calendars.DEFAULT_SORT_ORDER);
     }
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -270,24 +260,24 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         }
     }
 
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCalendarSelectionView.swapCursor(null, null);
     }
 
+
     private void setUpPreferences() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        mWeatherEnabled = mPendingWeatherEnabled = sp.getBoolean(
-                WeatherSyncService.PREF_WEATHER_ENABLED, false);
         String exclusions = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(CalendarUtils.PREF_CALENDAR_EXCLUSIONS, null);
         if (!TextUtils.isEmpty(exclusions)) {
             mExcludedCalendarIds.addAll(Arrays.asList(exclusions.split(SEPARATOR)));
         }
         CalendarUtils.sWeekStart = sp.getInt(CalendarUtils.PREF_WEEK_START, Calendar.SUNDAY);
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(mWeatherChangeListener);
     }
+
+
 
     private void setUpContentView() {
         mCoordinatorLayout = findViewById(R.id.coordinator_layout);
@@ -323,6 +313,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         mFabAdd.hide();
     }
 
+
     private void toggleCalendarView() {
         if (mToolbarToggle.isChecked()) {
             mCalendarView.setVisibility(View.VISIBLE);
@@ -330,6 +321,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
             mCalendarView.setVisibility(View.GONE);
         }
     }
+
 
     @SuppressWarnings("ConstantConditions")
     private void toggleEmptyView(boolean visible) {
@@ -368,9 +360,11 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         mCoordinator.reset();
     }
 
+
     private void createEvent() {
         startActivity(new Intent(this, EditActivity.class));
     }
+
 
     private void loadEvents() {
         getSupportLoaderManager().initLoader(LOADER_CALENDARS, null, this);
@@ -378,22 +372,13 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         mFabAdd.show();
         mCalendarView.setCalendarAdapter(new CalendarCursorAdapter(this, mExcludedCalendarIds));
         mAgendaView.setAdapter(new AgendaCursorAdapter(this, mExcludedCalendarIds));
-        loadWeather();
+
     }
 
-    private void toggleWeather() {
-        mWeatherEnabled = mPendingWeatherEnabled;
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putBoolean(WeatherSyncService.PREF_WEATHER_ENABLED, mWeatherEnabled)
-                .apply();
-        supportInvalidateOptionsMenu();
-        loadWeather();
-    }
 
-    private void loadWeather() {
-        mAgendaView.setWeather(mWeatherEnabled ? WeatherSyncService.getSyncedWeather(this) : null);
-    }
+
+
+
 
     private void createLocalCalendar() {
         String name = getString(R.string.default_calendar_name);
@@ -418,6 +403,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                         , cv);
     }
 
+
     @VisibleForTesting
     protected boolean checkCalendarPermissions() {
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) |
@@ -425,12 +411,14 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                 PackageManager.PERMISSION_GRANTED;
     }
 
+
     @VisibleForTesting
     protected boolean checkLocationPermissions() {
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) |
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) ==
                 PackageManager.PERMISSION_GRANTED;
     }
+
 
     @VisibleForTesting
     protected void requestCalendarPermissions() {
@@ -441,12 +429,14 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                 REQUEST_CODE_CALENDAR);
     }
 
+
     @VisibleForTesting
     protected void requestLocationPermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 REQUEST_CODE_LOCATION);
     }
+
 
     private void explainLocationPermissions() {
         Snackbar.make(mCoordinatorLayout, R.string.location_permission_required,
@@ -459,6 +449,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
                 })
                 .show();
     }
+
 
     /**
      * Coordinator utility that synchronizes widgets as selected date changes
@@ -549,6 +540,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         }
     }
 
+
     static class AgendaCursorAdapter extends AgendaAdapter {
 
         @VisibleForTesting
@@ -566,6 +558,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
         }
     }
 
+
     static class CalendarCursorAdapter extends EventCalendarView.CalendarAdapter {
         private final MonthEventsQueryHandler mHandler;
 
@@ -582,6 +575,7 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
             mHandler.startQuery(monthMillis, startTimeMillis, endTimeMillis);
         }
     }
+
 
     static class DayEventsQueryHandler extends EventsQueryHandler {
 
