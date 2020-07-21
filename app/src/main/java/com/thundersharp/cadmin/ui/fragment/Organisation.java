@@ -53,9 +53,7 @@ public class Organisation extends Fragment {
         company_detail=root.findViewById(R.id.company_detail);
         company_logo=root.findViewById(R.id.company_logo);
         add_project=root.findViewById(R.id.add_project);
-       // project_done=root.findViewById(R.id.project_done);
         manager_name=root.findViewById(R.id.manager_name);
-        //frame=root.findViewById(R.id.frame);
         org1.setVisibility(View.GONE);
         data=new ArrayList<>();
         SharedPreferences preferences= this.getActivity().getSharedPreferences("org",0);
@@ -134,6 +132,7 @@ if (model != null) {
                 MainActivity.navController.navigate(R.id.nav_org);
             }
         });
+
 
         return root;
     }

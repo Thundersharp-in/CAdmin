@@ -46,7 +46,10 @@ import static android.app.Activity.RESULT_OK;
 
 public class Register extends Fragment {
 
-    TextInputLayout text_input_name,text_input_email,text_input_password,text_input_c_password,text_input_phone,text_input_org;
+    TextInputLayout text_input_name,
+            text_input_email,text_input_password,
+            text_input_c_password,text_input_phone,
+            text_input_org;
     Button bot_reg;
     TextView already_user;
     RadioButton male, female;
