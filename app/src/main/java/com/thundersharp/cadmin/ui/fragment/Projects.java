@@ -23,11 +23,11 @@ public class Projects extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_projects, container, false);
         MainActivity.container.setBackground(null);
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_chat_bubble_outline_24,getActivity().getTheme()));
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_playlist_add_24,getActivity().getTheme()));
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Chat comming soon",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Add projects comming soon",Toast.LENGTH_SHORT).show();
             }
         });
 

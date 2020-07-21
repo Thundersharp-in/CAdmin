@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".calendar.MainActivityCalander">
+
+            <include layout="@layout/toolbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include layout="@layout/include_activity_main"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include layout="@layout/fab_add"
+                app:layout_anchor="@id/agenda_view"
+                app:layout_anchorGravity="bottom|right|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <LinearLayout
+            android:id="@+id/drawer"
+            android:layout_gravity="start"
+            android:orientation="vertical"
+            android:background="?android:attr/colorBackground"
+            android:divider="@drawable/horizontal_divider"
+            android:showDividers="middle"
+            style="@style/Widget.AppCompat.DrawerArrowToggle"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:text="@string/calendars"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/horizontal_padding"
+                android:paddingRight="@dimen/horizontal_padding"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize" />
+
+            <com.thundersharp.cadmin.calendar.widget.CalendarSelectionView
+                android:id="@+id/list_view_calendar"
+                android:divider="@color/colorDivider"
+                android:dividerHeight="@dimen/divider_size"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <ViewStub
+        android:id="@+id/empty"
+        android:inflatedId="@+id/empty"
+        android:layout="@layout/empty_permission"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</merge>

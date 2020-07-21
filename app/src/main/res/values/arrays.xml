@@ -9,4 +9,13 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+        <string-array name="calendar_colors">
+            <item>@color/blue_50</item>
+            <item>@color/cyan_50</item>
+            <item>@color/green_50</item>
+            <item>@color/yellow_50</item>
+            <item>@color/red_50</item>
+        </string-array>
+
 </resources>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">CAdmin</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -29,4 +29,47 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="about_thundersharp">Thundersharp is one of the most exciting firm spreading its wings in this era to make all of your professional stuffs like Professional websites, Android applications, Graphics design related goods and services, Erp Emplementation and much more to support your business grow online, delivered at your demands</string>
+
+
+
+    <string name="no_event">No event</string>
+    <string name="calendar_permission_required">Calendar access is required to manage your events</string>
+    <string name="all_day">All day</string>
+    <string name="grant_access">Grant access</string>
+    <string name="today">Today</string>
+    <string name="title">Title</string>
+    <string name="event_time">Event time</string>
+    <string name="event_calendar">Event calendar</string>
+    <string name="warning_empty_title">Event title is required</string>
+    <string name="choose_calendar">Choose a calendar</string>
+    <string name="create_event">Create new event</string>
+    <string name="edit_event">Edit event</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete">Delete this event?</string>
+    <string name="confirm_discard_changes">Discard changes?</string>
+    <string name="warning_missing_calendar">Please choose a calendar</string>
+    <string name="end_time">Ends\n%s</string>
+    <string name="default_calendar_name">Local Calendar</string>
+    <string name="event_created">Event created.</string>
+    <string name="event_updated">Event updated.</string>
+    <string name="event_deleted">Event deleted.</string>
+    <string name="morning">Morning</string>
+    <string name="afternoon">Afternoon</string>
+    <string name="night">Night</string>
+    <string name="fahrenheit">%1$.1f\u00b0F</string>
+    <string name="show_weather">Show weather</string>
+    <string name="updating_weather" tools:ignore="TypographyEllipsis">Updating weather information...</string>
+    <string name="location_permission_required">Updating weather requires location access</string>
+    <string name="week_start">Week start</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
+    <string name="calendars">Calendars</string>
+    <string name="error_location">Unable to determine your location</string>
+
+
+
 </resources>

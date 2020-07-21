@@ -18,6 +18,7 @@
     <color name="colorFuncBtnText">#00796b</color>
     <color name="colorNumBtnBackground">#dddddd</color>
     <color name="colorNumBtnText">#333333</color>
+    <color name="colorDivider">#1F000000</color>
 
 
 

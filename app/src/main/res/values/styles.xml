@@ -41,4 +41,44 @@
         <item name="android:amPmTextColor">#fff</item>
         <item name="android:colorForeground">#fff</item>
     </style>
+
+
+    <style name="Widget" />
+
+    <style name="Widget.AppTheme" />
+
+    <style name="Widget.AppTheme.EventEditView">
+        <item name="android:paddingLeft">@dimen/padding</item>
+        <item name="android:paddingRight">@dimen/padding</item>
+    </style>
+
+    <style name="Widget.AppTheme.EventEditView.TextView">
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.AppTheme.EventEditView.TextView.Selectable">
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Widget.AppTheme.EventEditView.TextView.Selectable.End">
+        <item name="android:gravity">center_vertical|end</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.Hint" parent="TextAppearance.Design.Hint" />
+
+    <style name="TextAppearance.AppTheme.Hint.Disabled">
+        <item name="android:textColor">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="Widget.AppTheme.TextView" />
+
+    <style name="Widget.AppTheme.TextView.Weather">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">@dimen/padding_text</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:paddingTop">@dimen/padding_text</item>
+        <item name="android:paddingBottom">@dimen/padding_text</item>
+    </style>
+
+
 </resources>

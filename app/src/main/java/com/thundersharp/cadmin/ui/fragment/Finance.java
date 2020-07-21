@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.thundersharp.cadmin.calculators.CalculatorNorm;
+import com.thundersharp.cadmin.calendar.MainActivityCalander;
 import com.thundersharp.cadmin.ui.activity.Calendar;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
@@ -32,7 +33,7 @@ public class Finance extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(),"Chat comming soon",Toast.LENGTH_SHORT).show();
+                MainActivity.navController.navigate(R.id.nav_chats);
             }
         });
 
@@ -48,7 +49,7 @@ public class Finance extends Fragment {
         calnorm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), Calendar.class));
+                startActivity(new Intent(getActivity(), MainActivityCalander.class));
             }
         });
 
