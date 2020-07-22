@@ -22,7 +22,7 @@ public class Startup extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (FirebaseAuth.getInstance().getCurrentUser() !=null){
+                if (FirebaseAuth.getInstance().getCurrentUser() !=null && FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
                     startActivity(new Intent(Startup.this, MainActivity.class));
                     finish();
                 }else {

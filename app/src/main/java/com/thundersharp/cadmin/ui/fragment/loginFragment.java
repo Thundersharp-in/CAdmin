@@ -348,8 +348,12 @@ public class loginFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getActivity(), MainActivity.class));
+                    if (fAuth.getCurrentUser().isEmailVerified()){
+                        Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                    } else {
+                        Toast.makeText(getActivity(), "Please verify your email address", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }

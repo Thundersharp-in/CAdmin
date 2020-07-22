@@ -1,19 +1,25 @@
 package com.thundersharp.cadmin.ui.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,24 +33,33 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.facebook.login.Login;
+import com.facebook.login.LoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskExecutors;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
+import com.thundersharp.cadmin.ui.model.RegisterModel;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,10 +71,11 @@ public class Register extends Fragment {
             text_input_email,text_input_password,
             text_input_c_password,text_input_phone,
             text_input_org;
-    Button bot_reg;
+    EditText otp_verification;
+    Button bot_reg, btn_verify, number_verified;
     TextView already_user;
     NestedScrollView relativeLayout;
-    RelativeLayout getRelativeLayout;
+    RelativeLayout getRelativeLayout, phoneVerify;
     AnimationDrawable animationDrawable;
     FirebaseAuth mAuth;
     DatabaseReference mReference;
@@ -67,7 +83,8 @@ public class Register extends Fragment {
     static int PReqCode = 1;
     static int REQUEST_CODE = 1;
     Uri pickedImageUri;
-    String gender = "";
+    String verification_id;
+    PhoneAuthProvider.ForceResendingToken token;
 
 
     @Nullable
@@ -79,6 +96,8 @@ public class Register extends Fragment {
         text_input_c_password=view.findViewById(R.id.text_input_c_password);
         text_input_password=view.findViewById(R.id.text_input_password);
         text_input_phone=view.findViewById(R.id.text_input_phone);
+
+        btn_verify = view.findViewById(R.id.bot_very);
 
         bot_reg=view.findViewById(R.id.bot_reg);
         imageView = view.findViewById(R.id.profile_image);
@@ -97,97 +116,192 @@ public class Register extends Fragment {
             //openGallery();
         }
 
-        final String name = text_input_name.getEditText().getText().toString();
-        final String email = text_input_email.getEditText().getText().toString();
-        final String password = text_input_password.getEditText().getText().toString();
-        final String cpassword = text_input_c_password.getEditText().getText().toString();
-        final String phone = text_input_phone.getEditText().getText().toString();
-        //final String organization = text_input_org.getEditText().getText().toString();
+        btn_verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater1 = getLayoutInflater();
+                View alertLayout = inflater1.inflate(R.layout.otp_box,null);
+                builder.setView(alertLayout);
+                builder.setCancelable(true);
+
+                final Button button = alertLayout.findViewById(R.id.nextBtn);
+                final Button can = alertLayout.findViewById(R.id.cancelBtn);
+                final EditText phoneNumber = alertLayout.findViewById(R.id.phone);
+                final EditText codeEnter = alertLayout.findViewById(R.id.codeEnter);
+                final ProgressBar progressBar = alertLayout.findViewById(R.id.progressBar);
+                final TextView state = alertLayout.findViewById(R.id.state);
+                final CountryCodePicker picker = alertLayout.findViewById(R.id.ccp);
+
+
+                final Dialog dialog = builder.create();
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        button.setClickable(true);
+
+                        if (phoneNumber.getText().toString().isEmpty() && phoneNumber.getText().toString().length() < 10){
+                            phoneNumber.setError("Phone number is not valid");
+                        }
+                        else if (!phoneNumber.getText().toString().isEmpty() && phoneNumber.getText().toString().length() == 10){
+                            String phoneNum = "+"+picker.getSelectedCountryCode()+phoneNumber.getText().toString();
+                            progressBar.setVisibility(View.VISIBLE);
+                            state.setText("Sending OTP...");
+                            state.setVisibility(View.VISIBLE);
+                            requestOTP(phoneNum);
+                        }
+                        else
+                            {
+                            String userOTP = codeEnter.getText().toString();
+                            if (userOTP.isEmpty())
+                            {
+                                codeEnter.setError("OTP is not Valid");
+                            } else if (!userOTP.isEmpty() && userOTP.length() == 6)
+                            {
+                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verification_id,userOTP);
+                                mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()){
+                                            Toast.makeText(getActivity(), "Verified", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getActivity(), "Not able to verified", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+                            }
+                        }
+                    private void requestOTP(String phoneNum) {
+                        PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNum,
+                                60L,
+                                TimeUnit.SECONDS,
+                                getActivity(), new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                                    @Override
+                                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                        super.onCodeSent(s, forceResendingToken);
+
+                                        progressBar.setVisibility(View.GONE);
+                                        state.setVisibility(View.GONE);
+                                        codeEnter.setVisibility(View.VISIBLE);
+                                        verification_id = s;
+                                        token = forceResendingToken;
+                                        button.setText("Verify");
+                                        button.setClickable(true);
+                                        dialog.dismiss();
+                                        btn_verify.setText("Verified");
+
+                                    }
+
+                                    @Override
+                                    public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
+                                        super.onCodeAutoRetrievalTimeOut(s);
+                                    }
+
+                                    @Override
+                                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+                                    }
+
+                                    @Override
+                                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                });
+
+                can.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
 
 
         bot_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                final String name = text_input_name.getEditText().getText().toString();
+                final String email = text_input_email.getEditText().getText().toString();
+                final String password = text_input_password.getEditText().getText().toString();
+                final String cpassword = text_input_c_password.getEditText().getText().toString();
+                final String phone = text_input_phone.getEditText().getText().toString();
 
-                if (name.equals("")) {
-                    text_input_name.setError("Required");
+                if (TextUtils.isEmpty(name)){
+                    text_input_name.setError("Required!!");
                     text_input_name.requestFocus();
-                } else if (email.equals("")) {
-                    text_input_email.setError("Required");
+
+                }else if (TextUtils.isEmpty(email)){
+                    text_input_email.setError("Required!!");
                     text_input_email.requestFocus();
-                } else if (password.equals("")) {
-                    text_input_password.setError("Password Required");
+
+                }else if (TextUtils.isEmpty(password)){
+                    text_input_password.setError("Required!!");
                     text_input_password.requestFocus();
-                } else if(cpassword.equals("")){
-                    text_input_c_password.setError("Password Required");
+
+                }else if (TextUtils.isEmpty(cpassword)){
+                    text_input_c_password.setError("Required!!");
                     text_input_c_password.requestFocus();
-                } else if (phone.equals("")){
-                    text_input_phone.setError("Phone Number Required");
+
+                }else if (TextUtils.isEmpty(phone)){
+                    text_input_phone.setError("Required!!");
                     text_input_phone.requestFocus();
-                } else {
-                    setRegister(name, email, password);
 
+                }else if (password.length() < 6){
+                    text_input_password.setError("Password is too short");
+                    text_input_password.requestFocus();
+
+                }else if (!password.equals(cpassword)){
+                    text_input_password.setError("password is not same");
+                    text_input_c_password.setError("password is not same");
+                    text_input_c_password.requestFocus();
+                    text_input_password.requestFocus();
+
+                }else if (phone.length() < 10){
+                    text_input_phone.setError("Valid number is required");
+                    text_input_phone.requestFocus();
                 }
-            }
-
-            private void setRegister(final String name, final String email, final String password) {
-
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(getActivity(),new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Account created", Toast.LENGTH_SHORT).show();
-                            updateUserInfo(name,pickedImageUri,mAuth.getCurrentUser());
-                        }
-                    }
-                });
-            }
-
-            private void updateUserInfo(final String name, Uri pickedImageUri, final FirebaseUser currentUser) {
-                StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("user_photos");
-                final StorageReference imageFilePath = mStorage.child(pickedImageUri.getLastPathSegment());
-                imageFilePath.putFile(pickedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                                                            .setDisplayName(name)
-                                                                             .setPhotoUri(uri)
-                                                                             .build();
-                                currentUser.updateProfile(profileUpdate)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                else{
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()){
+                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                            hashMap.put("id",getId());
-                                            hashMap.put("name",name);
-                                            hashMap.put("email",email);
-                                            hashMap.put("password",password);
-                                            hashMap.put("imageUrl",imageView);
-                                            hashMap.put("gender","null");
-                                            hashMap.put("phone_no",phone);
-                                            hashMap.put("organisation","null");
-                                            mReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()){
-                                                        Toast.makeText(getContext(), "Register Complete", Toast.LENGTH_SHORT).show();
-                                                        Intent homeIntent = new Intent(getContext(),MainActivity.class);
-                                                        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        startActivity(homeIntent);
-                                                    }
-                                                }
-                                            }).addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                        if (task.isSuccessful())
+                                        {
+                                            RegisterModel model = new RegisterModel(mAuth.getUid(),
+                                                    "",
+                                                    mAuth.getCurrentUser().getEmail(),
+                                                    "",
+                                                    "");
+
+                                            FirebaseDatabase.getInstance()
+                                                    .getReference("Users1")
+                                                    .child(mAuth.getUid())
+                                                    .setValue(model)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()){
+                                                                Toast.makeText(getContext(), "Register SuccessFull. Please check your email for verification code", Toast.LENGTH_SHORT).show();
+                                                                Intent i = new Intent(getActivity(), LoginFragment.class);
+                                                                startActivity(i);
+
+                                                            }else {
+                                                                Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
                                         }
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -196,21 +310,15 @@ public class Register extends Fragment {
                                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        }
+                    });
+
+                }
             }
+
+
         });
 
 
@@ -237,6 +345,9 @@ public class Register extends Fragment {
         return view;
     }
 
+
+
+
     private void openGallery() {
         //TODO: open gallery intent and wait for user to pick an image!
 
@@ -258,10 +369,8 @@ public class Register extends Fragment {
             }
         }
         else{
-
         }
             //openGallery();
-
     }
 
     @Override
