@@ -115,6 +115,7 @@ public class CurrencyConverter extends AppCompatActivity {
 
 
         //Setting click listeners on arrows
+
         linearLayoutOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
