@@ -83,6 +83,7 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     };
     private final Organisation_cal.Coordinator mCoordinator = new Organisation_cal.Coordinator();
     private View mCoordinatorLayout;
+    TextView txt;
     private CheckedTextView mToolbarToggle;
     private EventCalendarView mCalendarView;
     private AgendaView mAgendaView;
@@ -92,7 +93,9 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     private DrawerLayout mDrawerLayout;
     private View mDrawer,root;
     private final HashSet<String> mExcludedCalendarIds = new HashSet<>();
+    Toolbar toolbarorg;
     private boolean mWeatherEnabled, mPendingWeatherEnabled;
+
 
 
 
@@ -109,6 +112,9 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
                 createEvent();
             }
         });
+
+        toolbarorg = getActivity().findViewById(R.id.toolbar);
+        txt = root.findViewById(R.id.txt);
 
         /*((AppCompatActivity)getActivity()).setSupportActionBar((Toolbar) getActivity().findViewById(R.id.toolbar));
         //noinspection ConstantConditions
@@ -134,7 +140,7 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //mDrawerToggle.syncState();
-        //mCoordinator.coordinate(null, mCalendarView, mAgendaView);
+        mCoordinator.coordinate(txt, mCalendarView, mAgendaView);
         loadEvents();
 
 
@@ -142,7 +148,7 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
 
 
 
-    @Override
+  /*  @Override
     public void onPrepareOptionsMenu(Menu menu) {
 
         switch (CalendarUtils.sWeekStart) {
@@ -158,9 +164,9 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
         }
         super.onPrepareOptionsMenu(menu);
     }
+*/
 
-
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_today) {
             mCoordinator.reset();
@@ -176,13 +182,13 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
             return true;
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mCoordinator.saveState(outState);
+        //mCoordinator.saveState(outState);
         //outState.putBoolean(STATE_TOOLBAR_TOGGLE, mToolbarToggle.isChecked());
     }
 
@@ -435,14 +441,14 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
             mCalendarView.setSelectedDay(mSelectedDayMillis);
             agendaView.setSelectedDay(mSelectedDayMillis);
             //TODO here too
-            //updateTitle(mSelectedDayMillis);
+            updateTitle(mSelectedDayMillis);
             calendarView.setOnChangeListener(mCalendarListener);
             agendaView.setOnDateChangeListener(mAgendaListener);
         }
 
-        void saveState(Bundle outState) {
+        /*void saveState(Bundle outState) {
             outState.putLong(STATE_SELECTED_DATE, mSelectedDayMillis);
-        }
+        }*/
 
         void restoreState(Bundle savedState) {
             mSelectedDayMillis = savedState.getLong(STATE_SELECTED_DATE,
