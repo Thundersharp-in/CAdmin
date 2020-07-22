@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +36,7 @@ public class Organisation extends Fragment {
     TextView company_name,company_detail,manager_name;
     ImageView company_logo;
     Button project_done;
-    LinearLayout add_project;
+    FloatingActionButton add_project;
     DatabaseReference mRef,mRef1;
     List<org_details_model> data;
     RelativeLayout org1;

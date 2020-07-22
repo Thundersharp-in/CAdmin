@@ -43,6 +43,9 @@
     <color name="grey_800">#424242</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="blue">#2A93D5</color>
+    <color name="red">#D73A31</color>
+    <color name="peach">#FA898A</color>
 
 
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>

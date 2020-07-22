@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.thundersharp.cadmin.calculators.CalculatorNorm;
 import com.thundersharp.cadmin.calendar.MainActivityCalander;
 import com.thundersharp.cadmin.ui.activity.Calendar;
+import com.thundersharp.cadmin.ui.activity.CurrencyConverter;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
 
@@ -26,7 +27,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class Finance extends Fragment {
 
     private static final int REQUEST_CODE_CALENDAR = 1;
-    RelativeLayout calci,calnorm;
+    RelativeLayout calci,calnorm,convq;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +61,14 @@ public class Finance extends Fragment {
                     requestCalendarPermissions();
                 }
 
+            }
+        });
+
+        convq=view.findViewById(R.id.convq);
+        convq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CurrencyConverter.class));
             }
         });
 
