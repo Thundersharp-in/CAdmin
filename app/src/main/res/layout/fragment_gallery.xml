@@ -28,6 +28,7 @@
                 android:textColor="#fff"
                 android:elevation="10dp"
                 android:textSize="12sp"
+                android:layout_marginStart="5dp"
                 android:text="click on the '+' icon to view the details and ave look on the project"
                 />
             <LinearLayout
@@ -122,10 +123,10 @@
 
                 <TextView
                     android:id="@+id/de"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Description"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:layout_marginEnd="12dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="12dp"
@@ -139,16 +140,15 @@
                     android:id="@+id/company_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="nvnfovjnfonjofbgjdfbogn
-            dfbonjofnmomnofbmnofkmnofkmnofkmnofkjbndfbjfjdfnbjdfbnfjbndfjbndfb"
-                    android:gravity="center"
+                    android:text="nvnfovjnfonjofbgjdfbogndfbonjofnmomnofbmnofkmnofkmnofkmnofkjbndfbjfjdfnbjdfbnfjbndfjbndfb"
+                    android:gravity="start"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="12dp"
                     android:layout_marginTop="5dp"
                     android:padding="5dp"
                     android:layout_marginBottom="30dp"
                     android:textSize="15sp"
-                    android:textColor="@color/yellow_50"
+                    android:textColor="@color/grey_800"
                     android:textStyle="italic"
                     android:textAllCaps="false"
                     />
@@ -164,40 +164,10 @@
                 android:src="@drawable/ic_add_black_24dp"
                 android:layout_below="@+id/r1"
                 android:layout_marginTop="-30dp"
+                android:elevation="12dp"
+                app:elevation="12dp"
                 android:layout_centerHorizontal="true"
                 />
-        <!--  <LinearLayout
-            android:id="@+id/add_project"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginEnd="140dp"
-            android:layout_marginBottom="0dp"
-            android:background="@drawable/circle"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:elevation="15dp"
-            android:padding="5dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="2dp"
-                android:src="@drawable/ic_add_black_24dp"
-                android:elevation="10dp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add \nProjects"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:elevation="2dp"
-                android:textColor="#000"/>
-        </LinearLayout>
- -->
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/project_rv"

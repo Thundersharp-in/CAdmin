@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="9dp"
+    app:cardCornerRadius="2dp"
+    android:elevation="9dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#686767"
+            />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/tw__composer_logo_blue"
+                android:background="@drawable/stroke1"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentTop="true"
+                android:padding="5dp"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toStartOf="@+id/iv"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Organisation Name"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginTop="4dp"
+                    android:textSize="19sp"
+                    android:padding="9dp"
+                    android:layout_marginStart="3dp"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Users >> "
+                        android:textSize="15sp"
+                        android:padding="5dp"
+                        android:textColor="@color/colorNumBtnText"
+                        android:layout_marginStart="3dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="work"
+                        android:layout_marginStart="8dp"
+                        android:padding="5dp"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text=" name1 : time1 \n name2 : time2 \n name3 : uid3 "
+                    android:layout_marginStart="3dp"
+                    android:textColor="@color/Brown"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:text="Manager Name "
+            android:layout_marginEnd="3dp"
+            android:padding="2dp"
+            android:layout_marginBottom="3dp"
+            />
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#686767"
+            />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
