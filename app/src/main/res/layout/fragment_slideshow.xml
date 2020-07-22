@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="4444"
-        android:visibility="gone"
         android:textColor="#000"/>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -41,35 +40,6 @@
                 app:layout_anchorGravity="bottom|end" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <LinearLayout
-            android:id="@+id/drawer"
-            style="@style/Widget.AppCompat.DrawerArrowToggle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="?android:attr/colorBackground"
-            android:divider="@drawable/horizontal_divider"
-            android:orientation="vertical"
-            android:showDividers="middle">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/horizontal_padding"
-                android:paddingRight="@dimen/horizontal_padding"
-                android:text="@string/calendars"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            <com.thundersharp.cadmin.calendar.widget.CalendarSelectionView
-                android:id="@+id/list_view_calendar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/colorDivider"
-                android:dividerHeight="@dimen/divider_size" />
-
-        </LinearLayout>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

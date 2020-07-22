@@ -68,19 +68,6 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     private static final int LOADER_CALENDARS = 0;
     private static final int LOADER_LOCAL_CALENDAR = 1;
 
-    private final CalendarSelectionView.OnSelectionChangeListener mCalendarSelectionListener
-            = new CalendarSelectionView.OnSelectionChangeListener() {
-        @Override
-        public void onSelectionChange(long id, boolean enabled) {
-            if (!enabled) {
-                mExcludedCalendarIds.add(String.valueOf(id));
-            } else {
-                mExcludedCalendarIds.remove(String.valueOf(id));
-            }
-            mCalendarView.invalidateData();
-            mAgendaView.invalidateData();
-        }
-    };
     private final Organisation_cal.Coordinator mCoordinator = new Organisation_cal.Coordinator();
     private View mCoordinatorLayout;
     TextView txt;
@@ -88,7 +75,6 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     private EventCalendarView mCalendarView;
     private AgendaView mAgendaView;
     private FloatingActionButton mFabAdd;
-    private CalendarSelectionView mCalendarSelectionView;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private View mDrawer,root;
@@ -122,6 +108,8 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
                 ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);*/
         setUpContentView(root);
         mCalendarView.setVisibility(View.VISIBLE);
+        mCoordinator.coordinate(txt, mCalendarView, mAgendaView);
+        loadEvents();
         //toggleCalendarView();
        /* mCoordinator.restoreState(savedInstanceState);
         if (savedInstanceState.getBoolean(STATE_TOOLBAR_TOGGLE, false)) {
@@ -134,19 +122,6 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
 
         return root;
     }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //mDrawerToggle.syncState();
-        mCoordinator.coordinate(txt, mCalendarView, mAgendaView);
-        loadEvents();
-
-
-    }
-
-
 
   /*  @Override
     public void onPrepareOptionsMenu(Menu menu) {
@@ -242,9 +217,6 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_CALENDARS:
-                if (data != null && data.moveToFirst()) {
-                    mCalendarSelectionView.swapCursor(new CalendarCursor(data), mExcludedCalendarIds);
-                }
                 break;
             case LOADER_LOCAL_CALENDAR:
                 if (data == null || data.getCount() == 0) {
@@ -257,7 +229,7 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mCalendarSelectionView.swapCursor(null, null);
+        //mCalendarSelectionView.swapCursor(null, null);
     }
 
 
@@ -275,9 +247,9 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
 
     private void setUpContentView(View view) {
         mCoordinatorLayout = view.findViewById(R.id.coordinator_layout);
-        mCalendarSelectionView = (CalendarSelectionView) view.findViewById(R.id.list_view_calendar);
+        //mCalendarSelectionView = (CalendarSelectionView) view.findViewById(R.id.list_view_calendar);
         //noinspection ConstantConditions
-        mCalendarSelectionView.setOnSelectionChangeListener(mCalendarSelectionListener);
+
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         mDrawer = view.findViewById(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, R.string.open_drawer, R.string.close_drawer);

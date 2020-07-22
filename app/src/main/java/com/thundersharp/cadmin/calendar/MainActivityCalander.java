@@ -346,11 +346,6 @@ public class MainActivityCalander extends AppCompatActivity implements LoaderMan
 
     }
 
-
-
-
-
-
     private void createLocalCalendar() {
         String name = getString(R.string.default_calendar_name);
         ContentValues cv = new ContentValues();

@@ -1,5 +1,8 @@
 package com.thundersharp.cadmin.ui.activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +17,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.calendar.MainActivityCalander;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     public static Toolbar toolbar;
+    private static final int REQUEST_CODE_CALENDAR = 0;
     BottomNavigationView bottomNavigationView;
     public static FloatingActionButton floatingActionButton;
     View fragment;
@@ -107,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        if (!checkCalendarPermissions()){
+            requestCalendarPermissions();
+        }
     }
 
     @Override
@@ -114,6 +125,39 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+
+            case REQUEST_CODE_CALENDAR:
+
+                break;
+
+        }
+    }
+
+    @VisibleForTesting
+    protected boolean checkCalendarPermissions() {
+
+        return (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CALENDAR) |
+                ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_CALENDAR)) ==
+                PackageManager.PERMISSION_GRANTED;
+    }
+
+
+
+
+    @VisibleForTesting
+    protected void requestCalendarPermissions() {
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR},
+                REQUEST_CODE_CALENDAR);
     }
 
     @Override
