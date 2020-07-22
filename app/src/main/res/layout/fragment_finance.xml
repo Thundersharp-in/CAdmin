@@ -101,6 +101,31 @@
             app:cardCornerRadius="5dp"
             android:layout_weight="1">
 
+            <RelativeLayout
+                android:id="@+id/convq"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/conv"
+                    android:src="@drawable/euro"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Currency converter"
+                    android:textAlignment="center"
+                    android:textSize="15dp"
+                    android:layout_below="@id/conv"
+                    android:layout_marginTop="15dp"/>
+
+            </RelativeLayout>
+
+
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

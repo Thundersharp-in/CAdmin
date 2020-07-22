@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,9 +33,9 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class Organisation extends Fragment {
 
-    TextView company_name,company_detail,manager_name,manager_uid,company_id;
+    TextView company_name,company_detail,manager_name;
     ImageView company_logo;
-    //Button project_done;
+    Button project_done;
     FloatingActionButton add_project;
     DatabaseReference mRef,mRef1;
     List<org_details_model> data;
@@ -53,8 +55,6 @@ public class Organisation extends Fragment {
         company_logo=root.findViewById(R.id.company_logo);
         add_project=root.findViewById(R.id.add_project);
         manager_name=root.findViewById(R.id.manager_name);
-        manager_uid=root.findViewById(R.id.manager_uid);
-        company_id=root.findViewById(R.id.company_id);
         org1.setVisibility(View.GONE);
         data=new ArrayList<>();
         SharedPreferences preferences= this.getActivity().getSharedPreferences("org",0);
@@ -84,7 +84,41 @@ public class Organisation extends Fragment {
                    Toast.makeText(getContext(), "none extracted", Toast.LENGTH_SHORT).show();
                }
 
+                /*
 
+                 for (DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
+                       org_details_model model = dataSnapshot1.getValue(org_details_model.class);
+                       data.add(model);
+                      // model.setKey(nn.getKey());
+                       org1.setVisibility(View.VISIBLE);
+                       company_name.setText(data.get(model.getOrganisation_name()));
+                       company_detail.setText(model.getCompany_description());
+                       company_logo.setImageURI(Uri.parse(model.getCompany_logo()));
+                       manager_name.setText(model.getOrganiser_name());
+                       Toast.makeText(getContext(), "All Extracted", Toast.LENGTH_SHORT).show();
+                   }
+
+
+
+
+                 org_details_model model=dataSnapshot.getValue(org_details_model.class);
+if (model != null) {
+                    if (l1.equals(model.getOrganisation_id())){
+                        org1.setVisibility(View.VISIBLE);
+                        company_name.setText(model.getOrganisation_name());
+                        company_detail.setText(model.getCompany_description());
+                        company_logo.setImageURI(Uri.parse(model.getCompany_logo()));
+                        manager_name.setText(model.getOrganiser_name());
+                        Toast.makeText(getContext(), "All Extracted", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    org1.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getContext(), "Null point", Toast.LENGTH_SHORT).show();
+                }
+
+                 */
             }
 
             @Override

@@ -42,7 +42,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.ui.activity.Login_reg;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.HashMap;
@@ -59,8 +58,8 @@ public class Register extends Fragment {
             text_input_org;
     Button bot_reg;
     TextView already_user;
-    RadioButton male, female;
     NestedScrollView relativeLayout;
+    RelativeLayout getRelativeLayout;
     AnimationDrawable animationDrawable;
     FirebaseAuth mAuth;
     DatabaseReference mReference;
@@ -74,21 +73,20 @@ public class Register extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.organisation_profile,container,false);
+        View view =inflater.inflate(R.layout.fragment_register,container,false);
         text_input_name = view.findViewById(R.id.text_input_name);
         text_input_email=view.findViewById(R.id.text_input_email);
         text_input_c_password=view.findViewById(R.id.text_input_c_password);
         text_input_password=view.findViewById(R.id.text_input_password);
         text_input_phone=view.findViewById(R.id.text_input_phone);
-        text_input_org = view.findViewById(R.id.text_input_org);
+
         bot_reg=view.findViewById(R.id.bot_reg);
         imageView = view.findViewById(R.id.profile_image);
-        male = view.findViewById(R.id.radio_male);
-        female = view.findViewById(R.id.radio_female);
         mAuth=FirebaseAuth.getInstance();
         mReference= FirebaseDatabase.getInstance().getReference();
+        getRelativeLayout = view.findViewById(R.id.tttt);
         relativeLayout = view.findViewById(R.id.containerreg);
-        animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
+        animationDrawable = (AnimationDrawable) getRelativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
         animationDrawable.setExitFadeDuration(2000);
 
@@ -99,18 +97,12 @@ public class Register extends Fragment {
             //openGallery();
         }
 
-        if (male.isChecked()){
-            gender ="Male";
-        } else if (female.isChecked()){
-            gender = "Female";
-        }
-
         final String name = text_input_name.getEditText().getText().toString();
         final String email = text_input_email.getEditText().getText().toString();
         final String password = text_input_password.getEditText().getText().toString();
         final String cpassword = text_input_c_password.getEditText().getText().toString();
         final String phone = text_input_phone.getEditText().getText().toString();
-        final String organization = text_input_org.getEditText().getText().toString();
+        //final String organization = text_input_org.getEditText().getText().toString();
 
 
 
@@ -177,9 +169,9 @@ public class Register extends Fragment {
                                             hashMap.put("email",email);
                                             hashMap.put("password",password);
                                             hashMap.put("imageUrl",imageView);
-                                            hashMap.put("gender",gender);
+                                            hashMap.put("gender","null");
                                             hashMap.put("phone_no",phone);
-                                            hashMap.put("organisation",organization);
+                                            hashMap.put("organisation","null");
                                             mReference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
