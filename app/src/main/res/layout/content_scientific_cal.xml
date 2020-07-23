@@ -57,6 +57,7 @@
             android:weightSum="4">
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/square"
@@ -67,6 +68,7 @@
                 android:textAllCaps="false"/>
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/xpowy"
@@ -77,6 +79,7 @@
                 android:textAllCaps="false"/>
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="log"
@@ -87,6 +90,7 @@
                 android:textAllCaps="false"/>
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/sin"
@@ -106,6 +110,7 @@
             android:weightSum="4">
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/cos"
@@ -116,6 +121,7 @@
                 android:textAllCaps="false"/>
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/tan"
@@ -126,16 +132,19 @@
                 android:textAllCaps="false"/>
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/toggle"
-                android:text="@string/toggle"
+                android:text="shift"
+                android:textAllCaps="false"
                 android:layout_weight="1"
                 android:textSize="17sp"
                 android:checked="false"
                 android:onClick="onClick" />
 
             <Button
+                android:background="@color/light_blue_200"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/factorial"
@@ -156,41 +165,50 @@
             android:weightSum="4">
 
             <Button
+                android:background="@color/colorSecondaryLite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/sqrt"
                 android:layout_weight="1"
                 android:text="@string/sqrt"
                 android:onClick="onClick"
+                android:textColor="@color/colorTextonSecondary"
                 android:textSize="17sp"
                 android:textAllCaps="false"/>
+
             <Button
+                android:background="@color/colorSecondaryLite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/posneg"
                 android:id="@+id/posneg"
                 android:layout_weight="1"
+                android:textColor="@color/colorTextonSecondary"
                 android:textSize="17sp"
                 android:onClick="onClick" />
             <Button
+                android:background="@color/colorSecondaryLite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/mode1"
                 android:id="@+id/mode"
                 android:onClick="onClick"
                 android:textSize="17sp"
+                android:textColor="@color/colorTextonSecondary"
                 android:layout_weight="1"
                 android:textAllCaps="false"/>
 
 
 
             <Button
+                android:background="@color/colorSecondaryLite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/pi"
                 android:id="@+id/pi"
                 android:layout_weight="1"
                 android:textSize="17sp"
+                android:textColor="@color/colorTextonSecondary"
                 android:onClick="onClick"
                 android:textAllCaps="false"/>
 
@@ -204,11 +222,13 @@
             android:weightSum="4">
 
             <Button
+                android:background="@color/colorSecondaryLite"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/divide"
                 android:id="@+id/divide"
                 android:layout_weight="1"
+                android:textColor="@color/colorTextonSecondary"
                 android:textSize="17sp"
                 android:onClick="onClick" />
 
@@ -216,8 +236,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="x"
+                android:background="@color/colorSecondaryLite"
                 android:id="@+id/multiply"
                 android:layout_weight="1"
+                android:textColor="@color/colorTextonSecondary"
                 android:textSize="17sp"
                 android:onClick="onClick" />
 
@@ -225,68 +247,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="-"
+                android:background="@color/colorSecondaryLite"
                 android:id="@+id/minus"
+                android:textColor="@color/colorTextonSecondary"
                 android:layout_weight="1"
                 android:textSize="17sp"
                 android:onClick="onClick" />
 
             <Button
                 android:layout_width="0dp"
+                android:background="@color/colorSecondaryLite"
                 android:layout_height="wrap_content"
                 android:text="+"
                 android:id="@+id/plus"
                 android:textSize="17sp"
+                android:textColor="@color/colorTextonSecondary"
                 android:layout_weight="1"
                 android:onClick="onClick" />
 
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="4">
-
-
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/openBracket"
-                android:layout_weight="1"
-                android:id="@+id/openBracket"
-                android:textSize="17sp"
-                android:onClick="onClick"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/closeBracket"
-                android:layout_weight="1"
-                android:id="@+id/closeBracket"
-                android:textSize="17sp"
-                android:onClick="onClick"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/clear"
-                android:id="@+id/clear"
-                android:layout_weight="1"
-                android:textSize="17sp"
-                android:onClick="onClick" />
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/backspace"
-                android:textSize="17sp"
-                android:id="@+id/backSpace"
-                android:layout_weight="1"
-                android:onClick="onClick" />
-
-        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -298,6 +279,7 @@
                 android:layout_height="wrap_content"
                 android:text="7"
                 android:id="@+id/num7"
+                android:background="#dddddd"
                 android:layout_weight="1"
                 android:textSize="17sp"
                 android:onClick="onClick"/>
@@ -309,29 +291,32 @@
                 android:id="@+id/num8"
                 android:layout_weight="1"
                 android:textSize="17sp"
+                android:background="#dddddd"
                 android:onClick="onClick" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="9"
+                android:background="#dddddd"
                 android:id="@+id/num9"
                 android:layout_weight="1"
                 android:textSize="17sp"
                 android:onClick="onClick" />
 
             <Button
+                android:id="@+id/clear"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="4"
-                android:id="@+id/num4"
                 android:layout_weight="1"
-                android:textSize="17sp"
-                android:onClick="onClick" />
+                android:textColor="#fff"
+                android:onClick="onClick"
+                android:text="AC"
+                android:background="#3F52BC"
+                android:textSize="17sp" />
+
 
         </LinearLayout>
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -341,13 +326,24 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="5"
-                android:id="@+id/num5"
+                android:text="4"
+                android:id="@+id/num4"
                 android:layout_weight="1"
                 android:textSize="17sp"
+                android:background="#dddddd"
                 android:onClick="onClick" />
 
             <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:id="@+id/num5"
+                android:layout_weight="1"
+                android:background="#dddddd"
+                android:textSize="17sp"
+                android:onClick="onClick" />
+            <Button
+                android:background="#dddddd"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="6"
@@ -359,20 +355,15 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="3"
-                android:id="@+id/num3"
+                android:text="@string/backspace"
                 android:textSize="17sp"
+                android:textColor="#fff"
+                android:background="#3F52BC"
+                android:id="@+id/backSpace"
                 android:layout_weight="1"
                 android:onClick="onClick" />
 
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:id="@+id/num2"
-                android:layout_weight="1"
-                android:textSize="17sp"
-                android:onClick="onClick" />
+
 
         </LinearLayout>
 
@@ -387,36 +378,94 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="1"
+                android:background="#dddddd"
                 android:id="@+id/num1"
                 android:layout_weight="1"
                 android:textSize="17sp"
                 android:onClick="onClick" />
+            <Button
+                android:layout_width="0dp"
+                android:background="#dddddd"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:id="@+id/num2"
+                android:layout_weight="1"
+                android:textSize="17sp"
+                android:onClick="onClick" />
+
+
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:id="@+id/num0"
+                android:text="3"
+                android:background="#dddddd"
+                android:id="@+id/num3"
                 android:textSize="17sp"
                 android:layout_weight="1"
                 android:onClick="onClick" />
-
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="."
+                android:background="#3F52BC"
+                android:textColor="#fff"
                 android:textStyle="bold"
                 android:id="@+id/dot"
                 android:layout_weight="1"
                 android:textSize="17sp"
                 android:nestedScrollingEnabled="false"
                 android:onClick="onClick" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/openBracket"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:id="@+id/openBracket"
+                android:textSize="17sp"
+                android:onClick="onClick"/>
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:background="#dddddd"
+                android:id="@+id/num0"
+                android:textSize="17sp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
+
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/closeBracket"
+                android:layout_weight="1"
+                android:id="@+id/closeBracket"
+                android:textSize="17sp"
+                android:background="#fff"
+                android:onClick="onClick"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="="
                 android:id="@+id/equal"
                 android:onClick="onClick"
+                android:textColor="#fff"
+                android:background="@color/colorNumBtnText"
                 android:textSize="17sp"
                 android:layout_weight="1"/>
 
