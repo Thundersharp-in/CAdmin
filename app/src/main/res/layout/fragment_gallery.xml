@@ -28,6 +28,7 @@
                 android:textColor="#fff"
                 android:elevation="10dp"
                 android:textSize="12sp"
+                android:gravity="center"
                 android:layout_marginStart="5dp"
                 android:text="click on the '+' icon to view the details and ave look on the project"
                 />

@@ -24,8 +24,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.notes.model.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
@@ -99,35 +102,66 @@ public class AddOrganisationFragment extends Fragment {
                  Random r = new Random(System.currentTimeMillis());
                  long l= l3 + r.nextInt((int) l4);
                  final String l1= String.valueOf(l);
+                 DatabaseReference reference1=FirebaseDatabase.getInstance().getReference().child("users")
+                         .child(organiser_uid).child("personal_data").child("name");
+                 reference1.addValueEventListener(new ValueEventListener() {
+                     @Override
+                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                         if (dataSnapshot.exists()) {
 
-                org_details_model_list=new org_details_model(org_description,logo_url,l1,org_name,organiser_name,organiser_uid);
-                mRef= FirebaseDatabase.getInstance().getReference("organisation1");
-                mRef.child(l1).child("description").setValue(org_details_model_list).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                             String organiser_name=dataSnapshot.getValue().toString();
+                             org_details_model_list=new org_details_model(org_description,logo_url,l1,org_name,organiser_name,organiser_uid);
+                             mRef= FirebaseDatabase.getInstance().getReference("organisation1");
+                             mRef.child(l1).child("description").setValue(org_details_model_list).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<Void> task) {
 
-                        if (task.isSuccessful()){
-                            Toast.makeText(getContext(), "Data Uploaded", Toast.LENGTH_SHORT).show();
-                            SharedPreferences pref =getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.putString("id",l1.trim());
-                            editor.apply();
-                            progressDialog.dismiss();
-                            Organisation fragment=new Organisation();
-                            FragmentManager manage=getFragmentManager();
-                            FragmentTransaction transaction=manage.beginTransaction();
-                            transaction.replace(R.id.org_manager,fragment);
-                            transaction.commit();
-                        }
+                                     if (task.isSuccessful()){
+                                         Toast.makeText(getContext(), "Data Uploaded", Toast.LENGTH_SHORT).show();
+                                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference()
+                                                 .child("users");
+                                         reference.child(organiser_uid).child("organisations").child(l1).setValue("true")
+                                                 .addOnFailureListener(new OnFailureListener() {
+                                                     @Override
+                                                     public void onFailure(@NonNull Exception e) {
+                                                         Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                                     }
+                                                 }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                             @Override
+                                             public void onComplete(@NonNull Task<Void> task) {
+                                                 Toast.makeText(getContext(), "Data successfully uploaded", Toast.LENGTH_SHORT).show();
+                                             }
+                                         });
+                                         SharedPreferences pref =getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
+                                         SharedPreferences.Editor editor = pref.edit();
+                                         editor.putString("id",l1.trim());
+                                         editor.apply();
+                                         progressDialog.dismiss();
+                                         Organisation fragment=new Organisation();
+                                         FragmentManager manage=getFragmentManager();
+                                         FragmentTransaction transaction=manage.beginTransaction();
+                                         transaction.replace(R.id.org_manager,fragment);
+                                         transaction.commit();
+                                     }
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                 }
+                             }).addOnFailureListener(new OnFailureListener() {
+                                 @Override
+                                 public void onFailure(@NonNull Exception e) {
+                                     progressDialog.dismiss();
+                                     Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                 }
+                             });
+                         }
+
+                     }
+
+                     @Override
+                     public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                     }
+                 });
+
             }
         });
         return view;

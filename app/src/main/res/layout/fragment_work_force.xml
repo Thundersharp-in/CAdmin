@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.WorkForce">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_work_force"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            />
+    </RelativeLayout>
+
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,8 +63,8 @@
                 android:textStyle="bold"
                 android:drawableStart="@drawable/ic_baseline_group_24"
                 android:drawablePadding="5dp"/>
-<!-- android:background="@drawable/text_view_background"
-                android:drawableStart="@drawable/ic_baseline_group_24" -->
+ android:background="@drawable/text_view_background"
+                android:drawableStart="@drawable/ic_baseline_group_24"
             <TextView
                 android:id="@+id/project_text_name"
                 android:layout_width="0dp"
@@ -69,8 +82,8 @@
                 android:textStyle="bold"
                 android:drawableStart="@drawable/ic_baseline_group_work_24"
                 android:drawablePadding="5dp"/>
-            <!--  android:background="@drawable/text_view_bg1"
-                android:drawableStart="@drawable/ic_baseline_work_24"-->
+              android:background="@drawable/text_view_bg1"
+                android:drawableStart="@drawable/ic_baseline_work_24"
 
         </LinearLayout>
 
@@ -95,7 +108,7 @@
             android:drawableEnd="@drawable/ic_baseline_person_24"
             android:drawablePadding="8dp"/>
 
-        <!--  android:drawableEnd="@drawable/ic_baseline_person_24"-->
+          android:drawableEnd="@drawable/ic_baseline_person_24"
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="200dp">
@@ -133,7 +146,6 @@
                 android:src="@drawable/ic_baseline_person_24"
                 android:background="#fff"
                />
-<!-- android:src="@drawable/ic_baseline_person_24" -->
             <TextView
                 android:id="@+id/post_text_content"
                 android:layout_width="0dp"
@@ -151,10 +163,10 @@
                 app:layout_constraintStart_toEndOf="@id/post_text_image"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <!--  android:background="@drawable/txt_background"-->
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
+    -->
 
-
-</RelativeLayout>
+</ScrollView>
