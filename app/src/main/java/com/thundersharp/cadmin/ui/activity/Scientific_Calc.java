@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.calculators.CalculateFactorial;
@@ -16,7 +17,7 @@ import com.thundersharp.cadmin.core.calculators.ExtendedDoubleEvaluator;
 
 public class Scientific_Calc extends AppCompatActivity {
 
-    private EditText e1,e2;
+    private TextView e1,e2;
     private int count=0;
     private String expression="";
     private String text="";
@@ -32,18 +33,18 @@ public class Scientific_Calc extends AppCompatActivity {
         setContentView(R.layout.activity_scientific__calc);
 
 
-        e1 = (EditText) findViewById(R.id.editText);
-        e2 = (EditText) findViewById(R.id.editText2);
-        mode = (Button) findViewById(R.id.mode);
-        toggle = (Button) findViewById(R.id.toggle);
-        square = (Button) findViewById(R.id.square);
-        xpowy = (Button) findViewById(R.id.xpowy);
-        log = (Button) findViewById(R.id.log);
-        sin = (Button) findViewById(R.id.sin);
-        cos = (Button) findViewById(R.id.cos);
-        tan = (Button) findViewById(R.id.tan);
-        sqrt= (Button) findViewById(R.id.sqrt);
-        fact = (Button) findViewById(R.id.factorial);
+        e1 = findViewById(R.id.editText);
+        e2 =  findViewById(R.id.editText2);
+        mode = findViewById(R.id.mode);
+        toggle = findViewById(R.id.toggle);
+        square = findViewById(R.id.square);
+        xpowy = findViewById(R.id.xpowy);
+        log = findViewById(R.id.log);
+        sin = findViewById(R.id.sin);
+        cos = findViewById(R.id.cos);
+        tan = findViewById(R.id.tan);
+        sqrt= findViewById(R.id.sqrt);
+        fact = findViewById(R.id.factorial);
 
         dbHelper=new DBHelper(this);
 
@@ -418,9 +419,9 @@ public class Scientific_Calc extends AppCompatActivity {
             case R.id.posneg:
                 if (e2.length() != 0) {
                     String s = e2.getText().toString();
-                    char arr[] = s.toCharArray();
+                    char[] arr = s.toCharArray();
                     if (arr[0] == '-')
-                        e2.setText(s.substring(1, s.length()));
+                        e2.setText(s.substring(1));
                     else
                         e2.setText("-" + s);
                 }
