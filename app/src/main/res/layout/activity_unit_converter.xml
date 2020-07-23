@@ -23,7 +23,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/calci"
+                android:id="@+id/area"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -57,7 +57,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/salci"
+                android:id="@+id/length"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -102,7 +102,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/convq"
+                android:id="@+id/weight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -137,7 +137,7 @@
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/calnorm"
+                android:id="@+id/temperature"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

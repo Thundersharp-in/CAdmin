@@ -15,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.UnitConverter"></activity>
+        <activity android:name=".ui.activity.WeightConverter"></activity>
+        <activity android:name=".ui.activity.TemperatureConverter" />
+        <activity android:name=".ui.activity.LengthConverter" />
+        <activity android:name=".ui.activity.AreaConverter" />
+        <activity android:name=".ui.activity.UnitConverter" />
         <activity android:name=".ui.activity.Scientific_Calc" />
         <activity android:name=".ui.activity.Home" />
         <activity android:name=".ui.activity.Login_reg" />
