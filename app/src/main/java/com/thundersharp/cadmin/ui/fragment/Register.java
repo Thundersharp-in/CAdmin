@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +36,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -60,8 +64,9 @@ public class Register extends Fragment {
     Button bot_reg, btn_verify, number_verified;
     TextView already_user;
     NestedScrollView relativeLayout;
-    RelativeLayout getRelativeLayout, phoneVerify;
+    RelativeLayout getRelativeLayout;
     AnimationDrawable animationDrawable;
+    ProgressBar progressreg;
     FirebaseAuth mAuth;
     DatabaseReference mReference;
     CircleImageView imageView;
@@ -71,6 +76,7 @@ public class Register extends Fragment {
     Uri pickedImageUri;
     String verification_id,codeSent;
     PhoneAuthProvider.ForceResendingToken token;
+    AuthCredential authCredential;
     TextInputLayout otpval;
     Button phoneverify, dismiss, update, verify, loginback;
     AlertDialog otpdialogopener;
@@ -87,6 +93,8 @@ public class Register extends Fragment {
         text_input_phone=view.findViewById(R.id.text_input_phone);
 
         btn_verify = view.findViewById(R.id.bot_very);
+        progressreg = view.findViewById(R.id.progressreg);
+        progressreg.setVisibility(View.GONE);
 
         bot_reg=view.findViewById(R.id.bot_reg);
         imageView = view.findViewById(R.id.profile_image);
@@ -113,6 +121,7 @@ public class Register extends Fragment {
         btn_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (text_input_phone.getEditText().getText().toString().isEmpty() || text_input_phone.getEditText().getText().toString().length() != 10) {
                     text_input_phone.getEditText().setError("Enter a valid mobile number");
                     text_input_phone.getEditText().requestFocus();
@@ -175,6 +184,8 @@ public class Register extends Fragment {
             @Override
             public void onClick(View v) {
 
+                progressreg.setVisibility(View.VISIBLE);
+
                 final String name = text_input_name.getEditText().getText().toString();
                 final String email = text_input_email.getEditText().getText().toString();
                 final String password = text_input_password.getEditText().getText().toString();
@@ -184,39 +195,48 @@ public class Register extends Fragment {
                 if (TextUtils.isEmpty(name)){
                     text_input_name.setError("Required!!");
                     text_input_name.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (TextUtils.isEmpty(email)){
                     text_input_email.setError("Required!!");
                     text_input_email.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (TextUtils.isEmpty(password)){
                     text_input_password.setError("Required!!");
                     text_input_password.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (TextUtils.isEmpty(cpassword)){
                     text_input_c_password.setError("Required!!");
                     text_input_c_password.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (TextUtils.isEmpty(phone)){
                     text_input_phone.setError("Required!!");
                     text_input_phone.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (password.length() < 6){
                     text_input_password.setError("Password is too short");
                     text_input_password.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (!password.equals(cpassword)){
                     text_input_password.setError("password is not same");
                     text_input_c_password.setError("password is not same");
                     text_input_c_password.requestFocus();
                     text_input_password.requestFocus();
+                    progressreg.setVisibility(View.GONE);
 
                 }else if (phone.length() < 10){
                     text_input_phone.setError("Valid number is required");
                     text_input_phone.requestFocus();
+                    progressreg.setVisibility(View.GONE);
                 }
                 else if(!codeverified){
                     Toast.makeText(getActivity(),"Please verify otp first",Toast.LENGTH_SHORT).show();
+                    progressreg.setVisibility(View.GONE);
 
                 }else {
                     final UserData userData = new UserData("No bio updated",
@@ -227,8 +247,14 @@ public class Register extends Fragment {
                             text_input_phone.getEditText().getText().toString(),
                             FirebaseAuth.getInstance().getUid());
 
+                    authCredential = EmailAuthProvider
+                            .getCredential(
+                                    text_input_email.getEditText().getText().toString(),
+                                    text_input_c_password.getEditText().getText().toString());
+
                     FirebaseAuth.getInstance()
-                            .createUserWithEmailAndPassword(email,password)
+                            .getCurrentUser()
+                            .linkWithCredential(authCredential)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -242,7 +268,7 @@ public class Register extends Fragment {
                                         {
 
                                             FirebaseDatabase.getInstance()
-                                                    .getReference("Users")
+                                                    .getReference("users")
                                                     .child(mAuth.getUid())
                                                     .child("personal_data")
                                                     .setValue(userData)
@@ -256,9 +282,10 @@ public class Register extends Fragment {
                                                                 fragmentTransaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
                                                                 fragmentTransaction.replace(R.id.containerlog, register).commit();
                                                                 FirebaseAuth.getInstance().signOut();
-
+                                                                progressreg.setVisibility(View.GONE);
 
                                                             }else {
+                                                                progressreg.setVisibility(View.GONE);
                                                                 Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                                             }
                                                         }
@@ -268,6 +295,7 @@ public class Register extends Fragment {
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        progressreg.setVisibility(View.GONE);
                                         Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -366,8 +394,8 @@ public class Register extends Fragment {
                             //TODO CHECK PHONE FOR UNIQUE VALUE
 
                             otpdialogopener.dismiss();
-                            phoneverify.setText("✓ Verified");
-                            phoneverify.setEnabled(false);
+                            verify.setText("✓ Verified");
+                            verify.setEnabled(false);
                             text_input_phone.setEnabled(false);
                             codeverified=true;
 

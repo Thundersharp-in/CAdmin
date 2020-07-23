@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class loginFragment extends Fragment {
     OAuthProvider.Builder provider1;
     private AccessToken token;
     RelativeLayout relativeLayout,signup;
+    ProgressBar progresslog;
     Animation show_fab_1, hide_fab_1;
     AnimationDrawable animationDrawable;
     GoogleSignInClient mGoogleSignInClient;
@@ -89,6 +91,9 @@ public class loginFragment extends Fragment {
         logingoogle = view.findViewById(R.id.logingoogle);
         github = view.findViewById(R.id.github);
         arrow= view.findViewById(R.id.arrow);
+
+        progresslog = view.findViewById(R.id.progresslog);
+        progresslog.setVisibility(View.GONE);
 
         show_fab_1 = AnimationUtils.loadAnimation(getActivity(),R.anim.fadeout);
         hide_fab_1 = AnimationUtils.loadAnimation(getActivity(),R.anim.fadein);
@@ -149,12 +154,15 @@ public class loginFragment extends Fragment {
         loginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progresslog.setVisibility(View.VISIBLE);
                 if (email.getEditText().getText().toString().isEmpty()) {
                     email.getEditText().setError("Required");
                     email.getEditText().requestFocus();
+                    progresslog.setVisibility(View.GONE);
                 } else if (password.getEditText().getText().toString().isEmpty()) {
                     password.getEditText().setError("Required");
                     password.getEditText().requestFocus();
+                    progresslog.setVisibility(View.GONE);
                 } else {
                     loginwithemail(email.getEditText().getText().toString(), password.getEditText().getText().toString());
                 }
@@ -322,11 +330,14 @@ public class loginFragment extends Fragment {
         //facebook
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         fAuth.signInWithCredential(credential).addOnFailureListener(new OnFailureListener() {
+
             @Override
             public void onFailure(@NonNull Exception e) {
 
             }
+
         }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
@@ -341,6 +352,7 @@ public class loginFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        progresslog.setVisibility(View.GONE);
                         Toast.makeText(context, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -351,11 +363,15 @@ public class loginFragment extends Fragment {
                     if (fAuth.getCurrentUser().isEmailVerified()){
                         Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getActivity(), MainActivity.class));
+                        getActivity().finish();
+                        progresslog.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getActivity(), "Please verify your email address", Toast.LENGTH_SHORT).show();
+                        progresslog.setVisibility(View.GONE);
                     }
                 } else {
                     Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    progresslog.setVisibility(View.GONE);
                 }
 
             }
