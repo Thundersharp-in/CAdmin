@@ -30,8 +30,7 @@ public class Scientific_Calc extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scientific__calc);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
         e1 = (EditText) findViewById(R.id.editText);
         e2 = (EditText) findViewById(R.id.editText2);
