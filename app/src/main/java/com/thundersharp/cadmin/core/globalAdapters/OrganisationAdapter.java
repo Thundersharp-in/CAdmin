@@ -1,4 +1,4 @@
-package com.thundersharp.cadmin.notes.adapters;
+package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.notes.model.org_details_model;
+import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 
 import java.util.List;
 
