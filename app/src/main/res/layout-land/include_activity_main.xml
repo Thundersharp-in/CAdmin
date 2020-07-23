@@ -8,12 +8,12 @@
     tools:showIn="@layout/activity_main_calendar"
     tools:ignore="MergeRootFrame">
 
-    <com.thundersharp.cadmin.calendar.widget.AgendaView
+    <com.thundersharp.cadmin.core.calendar.widget.AgendaView
         android:id="@+id/agenda_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.thundersharp.cadmin.calendar.widget.EventCalendarView
+    <com.thundersharp.cadmin.core.calendar.widget.EventCalendarView
         android:id="@+id/calendar_view"
         android:visibility="gone"
         tools:visibility="visible"

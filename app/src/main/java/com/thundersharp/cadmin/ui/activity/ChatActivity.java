@@ -10,8 +10,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.chats.FirebaseChatMainApp;
-import com.thundersharp.cadmin.chats.utils.Constants;
+import com.thundersharp.cadmin.core.chats.FirebaseChatMainApp;
+import com.thundersharp.cadmin.core.chats.utils.Constants;
 import com.thundersharp.cadmin.ui.fragment.chats.ChatFragment;
 
 public class ChatActivity extends AppCompatActivity {

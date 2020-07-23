@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
@@ -24,11 +21,8 @@ import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -38,15 +32,14 @@ import androidx.loader.content.Loader;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.thundersharp.cadmin.BuildConfig;
-import com.thundersharp.cadmin.calendar.CalendarUtils;
-import com.thundersharp.cadmin.calendar.EditActivity;
-import com.thundersharp.cadmin.calendar.content.CalendarCursor;
-import com.thundersharp.cadmin.calendar.content.EventCursor;
-import com.thundersharp.cadmin.calendar.content.EventsQueryHandler;
-import com.thundersharp.cadmin.calendar.widget.AgendaAdapter;
-import com.thundersharp.cadmin.calendar.widget.AgendaView;
-import com.thundersharp.cadmin.calendar.widget.CalendarSelectionView;
-import com.thundersharp.cadmin.calendar.widget.EventCalendarView;
+import com.thundersharp.cadmin.core.calendar.CalendarUtils;
+import com.thundersharp.cadmin.core.calendar.EditActivity;
+import com.thundersharp.cadmin.core.calendar.content.CalendarCursor;
+import com.thundersharp.cadmin.core.calendar.content.EventCursor;
+import com.thundersharp.cadmin.core.calendar.content.EventsQueryHandler;
+import com.thundersharp.cadmin.core.calendar.widget.AgendaAdapter;
+import com.thundersharp.cadmin.core.calendar.widget.AgendaView;
+import com.thundersharp.cadmin.core.calendar.widget.EventCalendarView;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
 
@@ -68,31 +61,20 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     private static final int LOADER_CALENDARS = 0;
     private static final int LOADER_LOCAL_CALENDAR = 1;
 
-    private final CalendarSelectionView.OnSelectionChangeListener mCalendarSelectionListener
-            = new CalendarSelectionView.OnSelectionChangeListener() {
-        @Override
-        public void onSelectionChange(long id, boolean enabled) {
-            if (!enabled) {
-                mExcludedCalendarIds.add(String.valueOf(id));
-            } else {
-                mExcludedCalendarIds.remove(String.valueOf(id));
-            }
-            mCalendarView.invalidateData();
-            mAgendaView.invalidateData();
-        }
-    };
     private final Organisation_cal.Coordinator mCoordinator = new Organisation_cal.Coordinator();
     private View mCoordinatorLayout;
+    TextView txt;
     private CheckedTextView mToolbarToggle;
     private EventCalendarView mCalendarView;
     private AgendaView mAgendaView;
     private FloatingActionButton mFabAdd;
-    private CalendarSelectionView mCalendarSelectionView;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     private View mDrawer,root;
     private final HashSet<String> mExcludedCalendarIds = new HashSet<>();
+    Toolbar toolbarorg;
     private boolean mWeatherEnabled, mPendingWeatherEnabled;
+
 
 
 
@@ -110,12 +92,17 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
             }
         });
 
+        toolbarorg = getActivity().findViewById(R.id.toolbar);
+        txt = root.findViewById(R.id.txt);
+
         /*((AppCompatActivity)getActivity()).setSupportActionBar((Toolbar) getActivity().findViewById(R.id.toolbar));
         //noinspection ConstantConditions
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayOptions(
                 ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_HOME_AS_UP);*/
         setUpContentView(root);
         mCalendarView.setVisibility(View.VISIBLE);
+        mCoordinator.coordinate(txt, mCalendarView, mAgendaView);
+        loadEvents();
         //toggleCalendarView();
        /* mCoordinator.restoreState(savedInstanceState);
         if (savedInstanceState.getBoolean(STATE_TOOLBAR_TOGGLE, false)) {
@@ -129,20 +116,7 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
         return root;
     }
 
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        //mDrawerToggle.syncState();
-        //mCoordinator.coordinate(null, mCalendarView, mAgendaView);
-        loadEvents();
-
-
-    }
-
-
-
-    @Override
+  /*  @Override
     public void onPrepareOptionsMenu(Menu menu) {
 
         switch (CalendarUtils.sWeekStart) {
@@ -158,9 +132,9 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
         }
         super.onPrepareOptionsMenu(menu);
     }
+*/
 
-
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_today) {
             mCoordinator.reset();
@@ -176,13 +150,13 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
             return true;
         }
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
+    }*/
 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mCoordinator.saveState(outState);
+        //mCoordinator.saveState(outState);
         //outState.putBoolean(STATE_TOOLBAR_TOGGLE, mToolbarToggle.isChecked());
     }
 
@@ -236,9 +210,6 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         switch (loader.getId()) {
             case LOADER_CALENDARS:
-                if (data != null && data.moveToFirst()) {
-                    mCalendarSelectionView.swapCursor(new CalendarCursor(data), mExcludedCalendarIds);
-                }
                 break;
             case LOADER_LOCAL_CALENDAR:
                 if (data == null || data.getCount() == 0) {
@@ -251,7 +222,7 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mCalendarSelectionView.swapCursor(null, null);
+        //mCalendarSelectionView.swapCursor(null, null);
     }
 
 
@@ -269,9 +240,9 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
 
     private void setUpContentView(View view) {
         mCoordinatorLayout = view.findViewById(R.id.coordinator_layout);
-        mCalendarSelectionView = (CalendarSelectionView) view.findViewById(R.id.list_view_calendar);
+        //mCalendarSelectionView = (CalendarSelectionView) view.findViewById(R.id.list_view_calendar);
         //noinspection ConstantConditions
-        mCalendarSelectionView.setOnSelectionChangeListener(mCalendarSelectionListener);
+
         mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         mDrawer = view.findViewById(R.id.drawer);
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, R.string.open_drawer, R.string.close_drawer);
@@ -435,14 +406,14 @@ public class Organisation_cal extends Fragment  implements LoaderManager.LoaderC
             mCalendarView.setSelectedDay(mSelectedDayMillis);
             agendaView.setSelectedDay(mSelectedDayMillis);
             //TODO here too
-            //updateTitle(mSelectedDayMillis);
+            updateTitle(mSelectedDayMillis);
             calendarView.setOnChangeListener(mCalendarListener);
             agendaView.setOnDateChangeListener(mAgendaListener);
         }
 
-        void saveState(Bundle outState) {
+        /*void saveState(Bundle outState) {
             outState.putLong(STATE_SELECTED_DATE, mSelectedDayMillis);
-        }
+        }*/
 
         void restoreState(Bundle savedState) {
             mSelectedDayMillis = savedState.getLong(STATE_SELECTED_DATE,

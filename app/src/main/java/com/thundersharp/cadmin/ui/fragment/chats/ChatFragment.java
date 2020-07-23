@@ -18,12 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.chats.adapters.ChatRecyclerAdapter;
-import com.thundersharp.cadmin.chats.core.chat.ChatContract;
-import com.thundersharp.cadmin.chats.core.chat.ChatPresenter;
-import com.thundersharp.cadmin.chats.event.PushNotificationEvent;
-import com.thundersharp.cadmin.chats.model.Chat;
-import com.thundersharp.cadmin.chats.utils.Constants;
+import com.thundersharp.cadmin.core.chats.adapters.ChatRecyclerAdapter;
+import com.thundersharp.cadmin.core.chats.core.chat.ChatContract;
+import com.thundersharp.cadmin.core.chats.core.chat.ChatPresenter;
+import com.thundersharp.cadmin.core.chats.event.PushNotificationEvent;
+import com.thundersharp.cadmin.core.chats.model.Chat;
+import com.thundersharp.cadmin.core.chats.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

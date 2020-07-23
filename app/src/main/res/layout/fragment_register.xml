@@ -7,10 +7,24 @@
     android:layout_height="match_parent"
     android:background="@drawable/animation_list">
 
+    <ProgressBar
+        android:id="@+id/progressreg"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_alignParentTop="true"
+        android:progressTint="#fff"
+        android:progressBackgroundTint="#ffff"
+        android:indeterminateBehavior="repeat"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"
+        />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/containerreg"
+        android:visibility="visible"
         android:layout_centerInParent="true">
 
         <RelativeLayout

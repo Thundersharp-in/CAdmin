@@ -7,6 +7,13 @@
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_home" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="Profile" />
+
+
         <item
             android:id="@+id/nav_work_force"
             android:icon="@drawable/ic_baseline_group_work_24"

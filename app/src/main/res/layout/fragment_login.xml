@@ -9,6 +9,18 @@
     tools:context=".ui.fragment.loginFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <ProgressBar
+        android:id="@+id/progresslog"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressTint="#fff"
+        android:layout_alignParentTop="true"
+        android:progressBackgroundTint="#ffff"
+        android:indeterminateBehavior="repeat"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"
+        />
 
 
     <RelativeLayout

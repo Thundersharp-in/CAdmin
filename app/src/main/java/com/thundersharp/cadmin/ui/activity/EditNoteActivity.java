@@ -12,9 +12,9 @@ import androidx.appcompat.widget.Toolbar;
 
 
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.notes.db.NotesDB;
-import com.thundersharp.cadmin.notes.db.NotesDao;
-import com.thundersharp.cadmin.notes.model.Note;
+import com.thundersharp.cadmin.core.notes.db.NotesDB;
+import com.thundersharp.cadmin.core.notes.db.NotesDao;
+import com.thundersharp.cadmin.core.notes.model.Note;
 import com.thundersharp.cadmin.ui.fragment.PNotes;
 
 import java.util.Date;

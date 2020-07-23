@@ -13,21 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.thundersharp.cadmin.calculators.CalculatorNorm;
-import com.thundersharp.cadmin.calendar.MainActivityCalander;
-import com.thundersharp.cadmin.ui.activity.Calendar;
+import com.thundersharp.cadmin.core.calculators.CalculatorNorm;
+import com.thundersharp.cadmin.core.calendar.MainActivityCalander;
 import com.thundersharp.cadmin.ui.activity.CurrencyConverter;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.ui.activity.Scientific_Calc;
+import com.thundersharp.cadmin.ui.activity.UnitConverter;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class Finance extends Fragment {
 
     private static final int REQUEST_CODE_CALENDAR = 1;
-    RelativeLayout calci,calnorm,convq;
+    RelativeLayout calci,calnorm,convq,scical,unit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +61,22 @@ public class Finance extends Fragment {
                     requestCalendarPermissions();
                 }
 
+            }
+        });
+
+        scical = view.findViewById(R.id.salci);
+        scical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), Scientific_Calc.class));
+            }
+        });
+
+        unit = view.findViewById(R.id.convunit);
+        unit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), UnitConverter.class));
             }
         });
 

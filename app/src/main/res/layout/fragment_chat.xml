@@ -15,7 +15,7 @@
         <include layout="@layout/data_placeholder_layout"/>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <com.thundersharp.cadmin.chats.core.recyclerview.GridRecyclerView
+    <com.thundersharp.cadmin.core.chats.core.recyclerview.GridRecyclerView
         android:id="@+id/recycler_view_chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

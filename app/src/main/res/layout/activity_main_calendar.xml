@@ -13,7 +13,7 @@
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".calendar.MainActivityCalander">
+            tools:context=".core.calendar.MainActivityCalander">
 
             <include layout="@layout/toolbar_main"
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
 
-            <com.thundersharp.cadmin.calendar.widget.CalendarSelectionView
+            <com.thundersharp.cadmin.core.calendar.widget.CalendarSelectionView
                 android:id="@+id/list_view_calendar"
                 android:divider="@color/colorDivider"
                 android:dividerHeight="@dimen/divider_size"
