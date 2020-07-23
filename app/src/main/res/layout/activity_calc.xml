@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="9"
-    tools:context=".calculators.CalculatorNorm">
+    tools:context=".core.calculators.CalculatorNorm">
 
     <TextView
         android:id="@+id/input"

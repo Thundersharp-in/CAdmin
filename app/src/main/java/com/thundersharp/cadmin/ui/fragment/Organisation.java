@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.notes.model.org_details_model;
+import com.thundersharp.cadmin.core.notes.model.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.ArrayList;

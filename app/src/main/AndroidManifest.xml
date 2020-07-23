@@ -33,20 +33,20 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <service android:name=".chats.fcm.MyFirebaseMessagingService" />
+        <service android:name=".core.chats.fcm.MyFirebaseMessagingService" />
 
         <activity
             android:name=".ui.activity.EditNoteActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".calculators.CalculatorNorm"
+            android:name=".core.calculators.CalculatorNorm"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".ui.activity.Calendar"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity android:name=".calendar.MainActivityCalander" />
+        <activity android:name=".core.calendar.MainActivityCalander" />
         <activity
-            android:name=".calendar.EditActivity"
+            android:name=".core.calendar.EditActivity"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".ui.activity.CurrencyConverter" />
 

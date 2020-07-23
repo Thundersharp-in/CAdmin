@@ -22,13 +22,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.notes.adapters.NotesAdapter;
-import com.thundersharp.cadmin.notes.callbacks.MainActionModeCallback;
-import com.thundersharp.cadmin.notes.callbacks.NoteEventListener;
-import com.thundersharp.cadmin.notes.db.NotesDB;
-import com.thundersharp.cadmin.notes.db.NotesDao;
-import com.thundersharp.cadmin.notes.model.Note;
-import com.thundersharp.cadmin.notes.utils.NoteUtils;
+import com.thundersharp.cadmin.core.notes.adapters.NotesAdapter;
+import com.thundersharp.cadmin.core.notes.callbacks.MainActionModeCallback;
+import com.thundersharp.cadmin.core.notes.callbacks.NoteEventListener;
+import com.thundersharp.cadmin.core.notes.db.NotesDB;
+import com.thundersharp.cadmin.core.notes.db.NotesDao;
+import com.thundersharp.cadmin.core.notes.model.Note;
+import com.thundersharp.cadmin.core.notes.utils.NoteUtils;
 import com.thundersharp.cadmin.ui.activity.EditNoteActivity;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 

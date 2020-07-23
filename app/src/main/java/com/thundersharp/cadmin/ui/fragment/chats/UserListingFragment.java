@@ -15,7 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.chats.adapters.UserListingPagerAdapter;
+import com.thundersharp.cadmin.core.chats.adapters.UserListingPagerAdapter;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 /**

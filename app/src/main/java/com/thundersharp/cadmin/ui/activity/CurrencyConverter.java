@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -31,11 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.currency.CurrencyAdapter;
-import com.thundersharp.cadmin.currency.rest.Data;
-import com.thundersharp.cadmin.currency.utils.Globals;
-import com.thundersharp.cadmin.currency.utils.Prefs;
-import com.thundersharp.cadmin.currency.utils.RelativeLayoutTouchListener;
+import com.thundersharp.cadmin.core.currency.CurrencyAdapter;
+import com.thundersharp.cadmin.core.currency.rest.Data;
+import com.thundersharp.cadmin.core.currency.utils.Globals;
+import com.thundersharp.cadmin.core.currency.utils.Prefs;
+import com.thundersharp.cadmin.core.currency.utils.RelativeLayoutTouchListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

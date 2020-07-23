@@ -16,11 +16,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.chats.adapters.UserListingRecyclerAdapter;
-import com.thundersharp.cadmin.chats.core.users.getall.GetUsersContract;
-import com.thundersharp.cadmin.chats.core.users.getall.GetUsersPresenter;
-import com.thundersharp.cadmin.chats.model.User;
-import com.thundersharp.cadmin.chats.utils.ItemClickSupport;
+import com.thundersharp.cadmin.core.chats.adapters.UserListingRecyclerAdapter;
+import com.thundersharp.cadmin.core.chats.core.users.getall.GetUsersContract;
+import com.thundersharp.cadmin.core.chats.core.users.getall.GetUsersPresenter;
+import com.thundersharp.cadmin.core.chats.model.User;
+import com.thundersharp.cadmin.core.chats.utils.ItemClickSupport;
 import com.thundersharp.cadmin.ui.activity.ChatActivity;
 
 

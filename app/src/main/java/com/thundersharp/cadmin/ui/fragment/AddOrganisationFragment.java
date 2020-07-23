@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.notes.model.org_details_model;
+import com.thundersharp.cadmin.core.notes.model.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.Random;

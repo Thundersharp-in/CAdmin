@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".calendar.EditActivity">
+    tools:context=".core.calendar.EditActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -47,7 +47,7 @@
         android:layout_height="match_parent"
         tools:ignore="UnusedAttribute">
 
-        <com.thundersharp.cadmin.calendar.widget.EventEditView
+        <com.thundersharp.cadmin.core.calendar.widget.EventEditView
             android:id="@+id/event_edit_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

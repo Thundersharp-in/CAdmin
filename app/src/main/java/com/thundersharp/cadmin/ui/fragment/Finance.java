@@ -13,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.thundersharp.cadmin.calculators.CalculatorNorm;
-import com.thundersharp.cadmin.calendar.MainActivityCalander;
-import com.thundersharp.cadmin.ui.activity.Calendar;
+import com.thundersharp.cadmin.core.calculators.CalculatorNorm;
+import com.thundersharp.cadmin.core.calendar.MainActivityCalander;
 import com.thundersharp.cadmin.ui.activity.CurrencyConverter;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;

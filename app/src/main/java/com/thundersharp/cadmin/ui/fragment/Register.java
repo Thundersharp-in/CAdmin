@@ -1,10 +1,7 @@
 package com.thundersharp.cadmin.ui.fragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
@@ -19,46 +16,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.facebook.login.Login;
 import com.facebook.login.LoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskExecutors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.rilixtech.widget.countrycodepicker.CountryCodePicker;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.ui.activity.MainActivity;
-import com.thundersharp.cadmin.ui.model.RegisterModel;
+import com.thundersharp.cadmin.core.globalmodels.UserData;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,9 +67,13 @@ public class Register extends Fragment {
     CircleImageView imageView;
     static int PReqCode = 1;
     static int REQUEST_CODE = 1;
+    boolean codeverified=false,photo=false;
     Uri pickedImageUri;
-    String verification_id;
+    String verification_id,codeSent;
     PhoneAuthProvider.ForceResendingToken token;
+    TextInputLayout otpval;
+    Button phoneverify, dismiss, update, verify, loginback;
+    AlertDialog otpdialogopener;
 
 
     @Nullable
@@ -109,118 +98,75 @@ public class Register extends Fragment {
         animationDrawable.setEnterFadeDuration(3000);
         animationDrawable.setExitFadeDuration(2000);
 
-        if (Build.VERSION.SDK_INT >= 22){
-            checkAndRequestForPermission();
-        }
-        else {
-            //openGallery();
-        }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= 22){
+                    checkAndRequestForPermission();
+                }
+                else {
+                    openGallery();
+                }
+            }
+        });
 
         btn_verify.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                if (text_input_phone.getEditText().getText().toString().isEmpty() || text_input_phone.getEditText().getText().toString().length() != 10) {
+                    text_input_phone.getEditText().setError("Enter a valid mobile number");
+                    text_input_phone.getEditText().requestFocus();
+                } else {
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater1 = getLayoutInflater();
-                View alertLayout = inflater1.inflate(R.layout.otp_box,null);
-                builder.setView(alertLayout);
-                builder.setCancelable(true);
-
-                final Button button = alertLayout.findViewById(R.id.nextBtn);
-                final Button can = alertLayout.findViewById(R.id.cancelBtn);
-                final EditText phoneNumber = alertLayout.findViewById(R.id.phone);
-                final EditText codeEnter = alertLayout.findViewById(R.id.codeEnter);
-                final ProgressBar progressBar = alertLayout.findViewById(R.id.progressBar);
-                final TextView state = alertLayout.findViewById(R.id.state);
-                final CountryCodePicker picker = alertLayout.findViewById(R.id.ccp);
+                    sendotptonumber("+91" + text_input_phone.getEditText().getText().toString());
 
 
-                final Dialog dialog = builder.create();
+                    View otpdialog = getLayoutInflater().inflate(R.layout.dialogotp, null);
 
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        button.setClickable(true);
+                    otpval = otpdialog.findViewById(R.id.otp);
+                    dismiss = otpdialog.findViewById(R.id.cancil);
+                    update = otpdialog.findViewById(R.id.change);
+                    verify = otpdialog.findViewById(R.id.submitotp);
 
-                        if (phoneNumber.getText().toString().isEmpty() && phoneNumber.getText().toString().length() < 10){
-                            phoneNumber.setError("Phone number is not valid");
+                    TextView desotp = otpdialog.findViewById(R.id.textfff);
+                    desotp.setText("Enter the otp which we sent you to " + text_input_phone.getEditText().getText().toString() + " to verify that it is your number if you have entered wrong number then click change button to correct it.");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(false);
+                    builder.setView(otpdialog);
+                    otpdialogopener = builder.create();
+                    otpdialogopener.show();
+
+                    dismiss.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            otpdialogopener.dismiss();
                         }
-                        else if (!phoneNumber.getText().toString().isEmpty() && phoneNumber.getText().toString().length() == 10){
-                            String phoneNum = "+"+picker.getSelectedCountryCode()+phoneNumber.getText().toString();
-                            progressBar.setVisibility(View.VISIBLE);
-                            state.setText("Sending OTP...");
-                            state.setVisibility(View.VISIBLE);
-                            requestOTP(phoneNum);
+                    });
+
+                    update.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            otpdialogopener.dismiss();
+                            Toast.makeText(getActivity(), "Please update the phone number and click on verify", Toast.LENGTH_SHORT).show();
                         }
-                        else
-                            {
-                            String userOTP = codeEnter.getText().toString();
-                            if (userOTP.isEmpty())
-                            {
-                                codeEnter.setError("OTP is not Valid");
-                            } else if (!userOTP.isEmpty() && userOTP.length() == 6)
-                            {
-                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verification_id,userOTP);
-                                mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()){
-                                            Toast.makeText(getActivity(), "Verified", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(getActivity(), "Not able to verified", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            }
+                    });
+
+                    verify.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (otpval.getEditText().getText().toString().length() < 6) {
+                                otpval.getEditText().setError("Minimum 6 digits required");
+                            } else {
+                                PhoneAuthCredential credential = PhoneAuthProvider.getCredential(codeSent, otpval.getEditText().getText().toString());
+                                signInWithPhoneAuthCredential(credential);
+
                             }
                         }
-                    private void requestOTP(String phoneNum) {
-                        PhoneAuthProvider.getInstance().verifyPhoneNumber(phoneNum,
-                                60L,
-                                TimeUnit.SECONDS,
-                                getActivity(), new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    });
 
-                                    @Override
-                                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                        super.onCodeSent(s, forceResendingToken);
 
-                                        progressBar.setVisibility(View.GONE);
-                                        state.setVisibility(View.GONE);
-                                        codeEnter.setVisibility(View.VISIBLE);
-                                        verification_id = s;
-                                        token = forceResendingToken;
-                                        button.setText("Verify");
-                                        button.setClickable(true);
-                                        dialog.dismiss();
-                                        btn_verify.setText("Verified");
+                }
 
-                                    }
-
-                                    @Override
-                                    public void onCodeAutoRetrievalTimeOut(@NonNull String s) {
-                                        super.onCodeAutoRetrievalTimeOut(s);
-                                    }
-
-                                    @Override
-                                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-
-                                    }
-
-                                    @Override
-                                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                });
-
-                can.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
             }
         });
 
@@ -269,33 +215,48 @@ public class Register extends Fragment {
                     text_input_phone.setError("Valid number is required");
                     text_input_phone.requestFocus();
                 }
-                else{
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                else if(!codeverified){
+                    Toast.makeText(getActivity(),"Please verify otp first",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    final UserData userData = new UserData("No bio updated",
+                            "DOB not updated",
+                            text_input_email.getEditText().getText().toString(),
+                            "null",
+                            text_input_name.getEditText().getText().toString(),
+                            text_input_phone.getEditText().getText().toString(),
+                            FirebaseAuth.getInstance().getUid());
+
+                    FirebaseAuth.getInstance()
+                            .createUserWithEmailAndPassword(email,password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()){
-                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                mAuth.getCurrentUser()
+                                        .sendEmailVerification()
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful())
                                         {
-                                            RegisterModel model = new RegisterModel(mAuth.getUid(),
-                                                    "",
-                                                    mAuth.getCurrentUser().getEmail(),
-                                                    "",
-                                                    "");
 
                                             FirebaseDatabase.getInstance()
-                                                    .getReference("Users1")
+                                                    .getReference("Users")
                                                     .child(mAuth.getUid())
-                                                    .setValue(model)
+                                                    .child("personal_data")
+                                                    .setValue(userData)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()){
                                                                 Toast.makeText(getContext(), "Register SuccessFull. Please check your email for verification code", Toast.LENGTH_SHORT).show();
-                                                                Intent i = new Intent(getActivity(), LoginFragment.class);
-                                                                startActivity(i);
+                                                                loginFragment register = new loginFragment();
+                                                                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                                                                fragmentTransaction.setCustomAnimations(R.anim.slide_in_up,R.anim.slide_out_up);
+                                                                fragmentTransaction.replace(R.id.containerlog, register).commit();
+                                                                FirebaseAuth.getInstance().signOut();
+
 
                                                             }else {
                                                                 Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -370,7 +331,7 @@ public class Register extends Fragment {
         }
         else{
         }
-            //openGallery();
+            openGallery();
     }
 
     @Override
@@ -389,6 +350,60 @@ public class Register extends Fragment {
         super.onResume();
         animationDrawable.start();
     }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //TODO CHECK PHONE FOR UNIQUE VALUE
+
+                            otpdialogopener.dismiss();
+                            phoneverify.setText("✓ Verified");
+                            phoneverify.setEnabled(false);
+                            text_input_phone.setEnabled(false);
+                            codeverified=true;
+
+                        }
+                    }
+                });
+    }
+
+    private void sendotptonumber(String phone) {
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(phone, 60, TimeUnit.SECONDS, getActivity(), mCallbacks);
+
+    }
+
+
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            Toast.makeText(getContext(), "otp verified", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            codeSent = s;
+
+            Toast.makeText(getContext(), "Otp Sent.  ", Toast.LENGTH_LONG).show();
+
+
+        }
+    };
 
 
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main_calendar">
 
-    <com.thundersharp.cadmin.calendar.widget.EventCalendarView
+    <com.thundersharp.cadmin.core.calendar.widget.EventCalendarView
         android:id="@id/calendar_view"
         android:layout_width="@dimen/calendar_width"
         android:layout_height="match_parent" />
@@ -19,7 +19,7 @@
         android:layout_width="@dimen/divider_size"
         android:layout_height="match_parent" />
 
-    <com.thundersharp.cadmin.calendar.widget.AgendaView
+    <com.thundersharp.cadmin.core.calendar.widget.AgendaView
         android:id="@id/agenda_view"
         android:layout_toRightOf="@id/divider"
         android:layout_toEndOf="@id/divider"
