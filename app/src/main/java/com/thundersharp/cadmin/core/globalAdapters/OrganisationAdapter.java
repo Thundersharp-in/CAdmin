@@ -24,6 +24,7 @@ import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import java.util.List;
 
 public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapter.CustomViewHolder> {
+
     private Context context;
     private List<org_details_model> data;
 
