@@ -61,6 +61,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.9.7'
     implementation 'com.github.joielechong:countrycodepicker:2.4.2'
+    implementation files('libs/javaluator-3.0.1.jar')
 
 
 }

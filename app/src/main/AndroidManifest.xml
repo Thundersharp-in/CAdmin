@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.Home"></activity>
+        <activity android:name=".ui.activity.UnitConverter"></activity>
+        <activity android:name=".ui.activity.Scientific_Calc" />
+        <activity android:name=".ui.activity.Home" />
         <activity android:name=".ui.activity.Login_reg" />
         <activity android:name=".ui.startup.Startup">
             <intent-filter>
@@ -31,7 +33,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".core.chats.fcm.MyFirebaseMessagingService" />
 
@@ -47,7 +49,8 @@
         <activity android:name=".core.calendar.MainActivityCalander" />
         <activity
             android:name=".core.calendar.EditActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.activity.History" />
         <activity android:name=".ui.activity.CurrencyConverter" />
 
         <meta-data
