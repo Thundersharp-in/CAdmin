@@ -3,6 +3,7 @@ package com.thundersharp.cadmin.ui.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -45,6 +46,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 
@@ -80,12 +82,14 @@ public class Register extends Fragment {
     TextInputLayout otpval;
     Button phoneverify, dismiss, update, verify, loginback;
     AlertDialog otpdialogopener;
+    SharedPreferences sharedPreferences;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_register,container,false);
+        sharedPreferences = getActivity().getSharedPreferences("logindata",Context.MODE_PRIVATE);
         text_input_name = view.findViewById(R.id.text_input_name);
         text_input_email=view.findViewById(R.id.text_input_email);
         text_input_c_password=view.findViewById(R.id.text_input_c_password);
@@ -276,6 +280,7 @@ public class Register extends Fragment {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()){
+                                                                savedatatoSharedPrefs(userData);
                                                                 Toast.makeText(getContext(), "Register SuccessFull. Please check your email for verification code", Toast.LENGTH_SHORT).show();
                                                                 loginFragment register = new loginFragment();
                                                                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
@@ -335,6 +340,15 @@ public class Register extends Fragment {
     }
 
 
+    private void savedatatoSharedPrefs(UserData userData){
+        Gson gson=new Gson();
+        String data = gson.toJson(userData);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.putString("data",data);
+        editor.putBoolean("exists",true);
+        editor.apply();
+    }
 
 
     private void openGallery() {

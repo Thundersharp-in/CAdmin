@@ -3,6 +3,7 @@ package com.thundersharp.cadmin.ui.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +44,13 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.ArrayList;
@@ -69,12 +76,14 @@ public class loginFragment extends Fragment {
     GoogleSignInClient mGoogleSignInClient;
     Button forgot, loginbutton;
     ImageView logingoogle, github,arrow;
+    SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        sharedPreferences = getActivity().getSharedPreferences("logindata",Context.MODE_PRIVATE);
         relativeLayout = view.findViewById(R.id.rellogin);
         animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
@@ -292,6 +301,17 @@ public class loginFragment extends Fragment {
         }
     }
 
+    public void savedatatoSharedPref(UserData userData){
+        Gson gson = new Gson();
+        String datamodel = gson.toJson(userData);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.putBoolean("exists",true);
+        editor.putString("data",datamodel);
+        editor.apply();
+    }
+
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -362,9 +382,24 @@ public class loginFragment extends Fragment {
                 if (task.isSuccessful()) {
                     if (fAuth.getCurrentUser().isEmailVerified()){
                         Toast.makeText(getActivity(), "Successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                        getActivity().finish();
-                        progresslog.setVisibility(View.GONE);
+                        FirebaseDatabase.getInstance().getReference("users").child(fAuth.getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    UserData userData = snapshot.getValue(UserData.class);
+                                    savedatatoSharedPref(userData);
+                                    startActivity(new Intent(getActivity(), MainActivity.class));
+                                    getActivity().finish();
+                                    progresslog.setVisibility(View.GONE);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
                     } else {
                         Toast.makeText(getActivity(), "Please verify your email address", Toast.LENGTH_SHORT).show();
                         progresslog.setVisibility(View.GONE);
