@@ -65,6 +65,7 @@
                             android:padding="1dp"
                             />
                         <RatingBar
+                            android:id="@+id/user_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:progressTint="#FF5722"
@@ -99,6 +100,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/bio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hello, CAdmin user welcome to your user profile section here you can find your overall rating and your current project progress and other info."
@@ -108,6 +110,7 @@
 
 
                         <ProgressBar
+                            android:id="@+id/work_progress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -168,6 +171,7 @@
                 android:layout_height="wrap_content"
                 >
                 <EditText
+                    android:id="@+id/edit_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="User Name"
@@ -199,6 +203,7 @@
                 android:layout_height="wrap_content"
                 >
                 <EditText
+                    android:id="@+id/edit_useremail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="something@s.com"
@@ -230,6 +235,7 @@
                 android:layout_height="wrap_content"
                 >
                 <EditText
+                    android:id="@+id/edit_userphoneNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="9876543210"
@@ -261,6 +267,7 @@
                 android:layout_height="wrap_content"
                 >
                 <EditText
+                    android:id="@+id/edit_userbio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/about_thundersharp"
@@ -293,6 +300,7 @@
                 android:layout_height="wrap_content"
                 >
                 <EditText
+                    android:id="@+id/edit_userOrganisations"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Organisation1 \n Organisation2 \n Oganisation3 "
@@ -325,6 +333,7 @@
                 android:layout_height="wrap_content"
                 >
                 <EditText
+                    android:id="@+id/edit_userUid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="hvgjfgfjvWS123"
