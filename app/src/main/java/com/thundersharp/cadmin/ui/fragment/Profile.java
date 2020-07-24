@@ -1,7 +1,9 @@
 package com.thundersharp.cadmin.ui.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,11 +28,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.ui.activity.Login_reg;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,15 +55,20 @@ public class Profile extends Fragment {
     FirebaseUser current_user;
     DatabaseReference reference;
     boolean editable = false;
+    SharedPreferences sharedPreferences;
     Button logout;
+    UserData userData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_profile, container, false);
+        sharedPreferences = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+
         MainActivity.container.setBackground(null);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
+
 
         profile_image=root.findViewById(R.id.profile_image);
         designation=root.findViewById(R.id.designation);
@@ -76,7 +88,26 @@ public class Profile extends Fragment {
         auth=FirebaseAuth.getInstance();
         current_user=auth.getCurrentUser();
         reference= FirebaseDatabase.getInstance().getReference("users");
-        reference.child(current_user.getUid()).addValueEventListener(new ValueEventListener() {
+
+
+        if (!sharedPreferences.getBoolean("exists", false)){
+            loadDatafromDatabase();
+            Toast.makeText(getActivity(),"Loaded from database",Toast.LENGTH_SHORT).show();
+        }else {
+
+            userData = loadDatafromPrefs();
+            name.setText(userData.getName());
+            edit_username.setText(userData.getName());
+            bio.setText(userData.getBio());
+            edit_userbio.setText(userData.getBio());
+            edit_useremail.setText(userData.getEmail());
+            edit_userphoneNo.setText(userData.getPhone_no());
+            edit_userUid.setText(userData.getUid());
+            Toast.makeText(getContext(),userData.getEmail(),Toast.LENGTH_SHORT).show();
+        }
+
+
+       /* reference.child(current_user.getUid()).child("personal_data").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -89,8 +120,8 @@ public class Profile extends Fragment {
                     edit_useremail.setText(model.getEmail());
                     edit_userphoneNo.setText(model.getPhone_no());
                     edit_userUid.setText(model.getUid());
-                   Toast.makeText(getContext(), "Something is found", Toast.LENGTH_SHORT).show();
-                   /*
+                    Toast.makeText(getContext(), "Something is found", Toast.LENGTH_SHORT).show();
+                   *//*
                     DatabaseReference Ref=reference.child(current_user.getUid()).child("organisations");
                     Ref.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -119,10 +150,10 @@ public class Profile extends Fragment {
                         }
                     });
 
-                    */
+                    *//*
                     name.setText(model.getName());
-                  //  profile_image.setImageURI(Uri.parse(model.getImage_uri()));
-                    /*
+                    //  profile_image.setImageURI(Uri.parse(model.getImage_uri()));
+                    *//*
                     assert model.getImage_uri()!=null;
                     if (model.getImage_uri().isEmpty()){
                        profile_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_person_24));
@@ -130,7 +161,7 @@ public class Profile extends Fragment {
                         profile_image.setImageURI(Uri.parse(model.getImage_uri()));
                     }
 
-                     */
+                     *//*
 
                     //work_progress are to be done
                     //user_rating are to be done
@@ -143,7 +174,7 @@ public class Profile extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,6 +220,72 @@ public class Profile extends Fragment {
         });
 
         return root;
+    }
+
+    private void loadDatafromDatabase() {
+        FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    userData = snapshot.getValue(UserData.class);
+                    savedatatoSharedPref(userData);
+                    name.setText(userData.getName());
+                    edit_username.setText(userData.getName());
+                    bio.setText(userData.getBio());
+                    edit_userbio.setText(userData.getBio());
+                    edit_useremail.setText(userData.getEmail());
+                    edit_userphoneNo.setText(userData.getPhone_no());
+                    edit_userUid.setText(userData.getUid());
+
+                    Toast.makeText(getContext(),userData.getEmail(),Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(),"SERVER ERROR CODE : 404",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void savetoDatabase(final UserData userData){
+
+        FirebaseDatabase
+                .getInstance()
+                .getReference("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("personal_data").setValue(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    savedatatoSharedPref(userData);
+                }
+            }
+        });
+    }
+
+
+    public void savedatatoSharedPref(UserData userData){
+        Gson gson = new Gson();
+        String datamodel = gson.toJson(userData);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.putBoolean("exists",true);
+        editor.putString("data",datamodel);
+        editor.apply();
+    }
+
+    private UserData loadDatafromPrefs(){
+        String data;
+
+        Gson gson = new Gson();
+        data = sharedPreferences.getString("data","no data");
+        Type type = new TypeToken<UserData>(){}.getType();
+
+        return gson.fromJson(data,type);
     }
 
 }
