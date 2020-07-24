@@ -118,7 +118,6 @@ public class Profile extends Fragment {
 
                         }
                     });
-
                     */
                     name.setText(model.getName());
                   //  profile_image.setImageURI(Uri.parse(model.getImage_uri()));
