@@ -44,7 +44,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class AddOrganisationFragment extends Fragment {
 
     CircleImageView upload_org_logo;
-    EditText upload_org_name,upload_org_desc;
+    EditText upload_org_name,upload_org_desc,upload_org_motto;
     Button btn_upload_org;
     Uri org_logo_uri;
     String logo_url,org_name,org_description,organiser_name,organiser_uid;
@@ -72,6 +72,7 @@ public class AddOrganisationFragment extends Fragment {
 
         upload_org_logo=view.findViewById(R.id.upload_org_logo);
         upload_org_name=view.findViewById(R.id.upload_org_name);
+                                                                  // upload_org_motto= view.findViewById(R.id.upload_org_motto);
         upload_org_desc=view.findViewById(R.id.upload_org_desc);
         btn_upload_org=view.findViewById(R.id.btn_upload_org);
         logo_url="";

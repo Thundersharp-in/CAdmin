@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,7 +13,7 @@ import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.calculators.ConvertingUnits;
 
 public class AreaConverter extends AppCompatActivity {
-    private EditText e1,e2;
+    private TextView e1,e2;
     private Spinner s1,s2;
     private int count1=0;
     private ConvertingUnits.Area ca;
@@ -22,8 +23,8 @@ public class AreaConverter extends AppCompatActivity {
         setContentView(R.layout.activity_area_converter);
 
 
-        e1=(EditText)findViewById(R.id.item1);
-        e2=(EditText)findViewById(R.id.item2);
+        e1=findViewById(R.id.item1);
+        e2=findViewById(R.id.item2);
         s1=(Spinner)findViewById(R.id.spinner1);
         s2=(Spinner)findViewById(R.id.spinner2);
 
