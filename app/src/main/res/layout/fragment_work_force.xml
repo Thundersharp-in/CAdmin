@@ -1,172 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.WorkForce">
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_work_force"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_work_force"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            />
-    </RelativeLayout>
-
-<!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="4dp">
-
-        <TextView
-            android:id="@+id/header_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="Header"
-            android:drawablePadding="5dp"
-            android:padding="8dp"
-            android:drawableLeft="@drawable/ic_baseline_watch_later_24"
-            />
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/group_text_name"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                android:text="Group Name"
-                android:textColor="#DD2C00"
-                android:alpha="0.8"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:drawableStart="@drawable/ic_baseline_group_24"
-                android:drawablePadding="5dp"/>
- android:background="@drawable/text_view_background"
-                android:drawableStart="@drawable/ic_baseline_group_24"
-            <TextView
-                android:id="@+id/project_text_name"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginEnd="4dp"
-                android:text="Project Name"
-                android:textColor="#DD2C00"
-                android:alpha="0.8"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:drawableStart="@drawable/ic_baseline_group_work_24"
-                android:drawablePadding="5dp"/>
-              android:background="@drawable/text_view_bg1"
-                android:drawableStart="@drawable/ic_baseline_work_24"
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/person_text_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="Manager Name"
-            android:textColor="#2C3316"
-            android:textAlignment="textEnd"
-            android:layout_marginTop="10dp"
-            android:padding="4dp"
-            android:layout_marginBottom="2dp"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:background="#FFFFFF"
-            android:drawableTint="#000"
-            android:drawableEnd="@drawable/ic_baseline_person_24"
-            android:drawablePadding="8dp"/>
-
-          android:drawableEnd="@drawable/ic_baseline_person_24"
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-
-            <ImageView
-                android:id="@+id/line"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:background="#64DD17"/>
-
-            <TextView
-                android:background="#ffffff"
-                android:id="@+id/post_text_time"
-                android:layout_marginTop="32dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="04:37"
-                app:layout_constraintEnd_toEndOf="@id/line"
-                app:layout_constraintStart_toStartOf="@id/line"
-                app:layout_constraintTop_toTopOf="@id/line"/>
-
-            <ImageView
-                android:id="@+id/post_text_image"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@id/line"
-                app:layout_constraintStart_toStartOf="@id/line"
-                app:layout_constraintTop_toBottomOf="@id/post_text_time"
-                android:src="@drawable/ic_baseline_person_24"
-                android:background="#fff"
-               />
-            <TextView
-                android:id="@+id/post_text_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:text="hellooooooooooo"
-                android:textColor="#000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/post_text_image"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-
-    -->
-
-</ScrollView>
+</RelativeLayout>

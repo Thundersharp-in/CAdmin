@@ -16,12 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
-            android:elevation="7dp"
-            app:endLineColor="#E91E63"
+            app:endLineColor="#000000"
             app:lineStyle="normal"
             app:lineWidth="3dp"
             app:markerSize="20dp"
-            app:startLineColor="#FFEB3B" />
+            app:startLineColor="#070707" />
 
 
         <androidx.cardview.widget.CardView
@@ -141,6 +140,7 @@
                         android:text="View contributions"/>
                     
                     <TextView
+                        android:id="@+id/end_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
