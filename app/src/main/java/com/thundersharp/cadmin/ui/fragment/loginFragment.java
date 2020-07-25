@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -36,7 +35,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -263,6 +261,25 @@ public class loginFragment extends Fragment {
                                     new OnSuccessListener<AuthResult>() {
                                         @Override
                                         public void onSuccess(AuthResult authResult) {
+
+                                            FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    if (snapshot.exists()){
+                                                        UserData data=snapshot.getValue(UserData.class);
+                                                        savedatatoSharedPref(data);
+                                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                                        startActivity(intent);
+                                                        getActivity().finish();
+                                                        Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
                                             // User is signed in.
                                             // IdP data available in
                                             // authResult.getAdditionalUserInfo().getProfile().
@@ -336,6 +353,7 @@ public class loginFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
+
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -344,8 +362,6 @@ public class loginFragment extends Fragment {
                 Toast.makeText(context, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        //email password
-
 
         //facebook
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -353,14 +369,11 @@ public class loginFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Exception e) {
-
             }
 
         }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
             }
         });
 
@@ -408,7 +421,6 @@ public class loginFragment extends Fragment {
                     Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     progresslog.setVisibility(View.GONE);
                 }
-
             }
         });
 
@@ -422,11 +434,26 @@ public class loginFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        UserData data=snapshot.getValue(UserData.class);
+                                        savedatatoSharedPref(data);
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                        Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                             // Sign in success, update UI with the signed-in user's information
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                            Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(context, "failed : " + task.getException().getCause().getMessage(), Toast.LENGTH_SHORT).show();
@@ -439,17 +466,12 @@ public class loginFragment extends Fragment {
             }
         });
     }
-
     @Override
     public void onResume() {
         super.onResume();
         animationDrawable.start();
     }
-
-
 }
-
-
 class OnSwipeTouchListener implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;

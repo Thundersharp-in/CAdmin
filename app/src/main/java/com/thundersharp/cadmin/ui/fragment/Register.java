@@ -31,7 +31,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.facebook.login.LoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,7 +38,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -60,8 +58,7 @@ public class Register extends Fragment {
 
     TextInputLayout text_input_name,
             text_input_email,text_input_password,
-            text_input_c_password,text_input_phone,
-            text_input_org;
+            text_input_c_password,text_input_phone;
     EditText otp_verification;
     Button bot_reg, btn_verify, number_verified;
     TextView already_user;
