@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
@@ -50,12 +51,14 @@ public class AddOrganisationFragment extends Fragment {
     FirebaseAuth mAuth;
     DatabaseReference mRef;
     FirebaseUser mUser;
+    SharedPreferences sharedPreferences;
     public org_details_model org_details_model_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        sharedPreferences=getActivity().getSharedPreferences("company",Context.MODE_PRIVATE);
         View view=inflater.inflate(R.layout.fragment_add_organisation, container, false);
         MainActivity.container.setBackground(null);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
@@ -112,7 +115,7 @@ public class AddOrganisationFragment extends Fragment {
 
                              String organiser_name=dataSnapshot.getValue().toString();
                              org_details_model_list=new org_details_model(org_description,logo_url,l1,org_name,organiser_name,organiser_uid);
-                             mRef= FirebaseDatabase.getInstance().getReference("organisation1");
+                             mRef= FirebaseDatabase.getInstance().getReference("organisation");
                              mRef.child(l1).child("description").setValue(org_details_model_list).addOnCompleteListener(new OnCompleteListener<Void>() {
                                  @Override
                                  public void onComplete(@NonNull Task<Void> task) {
@@ -177,5 +180,13 @@ public class AddOrganisationFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), " You haven't selected the logo", Toast.LENGTH_SHORT).show();
         }
+    }
+    private void company(org_details_model model){
+        Gson gson = new Gson();
+        String data = gson.toJson(model);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.putString("org_details",data);
+        editor.apply();
     }
 }
