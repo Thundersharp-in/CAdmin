@@ -41,6 +41,7 @@ public abstract class MainActionModeCallback implements ActionMode.Callback {
      *
      * @param b :visible
      */
+
     public void changeShareItemVisible(boolean b) {
         shareItem.setVisible(b);
     }

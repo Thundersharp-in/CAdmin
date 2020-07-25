@@ -1,106 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="9dp"
-    app:cardCornerRadius="2dp"
-    android:elevation="9dp">
+    android:background="#E8E6E6"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <view
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#686767"
-            />
-        <RelativeLayout
+        android:orientation="horizontal">
+
+        <thundersharp.timeline.TimelineView
+            android:id="@+id/timeline"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:elevation="7dp"
+            app:endLineColor="#E91E63"
+            app:lineStyle="normal"
+            app:lineWidth="3dp"
+            app:markerSize="20dp"
+            app:startLineColor="#FFEB3B" />
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/tw__composer_logo_blue"
-                android:background="@drawable/stroke1"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentTop="true"
-                android:padding="5dp"
-                />
+            app:cardCornerRadius="4dp"
+            android:elevation="5dp"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10">
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/timeline"
                 android:orientation="vertical"
-                android:layout_toStartOf="@+id/iv"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 >
-                <TextView
+
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Organisation Name"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginTop="4dp"
-                    android:textSize="19sp"
-                    android:padding="9dp"
-                    android:layout_marginStart="3dp"
-                    />
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/name_person"
+                        android:src="@drawable/avatar1"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginTop="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/name_person"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:layout_alignParentEnd="true"
+                        android:text="Updated by"
+                        android:textSize="13sp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginBottom="3dp"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/starttime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:textSize="13sp"
+                        android:text="Start time : 26/07/2020"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/Brown"/>
+
+
+                    <TextView
+                        android:id="@+id/name_proj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:text="Project name"
+                        android:layout_below="@+id/starttime"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/Brown"/>
+
+                    <TextView
+                        android:id="@+id/id_proj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textSize="12sp"
+                        android:text="id: 46734567"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/name_proj"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/red_900"/>
+
+
+                    <TextView
+                        android:id="@+id/desc_proj"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:layout_below="@id/id_proj"
+                        android:text="Description of projects xyz which is habla dabla bootloader unclock hurrr hurrr hurr oye hat mere raste se"
+                        android:layout_marginStart="10dp"
+                        android:layout_toStartOf="@id/name_person"
+                        android:textColor="@color/Brown"/>
+
+                    <TextView
+                        android:id="@+id/bekar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="12sp"
+                        android:text="Progress done by me on this project till now."
+                        android:textStyle="bold"
+                        android:layout_below="@+id/desc_proj"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/Brown"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/padding_10"
+                        android:drawableStart="@drawable/ic_baseline_last_page_24"
+                        android:drawablePadding="@dimen/padding_10"
+                        android:textColor="@color/grey_700"
+                        android:textSize="14sp"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                        android:id="@+id/recyclertodo"
+                        android:layout_below="@+id/bekar"
+                        android:text="View contributions"/>
+                    
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Users >> "
-                        android:textSize="15sp"
-                        android:padding="5dp"
-                        android:textColor="@color/colorNumBtnText"
-                        android:layout_marginStart="3dp"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="work"
-                        android:layout_marginStart="8dp"
-                        android:padding="5dp"
-                        />
+                        android:layout_marginTop="5dp"
+                        android:text="End time : 26/07/2020"
+                        android:layout_below="@+id/recyclertodo"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/Brown"/>
 
-                </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:text=" name1 : time1 \n name2 : time2 \n name3 : uid3 "
-                    android:layout_marginStart="3dp"
-                    android:textColor="@color/Brown"/>
+                </RelativeLayout>
 
             </LinearLayout>
-        </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:text="Manager Name "
-            android:layout_marginEnd="3dp"
-            android:padding="2dp"
-            android:layout_marginBottom="3dp"
-            />
-        <view
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#686767"
-            />
+
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+
+</RelativeLayout>
