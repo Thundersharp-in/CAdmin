@@ -1,2 +1,3 @@
+include ':timeline'
 include ':app'
 rootProject.name = "CAdmin"
