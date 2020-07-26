@@ -6,10 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
@@ -28,7 +23,6 @@ import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.OrganisationAdapter;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
-import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
@@ -36,29 +30,20 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.http.GET;
-
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class Organisation extends Fragment {
 
-    TextView company_name,company_detail,manager_name;
-    ImageView company_logo;
-    Button project_done;
     RecyclerView project_rv;
-    FloatingActionButton add_project;
-    DatabaseReference mRef,mRef1;
     List<org_details_model> data;
     List<Organisations>finalorg;
     SharedPreferences preferences,sharedPreferencesOrglist;
-
-
+    FloatingActionButton refresh;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-       // org_details_model homepagemodel = (org_details_model) getIntent().getSerializableExtra("match_data");
         MainActivity.container.setBackground(null);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp,getActivity().getTheme()));
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +58,14 @@ public class Organisation extends Fragment {
         preferences= getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);
+        refresh=root.findViewById(R.id.refresh);
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchProfilefromsever();
+            }
+        });
 
         List<Organisations> datapref = loadDataOrgfromPrefs();
         //Toast.makeText(getActivity(),String.valueOf(datapref.size()),Toast.LENGTH_SHORT).show();
@@ -85,9 +78,6 @@ public class Organisation extends Fragment {
             fetchListofAllOrganisation(loadDataOrgfromPrefs());
 
         }
-
-
-
 
         return root;
     }
@@ -107,13 +97,15 @@ public class Organisation extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
-                        dataorg.add(snapshot.getValue(org_details_model.class));
-                        Toast.makeText(getActivity(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
-                        OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
-                        project_rv.setAdapter(organisationAdapter);
 
+                        dataorg.add(snapshot.getValue(org_details_model.class));
+                        savefetchListofAllOrganisation(dataorg);
+                        Toast.makeText(getActivity(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
                     }
+                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
+                    project_rv.setAdapter(organisationAdapter);
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -123,10 +115,7 @@ public class Organisation extends Fragment {
 
 
         }
-
         //Toast.makeText(getActivity(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
-
-
     }
 
     private void savefetchListofAllOrganisation(List<org_details_model> org_details_models){
@@ -181,7 +170,6 @@ public class Organisation extends Fragment {
         Gson gson = new Gson();
         List<Organisations> dataprevious = getData();
         if (dataprevious == null){
-
             String data = gson.toJson(organisations);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();

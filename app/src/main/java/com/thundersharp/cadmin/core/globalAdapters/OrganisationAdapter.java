@@ -35,7 +35,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_organisation, parent,false);
+        View view = inflater.inflate(R.layout.item_organisation,null);
 
         return new CustomViewHolder(view);
     }
@@ -43,46 +43,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     @Override
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
         org_details_model model=data.get(position);
-        //ref2 for org
-        //ref 1 for user
-
-        /*
-        holder.reference1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot data:dataSnapshot.getChildren()){
-                       //data.getKey().toString()
-                        holder.reference2.child(data.getKey()).child("description").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                                if (dataSnapshot1.exists()){
-                                    for (DataSnapshot dataSnapshot2:dataSnapshot1.getChildren()){
-                                        org_details_model model1=dataSnapshot2.getValue(org_details_model.class);
-
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-         */
 
         Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo);
         Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo1);

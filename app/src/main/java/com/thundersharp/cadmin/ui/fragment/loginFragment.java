@@ -251,7 +251,8 @@ public class loginFragment extends Fragment {
                                             // Handle failure.
                                         }
                                     });
-                } else {
+                }
+                else {
                     // There's no pending result so you need to start the sign-in flow.
                     // See below.
 
