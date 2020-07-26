@@ -63,7 +63,7 @@ public class Organisation extends Fragment {
         data=new ArrayList<>();
         SharedPreferences preferences= this.getActivity().getSharedPreferences("org",0);
 
-                //requireActivity().getSharedPreferences("id",0);
+        //requireActivity().getSharedPreferences("id",0);
         final String l1 =preferences.getString("id","No value");
         mRef= FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("organisations");
         mRef1= FirebaseDatabase.getInstance().getReference("organisation");
@@ -71,17 +71,24 @@ public class Organisation extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
+
                     org1.setVisibility(View.VISIBLE);
+
                     for (DataSnapshot snapshot1:snapshot.getChildren()){
+
                         Toast.makeText(getContext(), snapshot1.getKey().toString(), Toast.LENGTH_SHORT).show();
+
                         mRef1.child(snapshot1.getKey()).child("description").addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                                 if (dataSnapshot1.exists()){
+
                                     for (DataSnapshot dataSnapshot2:dataSnapshot1.getChildren()){
+
                                         org_details_model model1=dataSnapshot2.getValue(org_details_model.class);
                                         data.add(model1);
                                         Toast.makeText(getContext(), "reaches here", Toast.LENGTH_SHORT).show();
+
                                     }
                                 }else {
                                     Toast.makeText(getContext(),"Server error code : 404",Toast.LENGTH_LONG).show();
@@ -112,19 +119,19 @@ public class Organisation extends Fragment {
         mRef1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               if (dataSnapshot.exists()){
-                   org_details_model model = dataSnapshot.getValue(org_details_model.class);
-                   data.add(model);
-                   org1.setVisibility(View.VISIBLE);
-                   company_name.setText(model.getOrganisation_name());
-                   company_detail.setText(model.getCompany_description());
-                  // String logo=model.getCompany_logo();
-                   //company_logo.setImageURI(Uri.parse(logo));
-                   manager_name.setText(model.getOrganiser_name());
-                   Toast.makeText(getContext(), "All Extracted", Toast.LENGTH_SHORT).show();
-               }else {
-                   Toast.makeText(getContext(), "none extracted", Toast.LENGTH_SHORT).show();
-               }
+                if (dataSnapshot.exists()){
+                    org_details_model model = dataSnapshot.getValue(org_details_model.class);
+                    data.add(model);
+                    org1.setVisibility(View.VISIBLE);
+                    company_name.setText(model.getOrganisation_name());
+                    company_detail.setText(model.getCompany_description());
+                    // String logo=model.getCompany_logo();
+                    //company_logo.setImageURI(Uri.parse(logo));
+                    manager_name.setText(model.getOrganiser_name());
+                    Toast.makeText(getContext(), "All Extracted", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getContext(), "none extracted", Toast.LENGTH_SHORT).show();
+                }
 
                 /*
 
@@ -175,7 +182,6 @@ if (model != null) {
                 MainActivity.navController.navigate(R.id.nav_org);
             }
         });
-
 
         return root;
     }
