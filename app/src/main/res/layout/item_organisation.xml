@@ -71,12 +71,6 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <view
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/secondary_text_light"
-            android:baselineAlignBottom="true"
-            android:layout_below="@+id/cv1"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/cv2"
             android:layout_width="match_parent"
@@ -84,10 +78,10 @@
             android:layout_marginTop="15dp"
             android:layout_below="@+id/cv1"
             >
-            <view
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/secondary_text_light"
+                android:background="@color/grey_700"
                 android:baselineAlignBottom="true"
                 />
             <LinearLayout
@@ -211,10 +205,10 @@
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-                <view
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@android:color/secondary_text_light"
+                    android:background="@color/grey_700"
                     android:baselineAlignBottom="true"
                     android:layout_marginTop="30dp"
                     />
@@ -250,11 +244,5 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-        <view
-            android:layout_below="@+id/cv2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/secondary_text_light"
-            />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

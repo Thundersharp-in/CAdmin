@@ -17,6 +17,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             app:endLineColor="#000000"
+            android:elevation="7dp"
             app:lineStyle="normal"
             app:lineWidth="3dp"
             app:markerSize="20dp"

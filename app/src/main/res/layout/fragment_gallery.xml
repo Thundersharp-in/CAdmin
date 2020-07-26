@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,179 +7,14 @@
     android:orientation="vertical"
     android:id="@+id/org"
     tools:context=".ui.fragment.Organisation">
-    <RelativeLayout
-        android:id="@+id/org1"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/project_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <RelativeLayout
-            android:id="@+id/r1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/up_frame"
-            android:layout_marginEnd="-2dp"
-            >
-            <TextView
-                android:id="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
-                android:textStyle="italic"
-                android:textColor="#fff"
-                android:elevation="10dp"
-                android:textSize="12sp"
-                android:gravity="center"
-                android:layout_marginStart="5dp"
-                android:text="click on the '+' icon to view the details and ave look on the project"
-                />
-            <LinearLayout
-                android:id="@+id/l2"
-                android:layout_below="@+id/tv"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_height="wrap_content"
-                android:padding="1dp"
-                android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_alignParentEnd="true"
-                >
-                <ImageView
-                    android:id="@+id/company_logo"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_gravity="end"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/ic_baseline_person_24"
-                    android:background="@drawable/stroke1"
-                    android:padding="3dp"
-                    />
-                <TextView
-                    android:id="@+id/manager_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="italic"
-                    android:text="organiser name"
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/colorTextonPrimary"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginBottom="3dp"
-                    android:elevation="14dp"
-                    android:padding="1dp"
-                    />
-                <TextView
-                    android:id="@+id/manager_uid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:textStyle="italic"
-                    android:text="organiser uid"
-                    android:layout_marginTop="2dp"
-                    android:background="@android:color/transparent"
-                    android:gravity="center"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginBottom="3dp"
-                    android:elevation="14dp"
-                    android:padding="1dp"
-                    />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/l2"
-                android:layout_below="@+id/tv"
-                android:gravity="start"
-                android:layout_alignParentStart="true"
-                android:orientation="vertical"
-                >
-                <TextView
-                    android:id="@+id/company_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Organisation Name"
-                    android:layout_marginStart="12dp"
-                    android:padding="3dp"
-                    android:textColor="@color/colorTextonPrimary"
-                    android:textStyle="bold|italic"
-                    android:textSize="18sp"
-                    android:textAllCaps="false"
-                    />
-                <TextView
-                    android:id="@+id/company_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Organisation id"
-                    android:layout_marginStart="12dp"
-                    android:padding="1dp"
-                    android:textStyle="bold|italic"
-                    android:textAllCaps="false"
-                    />
+        android:layout_height="match_parent"
+        android:padding="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
 
 
-                <TextView
-                    android:id="@+id/de"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Description"
-                    android:gravity="start"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:padding="2dp"
-                    android:textSize="17sp"
-                    android:textColor="@color/white"
-                    android:textStyle="italic"
-                    android:textAllCaps="false"
-                    />
-                <TextView
-                    android:id="@+id/company_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="nvnfovjnfonjofbgjdfbogndfbonjofnmomnofbmnofkmnofkmnofkmnofkjbndfbjfjdfnbjdfbnfjbndfjbndfb"
-                    android:gravity="start"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="5dp"
-                    android:padding="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:textSize="15sp"
-                    android:textColor="@color/grey_800"
-                    android:textStyle="italic"
-                    android:textAllCaps="false"
-                    />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_project"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_black_24dp"
-                android:layout_below="@+id/r1"
-                android:layout_marginTop="-30dp"
-                android:elevation="12dp"
-                app:elevation="12dp"
-                android:layout_centerHorizontal="true"
-                />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/project_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/r1"
-            android:layout_marginTop="30dp"
-            android:padding="2dp"
-            />
-    </RelativeLayout>
-
-
-
-</ScrollView>
+</RelativeLayout>

@@ -30,10 +30,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalmodels.Organisations;
+import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,16 +55,22 @@ public class AddOrganisationFragment extends Fragment {
     Uri org_logo_uri;
     String logo_url,org_name,org_description,organiser_name,organiser_uid;
     FirebaseAuth mAuth;
+    SharedPreferences pref;
+    List<Organisations> organisations;
     DatabaseReference mRef;
+    UserData userData;
     FirebaseUser mUser;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferencesprofile;
     public org_details_model org_details_model_list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        sharedPreferences=getActivity().getSharedPreferences("company",Context.MODE_PRIVATE);
+
+        sharedPreferencesprofile = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
+        pref =getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
+
         View view=inflater.inflate(R.layout.fragment_add_organisation, container, false);
         MainActivity.container.setBackground(null);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
@@ -70,6 +82,9 @@ public class AddOrganisationFragment extends Fragment {
             }
         });
 
+        userData = loadDataProfilefromPrefs();
+        organisations = new ArrayList<>();
+
         upload_org_logo=view.findViewById(R.id.upload_org_logo);
         upload_org_name=view.findViewById(R.id.upload_org_name);
                                                                   // upload_org_motto= view.findViewById(R.id.upload_org_motto);
@@ -78,8 +93,9 @@ public class AddOrganisationFragment extends Fragment {
         logo_url="";
         org_description="";
         org_name="";
-        organiser_name="";
+
         organiser_uid="";
+
         upload_org_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,80 +112,69 @@ public class AddOrganisationFragment extends Fragment {
                  progressDialog.show();
                  mUser=FirebaseAuth.getInstance().getCurrentUser();
                  organiser_uid=mUser.getUid();
-                 organiser_name=mUser.getDisplayName();
+
+
+
                  org_name=upload_org_name.getText().toString();
                  org_description=upload_org_desc.getText().toString();
-                 // organiser_name="Name of organiser";
-                 //organiser_uid="organiser uid";
-                 long l3=1000000000;
-                 long l4=9000000000L;
-                 Random r = new Random(System.currentTimeMillis());
-                 long l= l3 + r.nextInt((int) l4);
-                 final String l1= String.valueOf(l);
-                 DatabaseReference reference1=FirebaseDatabase.getInstance().getReference().child("users")
-                         .child(organiser_uid).child("personal_data").child("name");
-                 reference1.addValueEventListener(new ValueEventListener() {
-                     @Override
-                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                         if (dataSnapshot.exists()) {
 
-                             String organiser_name=dataSnapshot.getValue().toString();
-                             org_details_model_list=new org_details_model(org_description,logo_url,l1,org_name,organiser_name,organiser_uid);
-                             mRef= FirebaseDatabase.getInstance().getReference("organisation");
-                             mRef.child(l1).child("description").setValue(org_details_model_list).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                 @Override
-                                 public void onComplete(@NonNull Task<Void> task) {
+                org_details_model_list=new org_details_model(
+                        org_description,
+                        logo_url,
+                        gen(),
+                        org_name,
+                        userData.getName(),
+                        organiser_uid);
 
-                                     if (task.isSuccessful()){
-                                         Toast.makeText(getContext(), "Data Uploaded", Toast.LENGTH_SHORT).show();
-                                         DatabaseReference reference=FirebaseDatabase.getInstance().getReference()
-                                                 .child("users");
-                                         reference.child(organiser_uid).child("organisations").child(l1).setValue("true")
-                                                 .addOnFailureListener(new OnFailureListener() {
-                                                     @Override
-                                                     public void onFailure(@NonNull Exception e) {
-                                                         Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                                                     }
-                                                 }).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                             @Override
-                                             public void onComplete(@NonNull Task<Void> task) {
-                                                 Toast.makeText(getContext(), "Data successfully uploaded", Toast.LENGTH_SHORT).show();
-                                             }
-                                         });
-                                         SharedPreferences pref =getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
-                                         SharedPreferences.Editor editor = pref.edit();
-                                         editor.putString("id",l1.trim());
-                                         editor.apply();
-                                         progressDialog.dismiss();
-                                         Organisation fragment=new Organisation();
-                                         FragmentManager manage=getFragmentManager();
-                                         FragmentTransaction transaction=manage.beginTransaction();
-                                         transaction.replace(R.id.org_manager,fragment);
-                                         transaction.commit();
-                                     }
+                createorganisation(org_details_model_list);
 
-                                 }
-                             }).addOnFailureListener(new OnFailureListener() {
-                                 @Override
-                                 public void onFailure(@NonNull Exception e) {
-                                     progressDialog.dismiss();
-                                     Toast.makeText(getContext(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                                 }
-                             });
-                         }
-
-                     }
-
-                     @Override
-                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                     }
-                 });
 
             }
         });
         return view;
     }
+
+    private void createorganisation(final org_details_model model){
+
+        FirebaseDatabase.getInstance()
+                .getReference("organisation")
+                .child(model.getOrganisation_id())
+                .child("description")
+                .setValue(model)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    savetoUsers(model.getOrganisation_id());
+                }
+            }
+        });
+
+    }
+
+    private void savetoUsers(@NonNull final String key) {
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("organisations")
+                .child(key)
+                .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    organisations.clear();
+                    Organisations organisations1 = new Organisations(key,true);
+                    organisations.add(organisations1);
+                    SavetoSharedPrefs(organisations);
+                    MainActivity.navController.navigate(R.id.nav_organisation);
+
+                }else {
+                    Toast.makeText(getContext(),"INTERNAL ERROR : "+task.getException().getCause().getMessage(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -181,12 +186,65 @@ public class AddOrganisationFragment extends Fragment {
             Toast.makeText(getContext(), " You haven't selected the logo", Toast.LENGTH_SHORT).show();
         }
     }
-    private void company(org_details_model model){
+/*    private void company(org_details_model model){
         Gson gson = new Gson();
         String data = gson.toJson(model);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.putString("org_details",data);
         editor.apply();
+    }*/
+
+    private void SavetoSharedPrefs(List<Organisations> organisations){
+        Gson gson = new Gson();
+        List<Organisations> dataprevious = getData();
+        if (dataprevious == null){
+
+            String data = gson.toJson(organisations);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.putString("id",data);
+            editor.apply();
+
+        }else {
+
+            dataprevious.addAll(organisations);
+
+            String data = gson.toJson(dataprevious);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.putString("id",data);
+            editor.apply();
+        }
+
+    }
+
+    //TODO ADD FUNCTION TO SAVE DATA TO SHARED PREFS FROM DATABASE
+
+    private List<Organisations> getData(){
+
+        Gson gson =new Gson();
+
+        if (!pref.getString("id","null").equals("null")){
+            String data = pref.getString("id","null");
+            Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
+            return gson.fromJson(data,type);
+
+        }else return null;
+
+    }
+
+    private String gen() {
+        Random r = new Random(System.currentTimeMillis());
+        return String.valueOf( 1000000 + r.nextInt(2000000));
+    }
+
+    private UserData loadDataProfilefromPrefs(){
+        String data;
+        Gson gson = new Gson();
+        data = sharedPreferencesprofile.getString("data","no data");
+        Type type = new TypeToken<UserData>(){}.getType();
+
+        return gson.fromJson(data,type);
     }
 }

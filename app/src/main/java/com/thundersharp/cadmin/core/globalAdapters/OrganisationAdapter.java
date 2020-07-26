@@ -35,7 +35,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_organisation, null);
+        View view = inflater.inflate(R.layout.item_organisation, parent,false);
 
         return new CustomViewHolder(view);
     }
