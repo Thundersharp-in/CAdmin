@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:gravity="center"
-    android:background="@drawable/stroke1"
     android:padding="3dp">
 
     <LinearLayout
@@ -12,21 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        >
+        android:layout_marginEnd="12dp">
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="1dp"
             android:src="@drawable/ic_menu_camera"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Videos"
-            android:layout_gravity="center"
-            android:layout_marginStart="1dp"
-            android:textColor="#000"
-            android:padding="1dp"/>
+
     </LinearLayout>
 
 </RelativeLayout>

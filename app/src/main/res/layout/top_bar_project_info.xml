@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="@layout/project_info">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/org_logo"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@mipmap/ic_launcher_round"
+        app:civ_border_color="#3F51B5"
+        app:civ_border_width="1.5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"/>
+
+    <TextView
+        android:id="@+id/projtittle"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/org_logo"
+        android:text="Project name"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:textColor="#000"
+        android:fontFamily="@font/bree_serif"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/descheadd"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/projtittle"
+        android:text="Description"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="13sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/descwhole"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descheadd"
+        android:text="@string/description"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@id/descwhole"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:background="@drawable/rectangle_border"
+            android:text="Edit project"
+            android:gravity="center"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/gradiant_button"
+            android:text="Mail manager"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:layout_marginStart="@dimen/padding_10"
+            android:gravity="center" />
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        android:layout_toEndOf="@id/org_logo">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Workforce"
+                android:textColor="#000"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue_grey_900"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Todo's"
+                android:textColor="#000"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue_grey_900"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="5dp"
+                android:src="@drawable/tick"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Compleated"
+                android:textColor="#000"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
