@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,7 +46,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class AddOrganisationFragment extends Fragment {
 
-    CircleImageView upload_org_logo;
+    ImageView upload_org_logo;
     TextInputLayout upload_org_name,upload_org_desc,upload_org_motto;
     Button btn_upload_org;
     Uri org_logo_uri;
