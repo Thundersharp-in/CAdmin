@@ -68,7 +68,7 @@ public class AddProject extends Fragment {
         preferences = getActivity().getSharedPreferences("proj",Context.MODE_PRIVATE);
         sharedPreference = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
 
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24,getActivity().getTheme()));
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
