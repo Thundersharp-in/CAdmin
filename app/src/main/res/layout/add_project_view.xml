@@ -43,7 +43,7 @@
                 android:textSize="20sp" />
 
                 <TextView
-                    android:id="@+id/edit_userUid"
+                    android:id="@+id/text_organiserUid"
                     android:layout_width="0dp"
                     android:layout_weight="1.45"
                     android:layout_height="wrap_content"

@@ -145,23 +145,11 @@
                 android:layout_marginTop="8dp" />
 
             <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/recycler_group"
-                android:layout_margin="10dp"
-                android:textColor="#fff"
-                android:background="@drawable/button_bg_gr"
-                android:elegantTextHeight="true"
-                android:elevation="7dp"
-                android:text="Cancel"/>
-
-            <Button
                 android:id="@+id/btn_project_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/recycler_group"
-                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/button_bg_gr"
                 android:textColor="#fff"
                 android:padding="4dp"

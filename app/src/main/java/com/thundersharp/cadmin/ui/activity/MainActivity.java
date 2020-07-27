@@ -3,29 +3,29 @@ package com.thundersharp.cadmin.ui.activity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.thundersharp.cadmin.R;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.thundersharp.cadmin.R;
 
 public class MainActivity extends AppCompatActivity {
     /***** Property of THUNDRSHAP inc. shuld not be modified or reproduced without permission *****/
@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_profile,
                 R.id.nav_work_force,
                 R.id.nav_organisation,
-                R.id.nav_cal,R.id.nav_proj,
+                R.id.nav_cal,
+                R.id.nav_proj,
                 R.id.nav_finance,
                 R.id.nav_settings)
                 .setDrawerLayout(drawer)

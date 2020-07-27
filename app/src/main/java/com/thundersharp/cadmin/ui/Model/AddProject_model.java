@@ -3,21 +3,23 @@ package com.thundersharp.cadmin.ui.Model;
 import android.media.Image;
 import android.widget.ImageView;
 
-public class AddProject {
+public class AddProject_model {
     String projectName;
     String projectDesc;
-//    String organisation_id;
-//    ImageView logo;
+    String project_id;
+    //ImageView logo;
 
-    public AddProject(String projectName, String projectDesc) {
+    public AddProject_model() {
+    }
+
+    public AddProject_model(String projectName, String projectDesc, String project_id) {
         this.projectName = projectName;
         this.projectDesc = projectDesc;
-//        this.organisation_id = organisation_id;
+        this.project_id = project_id;
 //        this.logo = logo;
     }
 
-    public AddProject() {
-    }
+
 
     public String getProjectName() {
         return projectName;
@@ -35,14 +37,15 @@ public class AddProject {
         this.projectDesc = projectDesc;
     }
 
-//    public String getOrganisation_id() {
-//        return organisation_id;
-//    }
-//
-//    public void setOrganisation_id(String organisation_id) {
-//        this.organisation_id = organisation_id;
-//    }
-//
+    public String getProject_id() {
+        return project_id;
+    }
+
+    public void setProject_id(String project_id) {
+        this.project_id = project_id;
+    }
+
+    //
 //    public ImageView getLogo() {
 //        return logo;
 //    }
