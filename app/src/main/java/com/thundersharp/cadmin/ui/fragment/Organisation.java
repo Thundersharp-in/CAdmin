@@ -36,7 +36,7 @@ public class Organisation extends Fragment {
 
     RecyclerView project_rv;
     List<org_details_model> data;
-    List<Organisations>finalorg;
+    List<Organisations> finalorg;
     SharedPreferences preferences,sharedPreferencesOrglist;
     FloatingActionButton refresh;
 
@@ -75,8 +75,7 @@ public class Organisation extends Fragment {
         }else {
             Toast.makeText(getActivity(),"data server",Toast.LENGTH_SHORT).show();
             //fetchListofAllOrganisation(datapref);
-            fetchListofAllOrganisation(loadDataOrgfromPrefs());
-
+            getorgdetailfromPref(loadDataOrgfromPrefs());
         }
 
         return root;
@@ -97,10 +96,10 @@ public class Organisation extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
-
+                        //dataorg.clear();
                         dataorg.add(snapshot.getValue(org_details_model.class));
                         savefetchListofAllOrganisation(dataorg);
-                        Toast.makeText(getActivity(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
                     }
                     OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
                     project_rv.setAdapter(organisationAdapter);
@@ -118,15 +117,29 @@ public class Organisation extends Fragment {
         //Toast.makeText(getActivity(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
     }
 
-    private void savefetchListofAllOrganisation(List<org_details_model> org_details_models){
+    private void getorgdetailfromPref(@NonNull  List<Organisations>  model){
+        List<org_details_model> datapref = loadOrgdetailfromPrefs();
+        if (datapref==null){
+            Toast.makeText(getActivity(),"no org data found",Toast.LENGTH_SHORT).show();
+            fetchListofAllOrganisation(model);
+        }else{
+            Toast.makeText(getActivity(), "org data found", Toast.LENGTH_SHORT).show();
+            List<org_details_model> dataorg = new  ArrayList<>();
+            Gson gson=new Gson();
+            for (int i=0;i<model.size();i++){
+                String data=sharedPreferencesOrglist.getString("org","null");
+                Type type = new TypeToken<ArrayList<org_details_model>>(){}.getType();
 
-        Gson gson = new Gson();
-        String data=gson.toJson(org_details_models);
-        SharedPreferences.Editor editor = sharedPreferencesOrglist.edit();
-        editor.clear();
-        editor.putString("org",data);
-        editor.apply();
+                dataorg =  gson.fromJson(data,type);
 
+                OrganisationAdapter organisationAdapter =new OrganisationAdapter(getActivity(),dataorg);
+                project_rv.setAdapter(organisationAdapter);
+        }
+
+            //dataorg.add(loadOrgdetailfromPrefs().size(),org_details_model.class);
+            // OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
+            //                    project_rv.setAdapter(organisationAdapter);
+        }
     }
 
 
@@ -153,16 +166,54 @@ public class Organisation extends Fragment {
         });
     }
 
+    private List<org_details_model> loadOrgdetailfromPrefs(){
+        String data;
+        Gson gson=new Gson();
+        data=sharedPreferencesOrglist.getString("org","null");
+        if (data.equals("null")){  //equalsIgnoreCase("null")
+            Type type=new TypeToken<ArrayList<org_details_model>>(){}.getType();
+            return gson.fromJson(data,type);
+        }else return null;
+    }
+
     private List<Organisations> loadDataOrgfromPrefs(){
 
         String data;
         Gson gson = new Gson();
         data = preferences.getString("id","null");
-        if (data.equalsIgnoreCase("null")){
+        if (data.equals("null")){  //equalsIgnoreCase("null")
             Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
             return gson.fromJson(data,type);
         }else return null;
 
+    }
+
+    private List<Organisations> getData(){
+
+        Gson gson =new Gson();
+        List<Organisations> dummy;
+
+        if (preferences.getString("id","null").equals("null")){
+            String data = preferences.getString("id","null");
+            Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
+            dummy =  gson.fromJson(data,type);
+
+        }else{
+            dummy = new ArrayList<>();
+        }
+
+        return dummy;
+    }
+
+    private void savefetchListofAllOrganisation(List<org_details_model> org_details_models){
+
+        Gson gson = new Gson();
+
+        String data=gson.toJson(org_details_models);
+        SharedPreferences.Editor editor = sharedPreferencesOrglist.edit();
+        editor.clear();
+        editor.putString("org",data);
+        editor.apply();
     }
 
     private void SavetoSharedPrefs(List<Organisations> organisations){
@@ -187,28 +238,23 @@ public class Organisation extends Fragment {
             editor.putString("id",data);
             editor.apply();
 
-            fetchListofAllOrganisation(organisations);
+            getorgdetailfromPref(organisations);
         }
 
     }
 
-
-    private List<Organisations> getData(){
-
-        Gson gson =new Gson();
-        List<Organisations> dummy;
-
-        if (preferences.getString("id","null").equals("null")){
-            String data = preferences.getString("id","null");
-            Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
-            dummy =  gson.fromJson(data,type);
-
-        }else{
-            dummy = new ArrayList<>();
+   /* private List<org_details_model> getOrgDetails(){
+        Gson gson=new Gson();
+        List<org_details_model> test;
+        if (sharedPreferencesOrglist.getString("org","null").equals("null")){
+            String data=sharedPreferencesOrglist.getString("org","null");
+            Type type=new TypeToken<ArrayList<org_details_model>>(){}.getType();
+            test=gson.fromJson(data,type);
+        }else {
+            test=new ArrayList<>();
         }
-
-        return dummy;
+        return test;
     }
 
-
+    */
 }

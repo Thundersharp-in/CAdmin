@@ -137,7 +137,9 @@
     <string name="log">log</string>
     <string name="Mod">%</string>
     <string name="inverse">1/x</string>
-    <string name="factorial">x!</string>>
+    <string name="factorial">x!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>>
 
 
 </resources>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="25dp">
+    android:padding="25dp"
+    tools:context=".ui.fragment.AddProject">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,7 +25,6 @@
                 android:text="Create New Project"
                 android:background="@drawable/button_bg_gr"
                 android:layout_margin="20dp"
-                android:textSize="20sp"
                 android:textColor="#000"
                 android:textAlignment="center"/>
 
@@ -63,7 +63,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Project Desc...."
-                    android:textSize="22sp"
                     android:textColorHint="#322929"
                     android:textColor="#0C0B0B"
                     android:inputType="text"/>
@@ -84,14 +83,15 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:src="@drawable/twitter"/>
-
-                <TextView
+<!--
+ <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="If you want to add any images to your project click above"
                     android:textColor="#000"
                     android:textAlignment="center"
-                    android:layout_marginVertical="10dp"/>
+                    android:layout_marginVertical="10dp"/>-->
+
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

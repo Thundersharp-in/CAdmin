@@ -23,7 +23,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
@@ -51,10 +50,8 @@ public class AddOrganisationFragment extends Fragment {
     Button btn_upload_org;
     Uri org_logo_uri;
     String logo_url,org_name,org_description,organiser_name,organiser_uid;
-    FirebaseAuth mAuth;
     SharedPreferences pref;
     List<Organisations> organisations;
-    DatabaseReference mRef;
     UserData userData;
     FirebaseUser mUser;
     SharedPreferences sharedPreferencesprofile,sharedPreference;

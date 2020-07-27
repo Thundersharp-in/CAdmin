@@ -1,36 +1,28 @@
-package com.thundersharp.cadmin.ui.Adapter;
+package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.core.chats.core.users.getall.GetUsersContract;
-import com.thundersharp.cadmin.ui.Model.AddProject;
+import com.thundersharp.cadmin.core.globalmodels.AddProjectModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAdapter.ViewHolder> {
 
-    private ArrayList<AddProject> addProjects;
+    private List<AddProjectModel> addProjectModels;
     private Context mContext;
 
 
 
-    public AddProjectViewAdapter(ArrayList<AddProject> addProjects, Context mContext) {
-        this.addProjects = addProjects;
+    public AddProjectViewAdapter(List<AddProjectModel> addProjectModels, Context mContext) {
+        this.addProjectModels = addProjectModels;
         this.mContext = mContext;
     }
 
@@ -48,16 +40,16 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final AddProject project = addProjects.get(position);
+        final AddProjectModel project = addProjectModels.get(position);
 
-        holder.projectName.setText(project.getProjectName());
-        holder.projectDesc.setText(project.getProjectDesc());
+        holder.projectName.setText(project.getProject_name());
+        holder.projectDesc.setText(project.getDescribe());
 
     }
 
     @Override
     public int getItemCount() {
-        return addProjects.size();
+        return addProjectModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
