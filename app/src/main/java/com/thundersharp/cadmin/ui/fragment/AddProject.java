@@ -63,6 +63,9 @@ public class AddProject extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_project,container,false);
 
         MainActivity.container.setBackground(null);
+        p_name=view.findViewById(R.id.add_project_name);
+        p_desc=view.findViewById(R.id.add_project_desc);
+        add_project=view.findViewById(R.id.buttoncreatep);
 
         sharedPreferencesProfile = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         preferences = getActivity().getSharedPreferences("proj",Context.MODE_PRIVATE);
@@ -76,7 +79,31 @@ public class AddProject extends Fragment {
             }
         });
 
+        add_project.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                project_name=p_name.getEditText().getText().toString();
+                project_description=p_desc.getEditText().getText().toString();
+                if (project_name.length()>30){
+                    p_name.getEditText().setError("More than 30 characters !");
+                    p_name.getEditText().requestFocus();
+                } else if (project_name.isEmpty()) {
+                    p_name.getEditText().setError("Required !");
+                    p_name.getEditText().requestFocus();
+                }else if (project_description.isEmpty()){
+                    p_desc.getEditText().setError("Required !");
+                    p_desc.getEditText().requestFocus();
+                }else {
+                    addProjectModel = new AddProject_model(
+                            project_name,
+                            project_description,
+                            gen());
 
+                    createProject(addProjectModel);
+                }
+
+            }
+        });
 
 
         return view;
@@ -94,13 +121,15 @@ public class AddProject extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             progressDialog.dismiss();
-                            savetoUsers(model.getProject_id());
+                            MainActivity.navController.navigate(R.id.nav_proj);
+                           // savetoUsers(model.getProject_id());
                         } else {
                             fetchfromdatabase();
                         }
                     }
                 });
     }
+
 
     private void savetoUsers(@NonNull final String key){
         FirebaseDatabase.getInstance()
@@ -124,6 +153,7 @@ public class AddProject extends Fragment {
             }
         });
     }
+
 
     private void SavetoSharedPrefs(List<Projects> projectsList){
         Gson gson = new Gson();

@@ -68,7 +68,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email"
+                android:id="@+id/add_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxStrokeColor="#2196F3"
@@ -77,6 +77,7 @@
                 android:textColorHint="#101010">
 
                 <com.google.android.material.textfield.TextInputEditText
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Project name"
@@ -91,7 +92,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/password"
+                android:id="@+id/add_project_desc"
                 android:layout_width="match_parent"
                 app:boxStrokeColor="#2196F3"
                 android:layout_height="wrap_content"
