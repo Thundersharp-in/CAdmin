@@ -64,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_profile,
                 R.id.nav_work_force,
                 R.id.nav_organisation,
-                R.id.nav_cal,R.id.nav_proj,
+                R.id.nav_cal,
+                R.id.nav_proj,
                 R.id.nav_finance,
                 R.id.nav_settings)
                 .setDrawerLayout(drawer)
