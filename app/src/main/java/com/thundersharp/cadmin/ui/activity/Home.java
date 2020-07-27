@@ -16,7 +16,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Home extends AppCompatActivity {
     CircleImageView orglogo;
     TextView orgtitle,manager,desc;
-    Button opnbot;
+    Button opnbot,contbot;
     DatabaseReference mDatabaseReference;
     FirebaseAuth mAuth;
 
@@ -28,7 +28,8 @@ public class Home extends AppCompatActivity {
         orgtitle = findViewById(R.id.orgtitle);
         manager = findViewById(R.id.manager);
         desc = findViewById(R.id.desc);
-        opnbot = findViewById(R.id.opnbot);
+        opnbot =findViewById(R.id.opnbot);
+        contbot=findViewById(R.id.contbot);
         mAuth=FirebaseAuth.getInstance();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
