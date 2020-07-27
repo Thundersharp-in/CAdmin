@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,14 +39,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 
 public class AddOrganisationFragment extends Fragment {
 
-    CircleImageView upload_org_logo;
+    ImageView upload_org_logo;
     TextInputLayout upload_org_name,upload_org_desc,upload_org_motto;
     Button btn_upload_org;
     Uri org_logo_uri;
@@ -110,18 +109,32 @@ public class AddOrganisationFragment extends Fragment {
 
                  org_name=upload_org_name.getEditText().getText().toString();
                  org_description=upload_org_desc.getEditText().getText().toString();
+                 if (org_name.length()>30){
+                     upload_org_name.getEditText().setError("More than 30 characters !");
+                     upload_org_desc.getEditText().requestFocus();
+                 }else if (org_name.isEmpty()){
+                     upload_org_name.getEditText().setError("Required !");
+                     upload_org_name.getEditText().requestFocus();
+                 }else if (org_description.isEmpty()){
+                     upload_org_desc.getEditText().setError("Required !");
+                     upload_org_desc.getEditText().requestFocus();
+                 }else if (logo_url.isEmpty()){
+                     upload_org_logo.setImageResource(R.drawable.organisation);
+                     Toast.makeText(getContext(), "Logo not selected ", Toast.LENGTH_SHORT).show();
+                 }else{
+                     org_details_model_list=new org_details_model(
+                             org_description,
+                             logo_url,
+                             gen(),
+                             org_name,
+                             userData.getName(),
+                             organiser_uid);
 
-                 org_details_model_list=new org_details_model(
-                        org_description,
-                        logo_url,
-                        gen(),
-                        org_name,
-                        userData.getName(),
-                        organiser_uid);
+                     createorganisation(org_details_model_list);
 
-                 createorganisation(org_details_model_list);
+                 }
 
-
+                 progressDialog.dismiss();
             }
         });
         return view;
