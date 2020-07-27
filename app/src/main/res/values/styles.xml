@@ -83,4 +83,10 @@
         <item name="textAllCaps">true</item>
     </style>
 
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">#2196F3</item>
+        <item name="boxStrokeWidth">2dp</item>
+    </style>
+
 </resources>

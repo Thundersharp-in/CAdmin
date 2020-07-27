@@ -69,7 +69,6 @@ public class AddProject extends Fragment {
         sharedPreference = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
 
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,39 +76,9 @@ public class AddProject extends Fragment {
             }
         });
 
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Data Uploading...");
 
-        userData = loadDataProfileFromPrefs();
-        projectsList = new ArrayList<>();
 
-        p_name = view.findViewById(R.id.project_input_name);
-        p_desc = view.findViewById(R.id.project_input_desc);
-        add_project = view.findViewById(R.id.btn_project_add);
 
-        project_description = "";
-        project_name = "";
-        project_uid = "";
-
-        add_project.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressDialog.show();
-                mUser = FirebaseAuth.getInstance().getCurrentUser();
-                project_uid = mUser.getUid();
-
-                project_name = p_name.getEditText().getText().toString();
-                project_description = p_desc.getEditText().getText().toString();
-
-                addProjectModel = new AddProject_model(
-                        project_name,
-                        project_description,
-                        gen());
-
-                createProject(addProjectModel);
-
-            }
-        });
         return view;
     }
 
