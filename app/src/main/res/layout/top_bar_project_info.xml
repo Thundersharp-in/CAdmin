@@ -18,10 +18,10 @@
 
     <TextView
         android:id="@+id/projtittle"
-        android:layout_width="120dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/org_logo"
-        android:text="Project name"
+        android:text="CAdmin Application"
         android:textStyle="bold"
         android:textSize="15dp"
         android:textColor="#000"
@@ -89,7 +89,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:weightSum="3"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
@@ -107,10 +107,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00"
+                android:text="09"
                 android:textColor="#000"
                 android:textStyle="bold"
-                android:textSize="25sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -139,10 +139,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00"
+                android:text="57"
                 android:textColor="#000"
                 android:textStyle="bold"
-                android:textSize="25sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -164,16 +164,16 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="5dp"
-                android:src="@drawable/tick"/>
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:src="@drawable/remove"/>
 
             <TextView
                 android:layout_width="match_parent"

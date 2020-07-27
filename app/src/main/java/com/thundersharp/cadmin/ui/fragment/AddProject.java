@@ -43,7 +43,7 @@ public class AddProject extends Fragment {
         addImage =view.findViewById(R.id.add_image);
         textView = view.findViewById(R.id.groupView);
         add = view.findViewById(R.id.btn_project_add);
-        can = view.findViewById(R.id.btn_cancel);
+        //can = view.findViewById(R.id.btn_cancel);
 
 
          add.setOnClickListener(new View.OnClickListener() {

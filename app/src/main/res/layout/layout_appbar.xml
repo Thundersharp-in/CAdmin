@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/project_info"
+    android:layout_marginTop="@dimen/padding_10"
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
