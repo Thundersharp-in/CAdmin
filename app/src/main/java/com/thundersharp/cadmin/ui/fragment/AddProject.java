@@ -53,6 +53,7 @@ public class AddProject extends Fragment {
     FirebaseUser mUser;
     SharedPreferences sharedPreference, sharedPreferencesProfile;
     public AddProject_model addProjectModel;
+    SharedPreferences sharedPreferencesorg;
 
     ProgressDialog progressDialog;
 
@@ -67,6 +68,7 @@ public class AddProject extends Fragment {
         p_desc=view.findViewById(R.id.add_project_desc);
         add_project=view.findViewById(R.id.buttoncreatep);
 
+        sharedPreferencesorg = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         sharedPreferencesProfile = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
         preferences = getActivity().getSharedPreferences("proj",Context.MODE_PRIVATE);
         sharedPreference = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
@@ -111,27 +113,37 @@ public class AddProject extends Fragment {
 
 
     private void createProject(final AddProject_model model) {
-        FirebaseDatabase.getInstance()
-                .getReference("organisation")
-                .child(model.getProject_id())
-                .child("projects")
-                .setValue(model)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            progressDialog.dismiss();
-                            MainActivity.navController.navigate(R.id.nav_proj);
-                           // savetoUsers(model.getProject_id());
-                        } else {
-                            fetchfromdatabase();
+
+        String org_id = sharedPreferencesorg.getString("selected",null);
+        if (org_id == null){
+            Toast.makeText(getContext(),"Failed to get your organisation please select it from the list of created/joined organisation from home or organisations",Toast.LENGTH_LONG).show();
+        }else {
+            FirebaseDatabase.getInstance()
+                    .getReference("organisation")
+                    .child(org_id)
+                    .child("projects")
+                    .child(model.getProject_id())
+                    .child("description")
+                    .setValue(model)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                //progressDialog.dismiss();
+
+                                savetoUsers(model.getProject_id());
+                            } else {
+                                fetchfromdatabase();
+                            }
                         }
-                    }
-                });
+                    });
+
+        }
     }
 
 
     private void savetoUsers(@NonNull final String key){
+
         FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(FirebaseAuth.getInstance().getUid())
