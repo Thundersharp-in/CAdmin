@@ -1,4 +1,4 @@
-package com.thundersharp.cadmin.core.globalAdapters;
+package com.thundersharp.cadmin.ui.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,24 +9,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.core.globalmodels.AddProjectModel;
+import com.thundersharp.cadmin.ui.Model.AddProject_model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAdapter.ViewHolder> {
 
-    private List<AddProjectModel> addProjectModels;
     private Context mContext;
+    private List<AddProject_model> data;
 
-
-
-    public AddProjectViewAdapter(List<AddProjectModel> addProjectModels, Context mContext) {
-        this.addProjectModels = addProjectModels;
+    public AddProjectViewAdapter(Context mContext, List<AddProject_model> data) {
+        this.data = data;
         this.mContext = mContext;
-    }
-
-    public AddProjectViewAdapter() {
     }
 
     @Override
@@ -40,28 +40,40 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final AddProjectModel project = addProjectModels.get(position);
+        AddProject_model project = data.get(position);
 
-        holder.projectName.setText(project.getProject_name());
-        holder.projectDesc.setText(project.getDescribe());
+        holder.projectName.setText(project.getProjectName());
+        holder.projectDesc.setText(project.getProjectDesc());
+        holder.project_id.setText("Id: "+project.getProject_id());
 
     }
 
     @Override
     public int getItemCount() {
-        return addProjectModels.size();
+        return data.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView projectName;
         TextView projectDesc;
+        TextView project_id;
+        DatabaseReference reference1,reference2;
+        FirebaseUser mCurrent;
+        String project_uid;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             projectName = itemView.findViewById(R.id.projectView_name);
             projectDesc = itemView.findViewById(R.id.projectView_projectBio);
+            project_id = itemView.findViewById(R.id.text_organiserUid);
+
+            mCurrent = FirebaseAuth.getInstance().getCurrentUser();
+            project_uid = mCurrent.getUid();
+            reference1= FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("projects");
+            reference2=FirebaseDatabase.getInstance().getReference().child("organisation");
+
         }
     }
 }
