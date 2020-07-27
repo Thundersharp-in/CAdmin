@@ -67,11 +67,12 @@ public class AddOrganisationFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_add_organisation, container, false);
         MainActivity.container.setBackground(null);
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24,getActivity().getTheme()));
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 MainActivity.navController.navigate(R.id.nav_organisation);
             }
         });
@@ -98,6 +99,7 @@ public class AddOrganisationFragment extends Fragment {
                 startActivityForResult(photoPicker,1);
             }
         });
+
         btn_upload_org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,12 +163,14 @@ public class AddOrganisationFragment extends Fragment {
     }
 
     private void savetoUsers(@NonNull final String key) {
+
         FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("organisations")
                 .child(key)
-                .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .setValue(true)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -175,6 +179,7 @@ public class AddOrganisationFragment extends Fragment {
                     organisations.add(organisations1);
                     SavetoSharedPrefs(organisations);
                     MainActivity.navController.navigate(R.id.nav_organisation);
+                    getActivity().sendBroadcast(new Intent("refreshPref"));
 
                 }else {
                     Toast.makeText(getContext(),"INTERNAL ERROR : "+task.getException().getCause().getMessage(),Toast.LENGTH_SHORT).show();
@@ -194,6 +199,7 @@ public class AddOrganisationFragment extends Fragment {
             Toast.makeText(getContext(), " You haven't selected the logo", Toast.LENGTH_SHORT).show();
         }
     }
+
     /*    private void company(org_details_model model){
         Gson gson = new Gson();
         String data = gson.toJson(model);
@@ -205,7 +211,9 @@ public class AddOrganisationFragment extends Fragment {
 
     private void SavetoSharedPrefs(List<Organisations> organisations){
         Gson gson = new Gson();
+
         List<Organisations> dataprevious = getData();
+
         if (dataprevious == null){
            //fetchfromdatabase();
             String data = gson.toJson(organisations);
@@ -284,12 +292,30 @@ public class AddOrganisationFragment extends Fragment {
     }
 
     private void storetosharedpref(List<org_details_model> org_detail){
-        Gson gson = new Gson();
-        String data=gson.toJson(org_detail);
-        SharedPreferences.Editor editor = sharedPreference.edit();
-        editor.clear();
-        editor.putString("org",data);
-        editor.apply();
+
+        List<org_details_model> org_details_models = getDataOrg();
+
+        if (org_details_models == null || org_details_models.isEmpty()){
+            Gson gson = new Gson();
+            String data=gson.toJson(org_detail);
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.clear();
+            editor.putString("org",data);
+            editor.apply();
+        }else {
+
+            org_detail.addAll(org_details_models);
+            Gson gson = new Gson();
+            String data=gson.toJson(org_detail);
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.clear();
+            editor.putString("org",data);
+            editor.apply();
+
+        }
+
+
+
     }
 
     private List<Organisations> getData(){
@@ -299,6 +325,20 @@ public class AddOrganisationFragment extends Fragment {
         if (!pref.getString("id","null").equals("null")){
             String data = pref.getString("id","null");
             Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
+            return gson.fromJson(data,type);
+
+        }else return null;
+
+    }
+
+
+    private List<org_details_model> getDataOrg(){
+
+        Gson gson =new Gson();
+
+        if (!sharedPreference.getString("org","null").equals("null")){
+            String data = sharedPreference.getString("org","null");
+            Type type = new TypeToken<ArrayList<org_details_model>>(){}.getType();
             return gson.fromJson(data,type);
 
         }else return null;

@@ -1,6 +1,9 @@
 package com.thundersharp.cadmin.ui.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +42,7 @@ public class Organisation extends Fragment {
     List<org_details_model> data;
     List<Organisations> finalorg;
     SharedPreferences preferences,sharedPreferencesOrglist;
-    FloatingActionButton refresh;
+    SwipeRefreshLayout refresh;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,24 +63,44 @@ public class Organisation extends Fragment {
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);
         refresh=root.findViewById(R.id.refresh);
+        refresh.setRefreshing(true);
 
-        refresh.setOnClickListener(new View.OnClickListener() {
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
+            public void onRefresh() {
                 fetchProfilefromsever();
             }
         });
 
         List<Organisations> datapref = loadDataOrgfromPrefs();
-        //Toast.makeText(getActivity(),String.valueOf(datapref.size()),Toast.LENGTH_SHORT).show();
+
+
         if (datapref == null){
+
             Toast.makeText(getActivity(),"profile server",Toast.LENGTH_SHORT).show();
             fetchProfilefromsever();
         }else {
             Toast.makeText(getActivity(),"data server",Toast.LENGTH_SHORT).show();
+
             //fetchListofAllOrganisation(datapref);
+
             getorgdetailfromPref(loadDataOrgfromPrefs());
+            refresh.setRefreshing(false);
         }
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equalsIgnoreCase("refreshPref")){
+                    Toast.makeText(getContext(),"command recieved",Toast.LENGTH_LONG).show();
+                    List<Organisations> datapref = loadDataOrgfromPrefs();
+                    getorgdetailfromPref(loadDataOrgfromPrefs());
+                    getActivity().recreate();
+                }
+            }
+        };
+
+        getActivity().registerReceiver(broadcastReceiver,new IntentFilter("refreshPref"));
 
         return root;
     }
@@ -99,10 +123,11 @@ public class Organisation extends Fragment {
                         //dataorg.clear();
                         dataorg.add(snapshot.getValue(org_details_model.class));
                         savefetchListofAllOrganisation(dataorg);
-                        Toast.makeText(getContext(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
                     }
                     OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
                     project_rv.setAdapter(organisationAdapter);
+                    refresh.setRefreshing(false);
                 }
 
 
@@ -118,12 +143,15 @@ public class Organisation extends Fragment {
     }
 
     private void getorgdetailfromPref(@NonNull  List<Organisations>  model){
+
         List<org_details_model> datapref = loadOrgdetailfromPrefs();
+
         if (datapref==null){
-            Toast.makeText(getActivity(),"no org data found",Toast.LENGTH_SHORT).show();
+            //Data not found on shared prefs checking server
             fetchListofAllOrganisation(model);
         }else{
-            Toast.makeText(getActivity(), "org data found", Toast.LENGTH_SHORT).show();
+            //Data found on shared prefs
+            refresh.setRefreshing(false);
             List<org_details_model> dataorg = new  ArrayList<>();
             Gson gson=new Gson();
             for (int i=0;i<model.size();i++){
@@ -144,6 +172,8 @@ public class Organisation extends Fragment {
 
 
     private void fetchProfilefromsever(){
+
+        finalorg.clear();
         FirebaseDatabase.getInstance().getReference("users")
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("organisations")
@@ -155,7 +185,10 @@ public class Organisation extends Fragment {
                         Organisations organisations = new Organisations(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
                         finalorg.add(organisations);
                     }
+
                     SavetoSharedPrefs(finalorg);
+                }else {
+                    SavetoSharedPrefs(null);
                 }
             }
 
@@ -170,7 +203,7 @@ public class Organisation extends Fragment {
         String data;
         Gson gson=new Gson();
         data=sharedPreferencesOrglist.getString("org","null");
-        if (data.equals("null")){  //equalsIgnoreCase("null")
+        if (!data.equals("null")){  //equalsIgnoreCase("null")
             Type type=new TypeToken<ArrayList<org_details_model>>(){}.getType();
             return gson.fromJson(data,type);
         }else return null;
@@ -181,10 +214,12 @@ public class Organisation extends Fragment {
         String data;
         Gson gson = new Gson();
         data = preferences.getString("id","null");
-        if (data.equals("null")){  //equalsIgnoreCase("null")
+
+        if (!data.equals("null")){  //equalsIgnoreCase("null")
             Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
             return gson.fromJson(data,type);
-        }else return null;
+        }else
+            return null;
 
     }
 
@@ -193,7 +228,7 @@ public class Organisation extends Fragment {
         Gson gson =new Gson();
         List<Organisations> dummy;
 
-        if (preferences.getString("id","null").equals("null")){
+        if (!preferences.getString("id","null").equals("null")){
             String data = preferences.getString("id","null");
             Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
             dummy =  gson.fromJson(data,type);
@@ -219,8 +254,20 @@ public class Organisation extends Fragment {
     private void SavetoSharedPrefs(List<Organisations> organisations){
 
         Gson gson = new Gson();
-        List<Organisations> dataprevious = getData();
-        if (dataprevious == null){
+
+        //List<Organisations> dataprevious = getData();
+
+        String data = gson.toJson(organisations);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.putString("id",data);
+        editor.apply();
+        if (organisations == null){
+            Toast.makeText(getActivity(),"No data to display",Toast.LENGTH_LONG).show();
+        }else fetchListofAllOrganisation(organisations);
+
+        //Toast.makeText(getActivity(),String.valueOf(dataprevious.get(0).getOrganisationKey()),Toast.LENGTH_LONG).show();
+   /*     if (dataprevious == null || dataprevious.isEmpty()){
             String data = gson.toJson(organisations);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
@@ -239,22 +286,8 @@ public class Organisation extends Fragment {
             editor.apply();
 
             getorgdetailfromPref(organisations);
-        }
+        }*/
 
     }
 
-   /* private List<org_details_model> getOrgDetails(){
-        Gson gson=new Gson();
-        List<org_details_model> test;
-        if (sharedPreferencesOrglist.getString("org","null").equals("null")){
-            String data=sharedPreferencesOrglist.getString("org","null");
-            Type type=new TypeToken<ArrayList<org_details_model>>(){}.getType();
-            test=gson.fromJson(data,type);
-        }else {
-            test=new ArrayList<>();
-        }
-        return test;
-    }
-
-    */
 }

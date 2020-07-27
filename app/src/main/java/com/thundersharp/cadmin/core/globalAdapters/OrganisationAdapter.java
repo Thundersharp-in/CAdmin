@@ -37,7 +37,8 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_organisation,null);
+        View view = inflater.inflate(R.layout.item_organisation,parent,false);
+
 
         return new CustomViewHolder(view);
     }
@@ -47,10 +48,10 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         org_details_model model=data.get(position);
 
         Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo);
-        Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo1);
+
         holder.org_name.setText(model.getOrganisation_name());
         holder.org_id.setText(model.getOrganisation_id());
-        holder.org_id1.setText(model.getOrganisation_id());
+
         holder.manager.setText(model.getOrganiser_name());
 
 /*
@@ -127,14 +128,14 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
             mCurrent= FirebaseAuth.getInstance().getCurrentUser();
             user_uid=mCurrent.getUid();
             org_logo=itemView.findViewById(R.id.org_logo);
-            org_logo1=itemView.findViewById(R.id.org_logo1);
+
             org_name=itemView.findViewById(R.id.org_name);
             org_id=itemView.findViewById(R.id.org_id);
-            org_id1=itemView.findViewById(R.id.org_id1);
-            project_name=itemView.findViewById(R.id.project_name);
-            no_of_users=itemView.findViewById(R.id.no_of_users);
+
+
+
             manager=itemView.findViewById(R.id.manager);
-            total_projects=itemView.findViewById(R.id.total_projects);
+
             reference1= FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("organisations");
             reference2=FirebaseDatabase.getInstance().getReference().child("organisation");
             itemView.setOnClickListener(this);
@@ -142,8 +143,9 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
         @Override
         public void onClick(View v) {
+
             Bundle bundle=new Bundle();
-            bundle.putString("org_id",org_id1.toString());
+            bundle.putString("org_id",org_id.toString());
             MainActivity.navController.navigate(R.id.nav_proj,bundle);
         }
     }
