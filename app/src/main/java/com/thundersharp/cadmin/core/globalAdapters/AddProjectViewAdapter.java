@@ -1,4 +1,4 @@
-package com.thundersharp.cadmin.ui.Adapter;
+package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.ui.Model.AddProject_model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAdapter.ViewHolder> {
