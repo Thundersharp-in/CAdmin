@@ -37,9 +37,9 @@
 
     <fragment
         android:id="@+id/nav_add_project"
-        android:name="com.thundersharp.cadmin.ui.fragment.AddProjects"
+        android:name="com.thundersharp.cadmin.ui.fragment.AddProject"
         android:label="Add Projects"
-        tools:layout="@layout/add_project_layout"/>
+        tools:layout="@layout/fragment_add_project"/>
 
     <fragment
         android:id="@+id/nav_finance"
@@ -78,14 +78,4 @@
         android:name="com.thundersharp.cadmin.ui.fragment.Profile"
         android:label="Your profile"
         tools:layout="@layout/fragment_profile" />
-
-    <fragment
-        android:id="@+id/nav_project"
-        android:name="com.thundersharp.cadmin.ui.fragment.AddProject"
-        android:label="Add Projects"
-        tools:layout="@layout/fragment_add_project" />
-
-
-
-
 </navigation>
