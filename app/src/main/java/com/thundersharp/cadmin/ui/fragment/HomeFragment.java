@@ -23,12 +23,12 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class HomeFragment extends Fragment  {
 
-    TabLayout tabLayout;
-    ViewPager viewPager;
+    //TabLayout tabLayout;
+    //ViewPager viewPager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.project_info, container, false);
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_chat_bubble_outline_24,getActivity().getTheme()));
         MainActivity.container.setBackground(null);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -38,15 +38,14 @@ public class HomeFragment extends Fragment  {
             }
         });
 
-        tabLayout = root.findViewById(R.id.sliding_tabs);
-        viewPager = root.findViewById(R.id.viewpager);
+        //tabLayout = root.findViewById(R.id.sliding_tabs);
+        //viewPager = root.findViewById(R.id.viewpager);
 
 
-
-        TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
-        tabAdapter.addFragment(new Photo(),null);
-        tabAdapter.addFragment(new Files(),null);
-        tabAdapter.addFragment(new Video(),null);
+/*        TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
+        tabAdapter.addFragment(new Photo(), null);
+        tabAdapter.addFragment(new Files(), null);
+        tabAdapter.addFragment(new Video(), null);
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -54,7 +53,7 @@ public class HomeFragment extends Fragment  {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_outline_photo_library_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_outline_file_copy_24);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);*/
 
         return root;
     }
