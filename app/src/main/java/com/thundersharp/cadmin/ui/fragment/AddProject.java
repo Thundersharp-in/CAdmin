@@ -29,7 +29,7 @@ import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.Projects;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
-import com.thundersharp.cadmin.ui.Model.AddProject_model;
+import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.lang.reflect.Type;

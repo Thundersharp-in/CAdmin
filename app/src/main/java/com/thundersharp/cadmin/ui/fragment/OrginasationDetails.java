@@ -17,9 +17,8 @@ import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
-import com.thundersharp.cadmin.ui.fragment.projetinfo.Files;
-import com.thundersharp.cadmin.ui.fragment.projetinfo.Photo;
-import com.thundersharp.cadmin.ui.fragment.projetinfo.Video;
+import com.thundersharp.cadmin.ui.fragment.organisationinfo.Photos;
+import com.thundersharp.cadmin.ui.fragment.organisationinfo.Users;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -99,17 +98,16 @@ public class OrginasationDetails extends Fragment {
 
 
         TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
-        tabAdapter.addFragment(new Photo(),null);
-        tabAdapter.addFragment(new Files(),null);
-        tabAdapter.addFragment(new Video(),null);
+        tabAdapter.addFragment(new Users(),"users");
+        tabAdapter.addFragment(new Photos(),"gallery");
+
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_outline_photo_library_24);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_outline_file_copy_24);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);
+        //tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_person_24);
+        //tabLayout.getTabAt(1).setIcon(R.drawable.ic_outline_photo_library_24);
 
         return root;
     }

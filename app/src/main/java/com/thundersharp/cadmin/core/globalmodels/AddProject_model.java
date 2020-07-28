@@ -1,7 +1,4 @@
-package com.thundersharp.cadmin.ui.Model;
-
-import android.media.Image;
-import android.widget.ImageView;
+package com.thundersharp.cadmin.core.globalmodels;
 
 public class AddProject_model {
     String projectName;

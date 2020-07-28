@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.ui.Model.AddProject_model;
+import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 
 import java.util.List;
 

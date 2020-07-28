@@ -1,4 +1,4 @@
-package com.thundersharp.cadmin.ui.fragment.projetinfo;
+package com.thundersharp.cadmin.ui.fragment.organisationinfo;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.thundersharp.cadmin.R;
 
-public class Files extends Fragment {
+public class Photos extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,7 +20,7 @@ public class Files extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Files() {
+    public Photos() {
         // Required empty public constructor
     }
 
@@ -30,11 +30,11 @@ public class Files extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Files.
+     * @return A new instance of fragment Photos.
      */
     // TODO: Rename and change types and number of parameters
-    public static Files newInstance(String param1, String param2) {
-        Files fragment = new Files();
+    public static Photos newInstance(String param1, String param2) {
+        Photos fragment = new Photos();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -55,6 +55,6 @@ public class Files extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_files, container, false);
+        return inflater.inflate(R.layout.fragment_photos, container, false);
     }
 }
