@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
@@ -26,10 +27,12 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
     private Context context;
     private List<org_details_model> data;
+    private List<Organisations> organisations;
 
-    public OrganisationAdapter(Context context, List<org_details_model> data) {
+    public OrganisationAdapter(Context context, List<org_details_model> data , List<Organisations> organisations) {
         this.context = context;
         this.data = data;
+        this.organisations=organisations;
     }
 
     @NonNull
@@ -136,17 +139,27 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
             manager=itemView.findViewById(R.id.manager);
 
-            reference1= FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("organisations");
+            reference1= FirebaseDatabase.getInstance().getReference()
+                    .child("users")
+                    .child(FirebaseAuth.getInstance().getUid())
+                    .child("organisations");
             reference2=FirebaseDatabase.getInstance().getReference().child("organisation");
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-
             Bundle bundle=new Bundle();
-            bundle.putParcelable("data",data.get(getAdapterPosition()));
+            Organisations org = organisations.get(getAdapterPosition());
+            org_details_model details=data.get(getAdapterPosition());
+
+            bundle.putSerializable("data",details); //data.get(getAdapterPosition())
+            bundle.putSerializable("orgs",org); //organisations.get(getAdapterPosition())
+
+            //bundle.putParcelable("data",data.get(getAdapterPosition()));
+            //bundle.putParcelable("orgs",organisations.get(getAdapterPosition()));
             //bundle.putString("org_id",org_id.toString());
+
             MainActivity.navController.navigate(R.id.nav_org_details,bundle);
         }
     }

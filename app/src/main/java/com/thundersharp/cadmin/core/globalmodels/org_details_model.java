@@ -1,9 +1,8 @@
 package com.thundersharp.cadmin.core.globalmodels;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class org_details_model implements Parcelable {
+public class org_details_model implements Serializable {
 
     public String company_description;
     public String company_logo;
@@ -54,13 +53,17 @@ public class org_details_model implements Parcelable {
         return organiser_uid;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+    /**
+     *  @Override
+     *     public int describeContents() {
+     *         return 0;
+     *     }
+     *
+     *     @Override
+     *     public void writeToParcel(Parcel parcel, int i) {
+     *
+     *     }
+     * @return
+     */
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-    }
 }

@@ -1,6 +1,8 @@
 package com.thundersharp.cadmin.core.globalmodels;
 
-public class Organisations {
+import java.io.Serializable;
+
+public class Organisations implements Serializable {     // Parcelable
     public Organisations(){
 
     }
@@ -20,4 +22,19 @@ public class Organisations {
     public boolean isManager() {
         return manager;
     }
+
+
+    /**
+     *  @Override
+     *     public int describeContents() {
+     *         return 0;
+     *     }
+     *
+     *     @Override
+     *     public void writeToParcel(Parcel dest, int flags) {
+     *
+     *     }
+     * @return
+     */
+
 }
