@@ -78,4 +78,12 @@
         android:name="com.thundersharp.cadmin.ui.fragment.Profile"
         android:label="Your profile"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_org_details"
+        android:name="com.thundersharp.cadmin.ui.fragment.OrginasationDetails"
+        android:label="Organisation details"
+        tools:layout="@layout/fragment_orginasation_details" />
+
+
 </navigation>

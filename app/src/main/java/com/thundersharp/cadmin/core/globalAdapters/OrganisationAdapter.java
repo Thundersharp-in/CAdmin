@@ -145,8 +145,9 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         public void onClick(View v) {
 
             Bundle bundle=new Bundle();
+            bundle.putParcelable("data",data.get(getAdapterPosition()));
             bundle.putString("org_id",org_id.toString());
-            MainActivity.navController.navigate(R.id.nav_proj,bundle);
+            MainActivity.navController.navigate(R.id.nav_org_details,bundle);
         }
     }
 }
