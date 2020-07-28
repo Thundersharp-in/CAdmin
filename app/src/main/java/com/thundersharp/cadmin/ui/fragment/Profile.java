@@ -22,6 +22,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
@@ -63,6 +68,7 @@ public class Profile extends Fragment {
     SharedPreferences sharedPreferences,organisation;
     Button logout;
     String image="null";
+    StorageReference  storageReference;
     UserData userData;
 
     @Override
@@ -74,7 +80,6 @@ public class Profile extends Fragment {
         organisation=getActivity().getSharedPreferences("organisations",Context.MODE_PRIVATE);
         MainActivity.container.setBackground(null);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
-
 
         profile_image=root.findViewById(R.id.profile_image);
         designation=root.findViewById(R.id.designation);
@@ -228,6 +233,7 @@ public class Profile extends Fragment {
 
     private void loadDatafromDatabase() {
 
+
         FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -278,48 +284,72 @@ public class Profile extends Fragment {
     }
 
     private void savetoDatabase(final UserData userData){
-
-        FirebaseDatabase
-                .getInstance()
-                .getReference("users")
-                .child(FirebaseAuth.getInstance().getUid())
-                .child("personal_data").setValue(userData)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        storageReference= FirebaseStorage.getInstance().getReference("profile_images").child(profile_uri.getLastPathSegment());
+        storageReference.putFile(Uri.parse(userData.getImage_uri())).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    savedatatoSharedPref(userData);
-                    FirebaseDatabase.getInstance()
-                            .getReference("users")
-                            .child(FirebaseAuth.getInstance().getUid())
-                            .child("organisations").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()){
-                                edit_userOrganisations.setText("");
-                                for (DataSnapshot data:snapshot.getChildren()){
-                                    edit_userOrganisations.append(data.getKey().toString()+"\n ");
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete());
+                Uri urlImage=uriTask.getResult();
+                image=urlImage.toString();
+                Toast.makeText(getContext(),storageReference.toString(),Toast.LENGTH_LONG).show();
+                UserData userData1;//=userData
 
+                String name=edit_username.getText().toString();
+                String bio=edit_userbio.getText().toString();
+                String email=edit_useremail.getText().toString();
+                String phone=edit_userphoneNo.getText().toString();
+                userData1= new UserData(bio,"dob",email,image,name,phone,FirebaseAuth.getInstance().getUid());
+                FirebaseDatabase
+                        .getInstance()
+                        .getReference("users")
+                        .child(FirebaseAuth.getInstance().getUid())
+                        .child("personal_data").setValue(userData1)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    savedatatoSharedPref(userData);
+                                    FirebaseDatabase.getInstance()
+                                            .getReference("users")
+                                            .child(FirebaseAuth.getInstance().getUid())
+                                            .child("organisations").addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()){
+                                                edit_userOrganisations.setText("");
+                                                for (DataSnapshot data:snapshot.getChildren()){
+                                                    edit_userOrganisations.append(data.getKey().toString()+"\n ");
+
+                                                }
+
+                                            }else{
+                                                Toast.makeText(getContext(), " ERROR ", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                                 }
-
-                            }else{
-                                Toast.makeText(getContext(), " ERROR ", Toast.LENGTH_SHORT).show();
                             }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
+                        });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==getActivity().RESULT_OK) {
+           // storageReference= FirebaseStorage.getInstance().getReference().child("profile_images\*").child(profile_uri.getLastPathSegment());
             profile_uri = data.getData();
             profile_image.setImageURI(profile_uri);
         } else {
