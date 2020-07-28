@@ -40,6 +40,7 @@
             android:textStyle="bold"/>
 
         <RelativeLayout
+            android:id="@+id/lay1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textdesctop">
@@ -293,7 +294,15 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="6dp"
+            android:layout_below="@id/lay1"
+            android:layout_marginTop="15dp">
+            
 
+        </RelativeLayout>
     </RelativeLayout>
 
 

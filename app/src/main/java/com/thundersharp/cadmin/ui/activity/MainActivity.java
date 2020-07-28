@@ -20,6 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -164,6 +165,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    protected NavOptions getNavOptions() {
+
+        NavOptions options = new NavOptions.Builder()
+                .setEnterAnim(R.anim.left_to_right)
+                .setExitAnim(R.anim.nav_default_exit_anim)
+                .setPopEnterAnim(R.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(R.anim.nav_default_pop_exit_anim)
+                .build();
+
+        return options;
     }
 
     @VisibleForTesting
