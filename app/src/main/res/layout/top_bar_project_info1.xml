@@ -63,6 +63,7 @@
         android:weightSum="5">
 
         <Button
+            android:id="@+id/edit_org"
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="match_parent"
@@ -73,6 +74,7 @@
             />
 
         <Button
+            android:id="@+id/btn_mail_manager"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -103,6 +105,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/no_of_employee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="09"
@@ -135,6 +138,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/no_of_projects"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="57"
@@ -168,6 +172,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/no_of_managers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2"

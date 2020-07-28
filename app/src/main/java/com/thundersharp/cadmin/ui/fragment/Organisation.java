@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -105,7 +104,7 @@ public class Organisation extends Fragment {
         return root;
     }
 
-    private void fetchListofAllOrganisation(@NonNull List<Organisations> organisations) {
+    private void fetchListofAllOrganisation(@NonNull final List<Organisations> organisations) {
 
         final List<org_details_model> dataorg = new ArrayList<>();
 
@@ -125,7 +124,7 @@ public class Organisation extends Fragment {
                         savefetchListofAllOrganisation(dataorg);
                         //Toast.makeText(getContext(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
                     }
-                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
+                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg,organisations);
                     project_rv.setAdapter(organisationAdapter);
                     refresh.setRefreshing(false);
                 }
@@ -160,7 +159,7 @@ public class Organisation extends Fragment {
 
                 dataorg =  gson.fromJson(data,type);
 
-                OrganisationAdapter organisationAdapter =new OrganisationAdapter(getActivity(),dataorg);
+                OrganisationAdapter organisationAdapter =new OrganisationAdapter(getActivity(),dataorg,model);
                 project_rv.setAdapter(organisationAdapter);
         }
 
@@ -271,7 +270,6 @@ public class Organisation extends Fragment {
 
         }else fetchListofAllOrganisation(organisations);
 
-        //Toast.makeText(getActivity(),String.valueOf(dataprevious.get(0).getOrganisationKey()),Toast.LENGTH_LONG).show();
    /*     if (dataprevious == null || dataprevious.isEmpty()){
             String data = gson.toJson(organisations);
             SharedPreferences.Editor editor = preferences.edit();
