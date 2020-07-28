@@ -1,5 +1,6 @@
 package com.thundersharp.cadmin.ui.fragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +30,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
@@ -34,6 +41,7 @@ import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +63,13 @@ public class AddOrganisationFragment extends Fragment {
     FirebaseUser mUser;
     SharedPreferences sharedPreferencesprofile,sharedPreference;
     public org_details_model org_details_model_list;
+    StorageReference storageReference;
+    String logourl;
+    Dialog dialog;
+
+    private void savecompanylogourl(@NonNull String logo_url){
+        this.logourl= logo_url;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,6 +95,13 @@ public class AddOrganisationFragment extends Fragment {
         userData = loadDataProfilefromPrefs();
         organisations = new ArrayList<>();
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.process,null,false);
+        builder.setView(view1);
+        dialog = builder.create();
+
+
         upload_org_logo=view.findViewById(R.id.upload_org_logo);
         upload_org_name=view.findViewById(R.id.upload_org_name);
                                                                   // upload_org_motto= view.findViewById(R.id.upload_org_motto);
@@ -90,6 +112,7 @@ public class AddOrganisationFragment extends Fragment {
         org_name="";
 
         organiser_uid="";
+        storageReference = FirebaseStorage.getInstance().getReference("Organisation logos");
 
         upload_org_logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +126,7 @@ public class AddOrganisationFragment extends Fragment {
         btn_upload_org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 final ProgressDialog progressDialog=new ProgressDialog(getContext());
-                 progressDialog.setMessage("Data Uploading ...");
-                 progressDialog.show();
+                 dialog.show();
                  mUser=FirebaseAuth.getInstance().getCurrentUser();
                  organiser_uid=mUser.getUid();
 
@@ -114,29 +135,30 @@ public class AddOrganisationFragment extends Fragment {
                  if (org_name.length()>30){
                      upload_org_name.getEditText().setError("More than 30 characters !");
                      upload_org_desc.getEditText().requestFocus();
+                     dialog.dismiss();
+
                  }else if (org_name.isEmpty()){
                      upload_org_name.getEditText().setError("Required !");
                      upload_org_name.getEditText().requestFocus();
+                     dialog.dismiss();
+
                  }else if (org_description.isEmpty()){
                      upload_org_desc.getEditText().setError("Required !");
                      upload_org_desc.getEditText().requestFocus();
-                 }else if (logo_url.isEmpty()){
+                     dialog.dismiss();
+
+                 }else if (logourl.isEmpty()){
                      upload_org_logo.setImageResource(R.drawable.organisation);
                      Toast.makeText(getContext(), "Logo not selected ", Toast.LENGTH_SHORT).show();
-                 }else{
-                     org_details_model_list=new org_details_model(
-                             org_description,
-                             logo_url,
-                             gen(),
-                             org_name,
-                             userData.getName(),
-                             organiser_uid);
+                     dialog.dismiss();
 
-                     createorganisation(org_details_model_list);
+                 }else{
+
+                     uploadtofirebaseStorage(org_logo_uri,gen());
+
 
                  }
 
-                 progressDialog.dismiss();
             }
         });
         return view;
@@ -180,8 +202,10 @@ public class AddOrganisationFragment extends Fragment {
                     SavetoSharedPrefs(organisations);
                     MainActivity.navController.navigate(R.id.nav_organisation);
                     getActivity().sendBroadcast(new Intent("refreshPref"));
+                    dialog.dismiss();
 
                 }else {
+                    dialog.dismiss();
                     Toast.makeText(getContext(),"INTERNAL ERROR : "+task.getException().getCause().getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
@@ -193,8 +217,10 @@ public class AddOrganisationFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==getActivity().RESULT_OK) {
             org_logo_uri = data.getData();
-            logo_url=org_logo_uri.toString();
+            logourl = data.getData().toString();
+            //Toast.makeText(getActivity(),logourl,Toast.LENGTH_SHORT).show();
             upload_org_logo.setImageURI(org_logo_uri);
+
         } else {
             Toast.makeText(getContext(), " You haven't selected the logo", Toast.LENGTH_SHORT).show();
         }
@@ -357,5 +383,66 @@ public class AddOrganisationFragment extends Fragment {
         Type type = new TypeToken<UserData>(){}.getType();
 
         return gson.fromJson(data,type);
+    }
+
+    private void uploadtofirebaseStorage(@NonNull Uri path, @NonNull final String org_id){
+
+        //Uri file = Uri.fromFile(new File(path));
+        StorageReference riversRef = storageReference.child("/"+org_id+".jpg");
+
+        riversRef.putFile(path)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                        Toast.makeText(getContext(),e.getCause().getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        final String storgePath = taskSnapshot.getMetadata().getPath();
+                        taskSnapshot
+                                .getStorage()
+                                .getDownloadUrl()
+                                .addOnFailureListener(getActivity(), new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        dialog.dismiss();
+                                        Toast.makeText(getContext(),e.getCause().getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                String url = uri.toString();
+                                org_details_model_list=new org_details_model(
+                                        org_description,
+                                        url,
+                                        storgePath,
+                                        org_id,
+                                        org_name,
+                                        userData.getName(),
+                                        organiser_uid);
+
+                                createorganisation(org_details_model_list);
+                                //savecompanylogourl(url);
+
+                            }
+                        });
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+
     }
 }

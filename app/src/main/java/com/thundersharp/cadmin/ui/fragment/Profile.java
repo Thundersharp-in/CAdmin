@@ -117,42 +117,6 @@ public class Profile extends Fragment {
             Toast.makeText(getContext(),userData.getEmail(),Toast.LENGTH_SHORT).show();
         }
 
-       /*
-                                    String desig="";
-                                    String org="Just User";
-                                    if (snapshot.getValue().toString().equals("true")){
-                                        desig="yes";
-                                        org="manager at"+ snapshot.getKey();
-                                        designation.setText(org);
-                                        break;
-                                    }else{
-                                        designation.setText("User");
-                                    }
-
-                                     */
-       /*
-                    assert model.getImage_uri()!=null;
-                    if (model.getImage_uri().isEmpty()){
-                       profile_image.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_person_24));
-                    } else if (!model.getImage_uri().isEmpty()) {
-                        profile_image.setImageURI(Uri.parse(model.getImage_uri()));
-                    }
-
-                     */
-       /*
-
-                    //work_progress are to be done
-                    //user_rating are to be done
-                }else{
-                    Toast.makeText(getContext(), "Oops ! Some error ", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -285,6 +249,7 @@ public class Profile extends Fragment {
 
     private void savetoDatabase(final UserData userData){
         storageReference= FirebaseStorage.getInstance().getReference("profile_images").child(profile_uri.getLastPathSegment());
+
         storageReference.putFile(Uri.parse(userData.getImage_uri())).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

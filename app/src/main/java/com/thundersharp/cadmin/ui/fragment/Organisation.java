@@ -263,7 +263,12 @@ public class Organisation extends Fragment {
         editor.putString("id",data);
         editor.apply();
         if (organisations == null){
+            SharedPreferences.Editor editor1 = preferences.edit();
+            editor1.clear();
+            editor1.apply();
             Toast.makeText(getActivity(),"No data to display",Toast.LENGTH_LONG).show();
+            refresh.setRefreshing(false);
+
         }else fetchListofAllOrganisation(organisations);
 
         //Toast.makeText(getActivity(),String.valueOf(dataprevious.get(0).getOrganisationKey()),Toast.LENGTH_LONG).show();

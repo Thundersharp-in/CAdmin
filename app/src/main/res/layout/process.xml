@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff">
+
+
+    <RelativeLayout
+        android:layout_width="294dp"
+        android:layout_height="wrap_content"
+        android:background="@null">
+
+        <ProgressBar
+            android:id="@+id/ProgressProgress"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#fff"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginBottom="15dp" />
+
+        <TextView
+            android:id="@+id/textUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_toEndOf="@id/ProgressProgress"
+            android:text="Creating Please Wait ... "
+            android:textColor="#000" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
