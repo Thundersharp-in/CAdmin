@@ -1,6 +1,7 @@
 package com.thundersharp.cadmin.ui.activity;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,7 +27,15 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalmodels.UserData;
+import com.thundersharp.cadmin.core.globalmodels.org_details_model;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     /***** Property of THUNDRSHAP inc. shuld not be modified or reproduced without permission *****/
@@ -40,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     public static RelativeLayout container;
     public static NavController navController;
     FrameLayout frame;
-
+    UserData userData;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferences = getSharedPreferences("logindata",MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String data = sharedPreferences.getString("data","null");
+        Type type = new TypeToken<UserData>(){}.getType();
+        userData = gson.fromJson(data,type);
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -76,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
 
         View headerview = navigationView.getHeaderView(0);
         ImageView profile = (ImageView) headerview.findViewById(R.id.imageView);
+        TextView name = headerview.findViewById(R.id.name_main);
+        name.setText(userData.getName());
+        TextView email = headerview.findViewById(R.id.email_main);
+        email.setText(userData.getEmail());
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,24 +1,300 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:text="home"
-        android:textColor="#000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+        <HorizontalScrollView
+            android:id="@+id/hsv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:reverseLayout="true"
+                android:layout_gravity="center"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="horizontal"
+                android:scrollIndicators="none"/>
+
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/textdesctop"
+            android:layout_below="@+id/hsv"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:paddingStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/padding_10"
+            android:text="Quick navigation : \n\nFrom here you can navigate quickly and easily to major sections of CAdmin."
+            android:textColor="#000"
+            android:textStyle="bold"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textdesctop">
+
+            <LinearLayout
+                android:id="@+id/top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="1dp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="@dimen/padding_10"
+                            android:layout_marginTop="15dp"
+                            android:id="@+id/fn2"
+                            android:src="@drawable/ic_baseline_account_balance_24"
+                            android:background="@drawable/circle_bagni"
+                            android:tint="#fff"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/mm1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="All organisations"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:fontFamily="sans-serif"
+                            android:layout_below="@id/fn2"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="From here you can create your own organisation or view organisations in which you are added"
+                            android:textAlignment="center"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:textSize="12sp"
+                            android:textColor="#000"
+                            android:layout_marginBottom="@dimen/padding_10"
+                            android:fontFamily="monospace"
+                            android:layout_below="@id/mm1"
+                            android:layout_marginTop="5dp"/>
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/relq"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="1dp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:id="@+id/calci"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_marginTop="15dp"
+                            android:id="@+id/fn1"
+                            android:padding="@dimen/padding_10"
+                            android:tint="#fff"
+                            android:background="@drawable/circle_bagni"
+                            android:src="@drawable/ic_baseline_group_work_24"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/m2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Work force"
+                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            android:layout_below="@id/fn1"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="All the work done by members of a selected organisation can be viewed here."
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="@dimen/padding_10"
+                            android:textColor="#000"
+                            android:fontFamily="monospace"
+                            android:layout_below="@id/m2"
+                            android:layout_marginTop="5dp"/>
+
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/top1"
+                android:layout_below="@id/top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="1dp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="@dimen/padding_10"
+                            android:layout_marginTop="15dp"
+                            android:id="@+id/fn3"
+                            android:src="@drawable/ic_baseline_calendar_today_24"
+                            android:background="@drawable/circle_bagni"
+                            android:tint="#fff"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/m3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Organisation calendar"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:fontFamily="sans-serif"
+                            android:layout_below="@id/fn3"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="All events of the selected organisation can be viewed here"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="#000"
+                            android:layout_marginBottom="@dimen/padding_10"
+                            android:fontFamily="monospace"
+                            android:layout_below="@id/m3"
+                            android:layout_marginTop="5dp"/>
+
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    app:cardElevation="2dp"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="1dp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="@dimen/padding_10"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/circle_bagni"
+                            android:tint="#fff"
+                            android:id="@+id/fn4"
+                            android:src="@drawable/ic_baseline_menu_book_24"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/mmm4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="All projects"
+                            android:textAlignment="center"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#000"
+                            android:fontFamily="sans-serif"
+                            android:layout_below="@id/fn4"
+                            android:layout_marginTop="10dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="All projects can be found here of the selected organisation."
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="@dimen/padding_10"
+                            android:textColor="#000"
+                            android:fontFamily="monospace"
+                            android:layout_below="@id/mmm4"
+                            android:layout_marginTop="5dp"/>
+
+
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</androidx.core.widget.NestedScrollView>
