@@ -130,7 +130,6 @@ public class AddProject extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
                                 //progressDialog.dismiss();
-
                                 savetoUsers(model.getProject_id());
                             } else {
                                 fetchfromdatabase();
@@ -195,7 +194,8 @@ public class AddProject extends Fragment {
         FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(FirebaseAuth.getInstance().getUid())
-                .child("projects").addListenerForSingleValueEvent(new ValueEventListener() {
+                .child("projects")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){

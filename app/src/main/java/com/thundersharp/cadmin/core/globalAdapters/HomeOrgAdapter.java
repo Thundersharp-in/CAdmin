@@ -40,43 +40,46 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
-        org_details_model model=data.get(position);
-        SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
-        String checked=preferences.getString("org_id","null");
-        if (checked.equals("null")){
-            if (holder.radioselector.isChecked()){
-                SharedPreferences preferences1=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor=preferences1.edit();
-                editor.putString("org_id",holder.orgid.toString());
-                editor.apply();
+    public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
+        final org_details_model model=data.get(position);
+        final SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+        String checked=preferences.getString("selected","null");
+
+        if (checked.equalsIgnoreCase("null")){
+            if (position == 0){
                 holder.radioselector.setChecked(true);
-            }else {
-                holder.radioselector.setChecked(data.get(0).equals(true));
-                SharedPreferences preferences1=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor=preferences1.edit();
-                editor.putString("org_id",holder.orgid.toString());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("selected",model.getOrganisation_id());
                 editor.apply();
+            }else {
+                holder.radioselector.setChecked(false);
             }
-           // holder.radioselector.isChecked();
-        }else if (checked.equals(holder.orgid.toString())){
-            if (holder.orgid.equals(checked)){
+        }else {
+
+            if (checked.equalsIgnoreCase(model.getOrganisation_id())){
                 holder.radioselector.setChecked(true);
             }else {
                 holder.radioselector.setChecked(false);
             }
-            /*
-            SharedPreferences preferences1=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=preferences1.edit();
-            editor.putString("org_id",holder.orgid.toString());
-            editor.apply();
-
-
-             */
         }
+
+        holder.radioselector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("selected",model.getOrganisation_id());
+                editor.apply();
+                notifyDataSetChanged();
+                notifyItemChanged(position);
+
+            }
+        });
+
         Glide.with(context).load(model.getCompany_logo()).into(holder.orglogo);
         holder.org_name.setText(model.getOrganisation_name());
         holder.orgid.setText(model.getOrganisation_id());
+
 
     }
 //check shared pref is null org name match if sav then checkrd else not checked
@@ -91,6 +94,7 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
         ImageView orglogo;
         TextView org_name,orgid;
         RadioButton radioselector;
+        SharedPreferences sharedPreferences;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -99,6 +103,7 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
             org_name = itemView.findViewById(R.id.org_name);
             orgid = itemView.findViewById(R.id.orgid);
             radioselector = itemView.findViewById(R.id.radioselector);
+            sharedPreferences = context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         }
 
         @Override

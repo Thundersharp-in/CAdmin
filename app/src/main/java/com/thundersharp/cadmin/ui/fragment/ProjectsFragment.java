@@ -88,6 +88,7 @@ public class ProjectsFragment extends Fragment {
         final List<AddProject_model> dataorg = new ArrayList<>();
 
         for (int i = 0; i<projects.size(); i++){
+
             Toast.makeText(getContext(),projects.get(i).getProjectKey(),Toast.LENGTH_SHORT).show();
             FirebaseDatabase.getInstance()
                     .getReference("organisation")
