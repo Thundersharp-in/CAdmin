@@ -502,7 +502,9 @@ class OnSwipeTouchListener implements View.OnTouchListener {
             try {
                 float diffY = e2.getY() - e1.getY();
                 float diffX = e2.getX() - e1.getX();
+
                 if (Math.abs(diffX) > Math.abs(diffY)) {
+
                     if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffX > 0) {
                             onSwipeRight();
@@ -525,6 +527,9 @@ class OnSwipeTouchListener implements View.OnTouchListener {
             return result;
         }
     }
+
+
+
 
     public void onSwipeRight() {
     }

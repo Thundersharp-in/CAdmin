@@ -98,16 +98,16 @@ public class OrginasationDetails extends Fragment {
 
 
         TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
-        tabAdapter.addFragment(new Users(),"users");
-        tabAdapter.addFragment(new Photos(),"gallery");
+        tabAdapter.addFragment(new Users(),null);
+        tabAdapter.addFragment(new Photos(),null);
 
 
         viewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        //tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_person_24);
-        //tabLayout.getTabAt(1).setIcon(R.drawable.ic_outline_photo_library_24);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
 
         return root;
     }

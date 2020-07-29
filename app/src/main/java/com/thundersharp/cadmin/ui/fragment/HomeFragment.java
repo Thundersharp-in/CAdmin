@@ -65,6 +65,13 @@ public class HomeFragment extends Fragment  {
         fn3 = root.findViewById(R.id.fn3);
         fn4 = root.findViewById(R.id.fn4);
 
+        relq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
 
         //tabLayout = root.findViewById(R.id.sliding_tabs);
