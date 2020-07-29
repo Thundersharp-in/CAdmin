@@ -16,6 +16,7 @@
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclervieworg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:reverseLayout="true"
@@ -300,7 +301,7 @@
             android:elevation="6dp"
             android:layout_below="@id/lay1"
             android:layout_marginTop="15dp">
-            
+
 
         </RelativeLayout>
     </RelativeLayout>

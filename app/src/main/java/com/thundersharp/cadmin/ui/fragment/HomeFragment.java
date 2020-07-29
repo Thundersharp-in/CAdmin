@@ -3,6 +3,8 @@ package com.thundersharp.cadmin.ui.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +19,25 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.thundersharp.cadmin.core.globalAdapters.HomeOrgAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
+import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.ui.fragment.projetinfo.Files;
 import com.thundersharp.cadmin.ui.fragment.projetinfo.Photo;
 import com.thundersharp.cadmin.ui.fragment.projetinfo.Video;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
@@ -36,7 +47,10 @@ public class HomeFragment extends Fragment  {
     //ViewPager viewPager;
     CardView relq,c1,c3,c4;
     ImageView fn1,fn2,fn3,fn4;
+    RecyclerView recyclervieworg;
     Animation fadein,fadeout,clockwise;
+    HomeOrgAdapter homeOrgAdapter;
+    SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +67,8 @@ public class HomeFragment extends Fragment  {
         fadein = AnimationUtils.loadAnimation(getActivity(),R.anim.fadein);
         fadeout = AnimationUtils.loadAnimation(getActivity(),R.anim.fadeout);
         clockwise = AnimationUtils.loadAnimation(getActivity(),R.anim.clockwise_rotate);
-
+        recyclervieworg=root.findViewById(R.id.recyclervieworg);
+        sharedPreferences = getActivity().getSharedPreferences("all_organisation", Context.MODE_PRIVATE);
 
         relq = root.findViewById(R.id.relq);
         c1 = root.findViewById(R.id.c1);
@@ -65,10 +80,32 @@ public class HomeFragment extends Fragment  {
         fn3 = root.findViewById(R.id.fn3);
         fn4 = root.findViewById(R.id.fn4);
 
+        loadOrganisation();
         relq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MainActivity.navController.navigate(R.id.nav_work_force);
+            }
+        });
 
+        c1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.navController.navigate(R.id.nav_organisation);
+            }
+        });
+
+        c3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.navController.navigate(R.id.nav_cal);
+            }
+        });
+
+        c4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.navController.navigate(R.id.nav_proj);
             }
         });
 
@@ -184,5 +221,27 @@ public class HomeFragment extends Fragment  {
         });
         oa7.start();
 
+    }
+
+    private void loadOrganisation(){
+        List<org_details_model> org_details_models = loadOrgdetailfromPrefs();
+        if (org_details_models !=null){
+            homeOrgAdapter = new HomeOrgAdapter(getActivity(),org_details_models);
+            recyclervieworg.setAdapter(homeOrgAdapter);
+
+        }else {
+            Toast.makeText(getActivity(),"No organisations",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private List<org_details_model> loadOrgdetailfromPrefs(){
+        String data;
+        Gson gson=new Gson();
+        data=sharedPreferences.getString("org","null");
+        if (!data.equals("null")){  //equalsIgnoreCase("null")
+            Type type = new TypeToken<ArrayList<org_details_model>>(){}.getType();
+            return gson.fromJson(data,type);
+        }else return null;
     }
 }
