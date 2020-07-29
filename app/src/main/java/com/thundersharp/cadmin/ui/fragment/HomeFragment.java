@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.thundersharp.cadmin.core.globalAdapters.ExpandableListAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.HomeOrgAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
@@ -37,6 +40,7 @@ import com.thundersharp.cadmin.ui.fragment.projetinfo.Video;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
@@ -51,6 +55,10 @@ public class HomeFragment extends Fragment  {
     Animation fadein,fadeout,clockwise;
     HomeOrgAdapter homeOrgAdapter;
     SharedPreferences sharedPreferences;
+    ExpandableListView faqholder;
+    private ExpandableListAdapter listAdapter;
+    private List<String> listDataHeader;
+    private HashMap<String,List<String>> listHash;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -74,6 +82,7 @@ public class HomeFragment extends Fragment  {
         c1 = root.findViewById(R.id.c1);
         c3 = root.findViewById(R.id.c3);
         c4 = root.findViewById(R.id.c4);
+        faqholder=root.findViewById(R.id.faqholder);
 
         fn1 =root.findViewById(R.id.fn1);
         fn2 = root.findViewById(R.id.fn2);
@@ -108,6 +117,11 @@ public class HomeFragment extends Fragment  {
                 MainActivity.navController.navigate(R.id.nav_proj);
             }
         });
+
+
+        initData();
+        listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,listHash);
+        faqholder.setAdapter(listAdapter);
 
 
 
@@ -243,5 +257,47 @@ public class HomeFragment extends Fragment  {
             Type type = new TypeToken<ArrayList<org_details_model>>(){}.getType();
             return gson.fromJson(data,type);
         }else return null;
+    }
+
+
+    private void initData() {
+
+        listDataHeader = new ArrayList<>();
+        listHash = new HashMap<>();
+
+        listDataHeader.add("When will i get my room id and password ?");
+        listDataHeader.add("Payment successful but wallet not updated.");
+        listDataHeader.add("Cashback is not credited");
+        listDataHeader.add("Refund is still not credited to my account");
+        listDataHeader.add("What is Reward wallet");
+        listDataHeader.add("Where i can use my win wallet balance");
+
+        List<String> edmtDev = new ArrayList<>();
+        edmtDev.add("Room id and password will be provided 10 minutes before the starting time of the match");
+
+        List<String> androidStudio = new ArrayList<>();
+        androidStudio.add("If the transaction is successful then wait for 72 hrs");
+
+
+        List<String> xamarin = new ArrayList<>();
+        xamarin.add("");
+
+
+        List<String> uwp = new ArrayList<>();
+        uwp.add("If the refund transaction is successful then wait for 7 working days .");
+
+        List<String> uwp1 = new ArrayList<>();
+        uwp1.add("Reward wallet is not your win wallet amount will get credited to your win reward wallet when you refer your friends. you can partially use your win rewards wallet");
+
+        List<String> uwp2 = new ArrayList<>();
+        uwp2.add("Till now the amount in the win wallet can only be used to play tournaments in win app only.");
+
+
+        listHash.put(listDataHeader.get(0),edmtDev);
+        listHash.put(listDataHeader.get(1),androidStudio);
+        listHash.put(listDataHeader.get(2),xamarin);
+        listHash.put(listDataHeader.get(3),uwp);
+        listHash.put(listDataHeader.get(4),uwp1);
+        listHash.put(listDataHeader.get(5),uwp2);
     }
 }

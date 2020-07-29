@@ -10,31 +10,42 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <HorizontalScrollView
-            android:id="@+id/hsv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclervieworg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:reverseLayout="true"
-                android:layout_gravity="center"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="horizontal"
-                android:scrollIndicators="none"/>
-
-        </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/textdesctop"
-            android:layout_below="@+id/hsv"
+            android:id="@+id/very"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="viewStart"
-            android:paddingStart="@dimen/padding_10"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/padding_10"
+            android:text="Choose default organisation : \n\nSelect an organisation to view its data thought the app !"
+            android:textColor="#000"
+            android:textStyle="bold"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclervieworg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/very"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_10"
+            android:layout_gravity="center"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/textdesctop"
+            android:layout_below="@+id/recyclervieworg"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewStart"
+            android:layout_marginStart="@dimen/padding_10"
             android:layout_marginEnd="@dimen/padding_10"
             android:text="Quick navigation : \n\nFrom here you can navigate quickly and easily to major sections of CAdmin."
             android:textColor="#000"
@@ -298,10 +309,26 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="6dp"
             android:layout_below="@id/lay1"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="10dp">
 
+            <include
+                android:id="@+id/qqq"
+                layout="@layout/latest_project_info"/>
+
+
+            <ExpandableListView
+                android:id="@+id/faqholder"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/padding_10"
+                android:layout_marginEnd="@dimen/padding_10"
+                android:scrollbars="none"
+                android:elevation="8dp"
+                android:groupIndicator="@drawable/customlist"
+                android:background="@color/white"
+                android:layout_below="@+id/qqq"/>
 
         </RelativeLayout>
     </RelativeLayout>

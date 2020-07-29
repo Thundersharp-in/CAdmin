@@ -1,6 +1,7 @@
 package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
 
     private Context context;
     private List<org_details_model> data;
-
     public HomeOrgAdapter(Context context, List<org_details_model> data ) {
         this.context = context;
         this.data = data;
@@ -42,11 +42,45 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
     @Override
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
         org_details_model model=data.get(position);
+        SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+        String checked=preferences.getString("org_id","null");
+        if (checked.equals("null")){
+            if (holder.radioselector.isChecked()){
+                SharedPreferences preferences1=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor=preferences1.edit();
+                editor.putString("org_id",holder.orgid.toString());
+                editor.apply();
+                holder.radioselector.setChecked(true);
+            }else {
+                holder.radioselector.setChecked(data.get(0).equals(true));
+                SharedPreferences preferences1=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor=preferences1.edit();
+                editor.putString("org_id",holder.orgid.toString());
+                editor.apply();
+            }
+           // holder.radioselector.isChecked();
+        }else if (checked.equals(holder.orgid.toString())){
+            if (holder.orgid.equals(checked)){
+                holder.radioselector.setChecked(true);
+            }else {
+                holder.radioselector.setChecked(false);
+            }
+            /*
+            SharedPreferences preferences1=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences1.edit();
+            editor.putString("org_id",holder.orgid.toString());
+            editor.apply();
+
+
+             */
+        }
         Glide.with(context).load(model.getCompany_logo()).into(holder.orglogo);
         holder.org_name.setText(model.getOrganisation_name());
         holder.orgid.setText(model.getOrganisation_id());
-    }
 
+    }
+//check shared pref is null org name match if sav then checkrd else not checked
+    //if not null get adapterposition =0
     @Override
     public int getItemCount() {
         return data.size();
@@ -65,7 +99,6 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
             org_name = itemView.findViewById(R.id.org_name);
             orgid = itemView.findViewById(R.id.orgid);
             radioselector = itemView.findViewById(R.id.radioselector);
-
         }
 
         @Override
