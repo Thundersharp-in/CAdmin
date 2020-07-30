@@ -37,11 +37,15 @@ public class ProjectsFragment extends Fragment {
     RecyclerView recyclerView;
     List<AddProject_model> data;
     List<Projects> list;
-    SharedPreferences preferences,sharedPreferencesProjList;
+    SharedPreferences
+            preferences,
+            sharedPreferencesProjList,
+            sharedPreferencesorg;
+
     FloatingActionButton refresh;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
@@ -51,8 +55,12 @@ public class ProjectsFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                //Toast.makeText(getContext(),"Add projects comming soon",Toast.LENGTH_SHORT).show();
-                MainActivity.navController.navigate(R.id.nav_add_project);
+                if (sharedPreferencesorg.getString("selected",null)== null){
+                    //
+                }else {
+                    MainActivity.navController.navigate(R.id.nav_add_project);
+                }
+
             }
         });
 
@@ -60,6 +68,7 @@ public class ProjectsFragment extends Fragment {
         list = new ArrayList<>();
         preferences = getActivity().getSharedPreferences("proj", Context.MODE_PRIVATE);
         sharedPreferencesProjList = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
+        sharedPreferencesorg = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         recyclerView = view.findViewById(R.id.adding_recyclerView);
         refresh = view.findViewById(R.id.refresh);
 
@@ -70,30 +79,39 @@ public class ProjectsFragment extends Fragment {
             }
         });
 
-        List<Projects> datapref = loadDataOrgfromPrefs();
+        if (sharedPreferencesorg.getString("selected",null)!= null){
+            List<Projects> datapref = loadDataOrgfromPrefs();
 
-        if (datapref == null){
-            Toast.makeText(getActivity(), "profile server", Toast.LENGTH_SHORT).show();
-            fetchProfileFromServer();
+            if (datapref == null){
+                Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
+                fetchProfileFromServer();
 
+            }else {
+                Toast.makeText(getActivity(), "Loaded from shared prefs", Toast.LENGTH_SHORT).show();
+                fetchListofAllProject(loadDataOrgfromPrefs());
+            }
         }else {
-            Toast.makeText(getActivity(), "data server", Toast.LENGTH_SHORT).show();
-            fetchListofAllProject(loadDataOrgfromPrefs());
+            //
         }
+
 
         return view;
     }
 
     private void fetchListofAllProject(@NonNull List<Projects> projects){
+
         final List<AddProject_model> dataorg = new ArrayList<>();
 
         for (int i = 0; i<projects.size(); i++){
 
             Toast.makeText(getContext(),projects.get(i).getProjectKey(),Toast.LENGTH_SHORT).show();
+
             FirebaseDatabase.getInstance()
                     .getReference("organisation")
-                    .child(projects.get(i).getProjectKey())
+                    .child(sharedPreferencesorg.getString("selected",null))
                     .child("projects")
+                    .child(projects.get(i).getProjectKey())
+                    .child("description")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -169,6 +187,7 @@ public class ProjectsFragment extends Fragment {
             editor.clear();
             editor.putString("id",data);
             editor.apply();
+
             fetchListofAllProject(projectsList);
 
         }else {

@@ -1,5 +1,6 @@
 package com.thundersharp.cadmin.ui.fragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,7 +56,8 @@ public class AddProject extends Fragment {
     SharedPreferences sharedPreference, sharedPreferencesProfile;
     public AddProject_model addProjectModel;
     SharedPreferences sharedPreferencesorg;
-
+    AlertDialog.Builder builder;
+    Dialog dialog;
     ProgressDialog progressDialog;
 
     @Nullable
@@ -67,6 +70,13 @@ public class AddProject extends Fragment {
         p_name=view.findViewById(R.id.add_project_name);
         p_desc=view.findViewById(R.id.add_project_desc);
         add_project=view.findViewById(R.id.buttoncreatep);
+        projectsList = new ArrayList<>();
+
+        builder=new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.process,null,false);
+        builder.setView(view1);
+        dialog = builder.create();
 
         sharedPreferencesorg = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         sharedPreferencesProfile = getActivity().getSharedPreferences("logindata", Context.MODE_PRIVATE);
@@ -84,24 +94,38 @@ public class AddProject extends Fragment {
         add_project.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.show();
                 project_name=p_name.getEditText().getText().toString();
                 project_description=p_desc.getEditText().getText().toString();
                 if (project_name.length()>30){
                     p_name.getEditText().setError("More than 30 characters !");
                     p_name.getEditText().requestFocus();
+                    dialog.dismiss();
+
                 } else if (project_name.isEmpty()) {
                     p_name.getEditText().setError("Required !");
                     p_name.getEditText().requestFocus();
+                    dialog.dismiss();
+
                 }else if (project_description.isEmpty()){
                     p_desc.getEditText().setError("Required !");
                     p_desc.getEditText().requestFocus();
-                }else {
-                    addProjectModel = new AddProject_model(
-                            project_name,
-                            project_description,
-                            gen());
+                    dialog.dismiss();
 
-                    createProject(addProjectModel);
+                }else {
+                    if (sharedPreferencesorg.getString("selected",null)!=null){
+                        addProjectModel = new AddProject_model(
+                                project_name,
+                                project_description,
+                                gen(),
+                                sharedPreferencesorg.getString("selected",null),
+                                false);
+
+                        createProject(addProjectModel);
+                    }else {
+                        //TODO add snackbar
+                    }
+
                 }
 
             }
@@ -156,9 +180,11 @@ public class AddProject extends Fragment {
                     Projects projects1 = new Projects(key,true);
                     projectsList.add(projects1);
                     SavetoSharedPrefs(projectsList);
+                    dialog.dismiss();
                     MainActivity.navController.navigate(R.id.nav_proj);
 
                 }else {
+                    dialog.dismiss();
                     Toast.makeText(getContext(), "Internal Error:"+task.getException().getCause().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -216,16 +242,22 @@ public class AddProject extends Fragment {
         final List<AddProject_model> modelList = new ArrayList<>();
 
         for (int i=0; i<projects.size(); i++){
+
             FirebaseDatabase.getInstance()
                     .getReference("organisation")
-                    .child(projects.get(i).getProjectKey())
+                    .child(sharedPreferencesorg.getString("selected",null))
                     .child("projects")
+                    .child(projects.get(i).getProjectKey())
+                    .child("description")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()){
                                 modelList.add(snapshot.getValue(AddProject_model.class));
+                                Toast.makeText(getActivity(),String.valueOf("trurgfhcgfdfgchjfhdffnjhgghghhgfgfhgfhgfhghgvh"+snapshot.getValue(AddProject_model.class).projectDesc),Toast.LENGTH_SHORT).show();
                                 storetosharedpref(modelList);
+                            }else {
+
                             }
                         }
 
