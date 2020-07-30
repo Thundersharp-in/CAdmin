@@ -1,6 +1,7 @@
 package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,9 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         @Override
         public void onClick(View view) {
 
-            MainActivity.navController.navigate(R.id.nav_proj_info);
+            Bundle bundle = new Bundle();
+            bundle.putString("project_id",data.get(getAdapterPosition()).project_id);
+            MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
 
         }
     }

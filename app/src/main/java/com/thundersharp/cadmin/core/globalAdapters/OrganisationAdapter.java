@@ -1,11 +1,13 @@
 package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         this.organisations=organisations;
     }
 
+
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,8 +50,8 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CustomViewHolder holder, int position) {
-        org_details_model model=data.get(position);
+    public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
+        final org_details_model model=data.get(position);
 
         Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo);
 
@@ -56,6 +59,41 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         holder.org_id.setText(model.getOrganisation_id());
 
         holder.manager.setText(model.getOrganiser_name());
+
+        final SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+        String checked=preferences.getString("selected","null");
+
+        if (checked.equalsIgnoreCase("null")){
+            if (position == 0){
+                holder.radioButton.setChecked(true);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("selected",model.getOrganisation_id());
+                editor.apply();
+            }else {
+                holder.radioButton.setChecked(false);
+            }
+        }else {
+
+            if (checked.equalsIgnoreCase(model.getOrganisation_id())){
+                holder.radioButton.setChecked(true);
+            }else {
+                holder.radioButton.setChecked(false);
+            }
+        }
+
+        holder.radioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("selected",model.getOrganisation_id());
+                editor.apply();
+                notifyDataSetChanged();
+                notifyItemChanged(position);
+
+            }
+        });
+
 
 /*
                                 final DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("projects");
@@ -125,6 +163,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         DatabaseReference reference1,reference2;
         FirebaseUser mCurrent;
         String user_uid;
+        RadioButton radioButton;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -134,8 +173,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
             org_name=itemView.findViewById(R.id.org_name);
             org_id=itemView.findViewById(R.id.org_id);
-
-
+            radioButton = itemView.findViewById(R.id.radioorg);
 
             manager=itemView.findViewById(R.id.manager);
 

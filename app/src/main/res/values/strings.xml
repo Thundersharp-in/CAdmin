@@ -50,7 +50,6 @@
     <string name="morning">Morning</string>
     <string name="afternoon">Afternoon</string>
     <string name="night">Night</string>
-    <string name="location_permission_required">Updating weather requires location access</string>
     <string name="week_start">Week start</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
@@ -72,17 +71,11 @@
     <string name="cosinv">cos\u207B\u00B9</string>
     <string name="taninv">tan\u207B\u00B9</string>
     <string name="posneg">±</string>
-    <string name="arrow">↑</string>
     <string name="xpown">xⁿ</string>
     <string name="epown">eⁿ</string>
     <string name="pi">π</string>
-    <string name="title_activity_unit_area">UnitArea</string>
-    <string name="title_activity_unit_length">UnitLength</string>
-    <string name="title_activity_unit_weight">UnitWeight</string>
-    <string name="title_activity_unit_temperature">UnitTemperature</string>
     <string name="openBracket">(</string>
     <string name="closeBracket">)</string>
-    <string name="history">History</string>
 
     <string-array name="area">
         <item>Sq. Millimeter</item>
@@ -122,11 +115,9 @@
         <item>Ounces</item>
     </string-array>
 
-    <string name="title_activity_history">History</string>
     <string name="deleteHistory">Delete History</string>
     <string name="mode1">Degree</string>
     <string name="mode2">Radian</string>
-    <string name="toggle">SWITCH</string>
     <string name="sin">sin</string>
     <string name="cos">cos</string>
     <string name="tan">tan</string>
