@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
+import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView projectName;
         TextView projectDesc;
@@ -72,6 +73,15 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
             project_uid = mCurrent.getUid();
             reference1= FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("projects");
             reference2=FirebaseDatabase.getInstance().getReference().child("organisation");
+
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            MainActivity.navController.navigate(R.id.nav_proj_info);
 
         }
     }

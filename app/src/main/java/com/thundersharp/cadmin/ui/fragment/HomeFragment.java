@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,21 +21,14 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.ExpandableListAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.HomeOrgAdapter;
-import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
-import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.ui.fragment.projetinfo.Files;
-import com.thundersharp.cadmin.ui.fragment.projetinfo.Photo;
-import com.thundersharp.cadmin.ui.fragment.projetinfo.Video;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -47,8 +39,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class HomeFragment extends Fragment  {
 
-    //TabLayout tabLayout;
-    //ViewPager viewPager;
+
     CardView relq,c1,c3,c4;
     ImageView fn1,fn2,fn3,fn4;
     RecyclerView recyclervieworg;
@@ -123,24 +114,6 @@ public class HomeFragment extends Fragment  {
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,listHash);
         faqholder.setAdapter(listAdapter);
 
-
-
-        //tabLayout = root.findViewById(R.id.sliding_tabs);
-        //viewPager = root.findViewById(R.id.viewpager);
-
-
-/*        TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
-        tabAdapter.addFragment(new Photo(), null);
-        tabAdapter.addFragment(new Files(), null);
-        tabAdapter.addFragment(new Video(), null);
-
-        viewPager.setAdapter(tabAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_outline_photo_library_24);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_outline_file_copy_24);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);*/
 
         return root;
     }

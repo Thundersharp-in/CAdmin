@@ -93,5 +93,11 @@
         android:label="Organisation details"
         tools:layout="@layout/fragment_orginasation_details" />
 
+    <fragment
+        android:id="@+id/nav_proj_info"
+        android:name="com.thundersharp.cadmin.ui.fragment.projetinfo.ProjectDetails"
+        android:label="Project details"
+        tools:layout="@layout/project_info" />
+
 
 </navigation>
