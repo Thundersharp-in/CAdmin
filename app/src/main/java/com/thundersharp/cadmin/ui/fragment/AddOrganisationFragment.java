@@ -153,9 +153,7 @@ public class AddOrganisationFragment extends Fragment {
                      dialog.dismiss();
 
                  }else{
-
                      uploadtofirebaseStorage(org_logo_uri,gen());
-
 
                  }
 
@@ -218,7 +216,6 @@ public class AddOrganisationFragment extends Fragment {
         if (resultCode==getActivity().RESULT_OK) {
             org_logo_uri = data.getData();
             logourl = data.getData().toString();
-            //Toast.makeText(getActivity(),logourl,Toast.LENGTH_SHORT).show();
             upload_org_logo.setImageURI(org_logo_uri);
 
         } else {
@@ -262,9 +259,6 @@ public class AddOrganisationFragment extends Fragment {
         }
 
     }
-
-    //TODO ADD FUNCTION TO SAVE DATA TO SHARED PREFS FROM DATABASE  check the usage of this code
-
 
     private void fetchfromdatabase(){
         FirebaseDatabase.getInstance()
@@ -356,7 +350,6 @@ public class AddOrganisationFragment extends Fragment {
         }else return null;
 
     }
-
 
     private List<org_details_model> getDataOrg(){
 

@@ -95,61 +95,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         });
 
 
-/*
-                                final DatabaseReference reference=FirebaseDatabase.getInstance().getReference().child("projects");
-                                reference.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        holder.total_projects.setText((int) dataSnapshot.getChildrenCount());
-                                        for (DataSnapshot item:dataSnapshot.getChildren()){
-                                            DatabaseReference reference2=FirebaseDatabase.getInstance().getReference(String.valueOf(item)).child("description");
-                                            reference2.addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    DatabaseReference reference1=FirebaseDatabase.getInstance().getReference().child("description") .child("project_name");
-                                                    reference1.addValueEventListener(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                            holder.project_name.setText(dataSnapshot.getValue().toString());
-                                                        }
 
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                        }
-                                                    });
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                }
-                                            });
-                                           DatabaseReference reference1=FirebaseDatabase.getInstance().getReference(String.valueOf(item)).child("users_uid");
-                                           reference1.addValueEventListener(new ValueEventListener() {
-                                               @Override
-                                               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                   if (dataSnapshot.exists()){
-                                                       Long users=dataSnapshot.getChildrenCount();
-                                                       holder.no_of_users.setText(users.toString());
-                                                   }
-                                               }
-
-                                               @Override
-                                               public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                               }
-                                           });
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-
-                                 */
     }
 
     @Override
@@ -158,8 +104,8 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView org_logo,org_logo1;
-        TextView org_name,org_id,org_id1,project_name,no_of_users,manager,total_projects;
+        ImageView org_logo;
+        TextView org_name,org_id,manager;
         DatabaseReference reference1,reference2;
         FirebaseUser mCurrent;
         String user_uid;

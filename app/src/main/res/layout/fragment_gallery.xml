@@ -8,10 +8,24 @@
     android:id="@+id/org"
     tools:context=".ui.fragment.Organisation">
 
+    <ProgressBar
+        android:id="@+id/progressorg"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressTint="#fff"
+        android:layout_alignParentTop="true"
+        android:progressBackgroundTint="#ffff"
+        android:indeterminateBehavior="repeat"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"
+        />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/progressorg">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/project_rv"
             android:layout_width="match_parent"

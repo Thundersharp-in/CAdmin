@@ -246,7 +246,7 @@ public class Register extends Fragment {
                             "null",
                             text_input_name.getEditText().getText().toString(),
                             text_input_phone.getEditText().getText().toString(),
-                            FirebaseAuth.getInstance().getUid());
+                            FirebaseAuth.getInstance().getUid(),"null");
 
                     authCredential = EmailAuthProvider
                             .getCredential(

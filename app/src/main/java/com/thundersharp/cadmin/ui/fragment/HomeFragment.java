@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment  {
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
     private HashMap<String,List<String>> listHash;
+    ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +70,8 @@ public class HomeFragment extends Fragment  {
         clockwise = AnimationUtils.loadAnimation(getActivity(),R.anim.clockwise_rotate);
         recyclervieworg=root.findViewById(R.id.recyclervieworg);
         sharedPreferences = getActivity().getSharedPreferences("all_organisation", Context.MODE_PRIVATE);
-
+        progressBar=root.findViewById(R.id.progresshome);
+        progressBar.setVisibility(View.GONE);
         relq = root.findViewById(R.id.relq);
         c1 = root.findViewById(R.id.c1);
         c3 = root.findViewById(R.id.c3);
@@ -121,7 +124,7 @@ public class HomeFragment extends Fragment  {
     @Override
     public void onStart() {
         super.onStart();
-
+        progressBar.setVisibility(View.VISIBLE);
         final ObjectAnimator oa1 = ObjectAnimator.ofFloat(c1, "scaleX", 1f, 0f);
         final ObjectAnimator oa2 = ObjectAnimator.ofFloat(c1, "scaleX", 0f, 1f);
         oa1.setInterpolator(new DecelerateInterpolator());
@@ -207,7 +210,7 @@ public class HomeFragment extends Fragment  {
             }
         });
         oa7.start();
-
+        progressBar.setVisibility(View.GONE);
     }
 
     private void loadOrganisation(){
@@ -273,4 +276,5 @@ public class HomeFragment extends Fragment  {
         listHash.put(listDataHeader.get(4),uwp1);
         listHash.put(listDataHeader.get(5),uwp2);
     }
+
 }

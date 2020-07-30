@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,7 +27,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class WorkForce extends Fragment {
 
-
+    ProgressBar progresswf;
     private ProjectDesc project;
     List<WorkforceModel> workforceModels;
     RecyclerView rv_work_force;
@@ -49,11 +50,14 @@ public class WorkForce extends Fragment {
         });
 
         View view = inflater.inflate(R.layout.fragment_work_force, container, false);
+        progresswf=view.findViewById(R.id.progresswork_force);
+        progresswf.setVisibility(View.GONE);
         workforceModels = new ArrayList<>();
         rv_work_force= view.findViewById(R.id.rv_work_force);
         rv_work_force.setHasFixedSize(true);
+        progresswf.setVisibility(View.VISIBLE);
         loadDataFromServer("key1");
-
+        progresswf.setVisibility(View.GONE);
 
         return view;
     }

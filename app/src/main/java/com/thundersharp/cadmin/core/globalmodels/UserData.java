@@ -3,9 +3,9 @@ package com.thundersharp.cadmin.core.globalmodels;
 public class UserData {
     public UserData(){}
 
-    public String bio,dob,email,image_uri,name,phone_no,uid;
+    public String bio,dob,email,image_uri,name,phone_no,uid,uri_ref;
 
-    public UserData(String bio, String dob, String email, String image_uri, String name, String phone_no, String uid) {
+    public UserData(String bio, String dob, String email, String image_uri, String name, String phone_no, String uid, String uri_ref) {
         this.bio = bio;
         this.dob = dob;
         this.email = email;
@@ -13,6 +13,7 @@ public class UserData {
         this.name = name;
         this.phone_no = phone_no;
         this.uid = uid;
+        this.uri_ref = uri_ref;
     }
 
     public String getBio() {
@@ -41,5 +42,9 @@ public class UserData {
 
     public String getUid() {
         return uid;
+    }
+
+    public String getUri_ref() {
+        return uri_ref;
     }
 }
