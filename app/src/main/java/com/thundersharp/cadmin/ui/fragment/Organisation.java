@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class Organisation extends Fragment {
     List<Organisations> finalorg;
     SharedPreferences preferences,sharedPreferencesOrglist;
     SwipeRefreshLayout refresh;
+    ProgressBar progressorg;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,7 +65,8 @@ public class Organisation extends Fragment {
         project_rv=root.findViewById(R.id.project_rv);
         refresh=root.findViewById(R.id.refresh);
         refresh.setRefreshing(true);
-
+        progressorg=root.findViewById(R.id.progressorg);
+        progressorg.setVisibility(View.GONE);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -75,26 +78,31 @@ public class Organisation extends Fragment {
 
 
         if (datapref == null){
-
+            progressorg.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(),"profile server",Toast.LENGTH_SHORT).show();
             fetchProfilefromsever();
+            progressorg.setVisibility(View.GONE);
         }else {
+            progressorg.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(),"data server",Toast.LENGTH_SHORT).show();
 
             //fetchListofAllOrganisation(datapref);
 
             getorgdetailfromPref(loadDataOrgfromPrefs());
             refresh.setRefreshing(false);
+            progressorg.setVisibility(View.GONE);
         }
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equalsIgnoreCase("refreshPref")){
+                    progressorg.setVisibility(View.VISIBLE);
                     Toast.makeText(getContext(),"command recieved",Toast.LENGTH_LONG).show();
                     List<Organisations> datapref = loadDataOrgfromPrefs();
                     getorgdetailfromPref(loadDataOrgfromPrefs());
                     getActivity().recreate();
+                    progressorg.setVisibility(View.GONE);
                 }
             }
         };

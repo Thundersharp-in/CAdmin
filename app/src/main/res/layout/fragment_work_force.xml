@@ -5,11 +5,23 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.WorkForce">
-
+    <ProgressBar
+        android:id="@+id/progresswork_force"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressTint="#fff"
+        android:layout_alignParentTop="true"
+        android:progressBackgroundTint="#ffff"
+        android:indeterminateBehavior="repeat"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_work_force"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/progresswork_force"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 

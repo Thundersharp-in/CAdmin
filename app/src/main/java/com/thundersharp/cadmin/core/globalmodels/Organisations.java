@@ -3,6 +3,7 @@ package com.thundersharp.cadmin.core.globalmodels;
 import java.io.Serializable;
 
 public class Organisations implements Serializable {     // Parcelable
+
     public Organisations(){
 
     }

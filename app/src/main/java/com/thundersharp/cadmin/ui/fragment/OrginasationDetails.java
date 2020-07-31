@@ -75,6 +75,7 @@ public class OrginasationDetails extends Fragment {
             public void onClick(View view) {
 
                 if (orgs.isManager()){
+                    //Alert dilog here
                     //Toast.makeText(getActivity(), "You have deleted the noe from everywhere", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getActivity(),"Sorry you can't delete this organisation !",Toast.LENGTH_SHORT).show();

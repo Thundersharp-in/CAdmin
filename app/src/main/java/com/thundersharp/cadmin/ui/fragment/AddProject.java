@@ -46,7 +46,7 @@ public class AddProject extends Fragment {
 
     TextInputLayout p_name, p_desc;
     Button add_project;
-    String project_description,project_name,project_uid;
+    String project_description,project_name;
     FirebaseAuth mAuth;
     SharedPreferences preferences;
     List<Projects> projectsList;

@@ -10,7 +10,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <ProgressBar
+            android:id="@+id/progresshome"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:progressTint="#fff"
+            android:layout_alignParentTop="true"
+            android:progressBackgroundTint="#ffff"
+            android:indeterminateBehavior="repeat"
+            android:indeterminate="true"
+            android:indeterminateTint="#fff"
+            />
         <TextView
             android:id="@+id/very"
             android:layout_marginTop="15dp"
@@ -18,6 +29,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="viewStart"
             android:layout_alignParentTop="true"
+            android:layout_below="@+id/progresshome"
             android:layout_marginStart="@dimen/padding_10"
             android:layout_marginEnd="@dimen/padding_10"
             android:text="Choose default organisation : \n\nSelect an organisation to view its data thought the app !"

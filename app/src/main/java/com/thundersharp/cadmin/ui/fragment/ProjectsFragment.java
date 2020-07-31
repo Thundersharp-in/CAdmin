@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,17 +34,20 @@ import java.util.List;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
+
 public class ProjectsFragment extends Fragment {
 
+    ProgressBar progressproj;
     RecyclerView recyclerView;
     List<AddProject_model> data;
     List<Projects> list;
+    SwipeRefreshLayout refresh_proj;
     SharedPreferences
             preferences,
             sharedPreferencesProjList,
             sharedPreferencesorg;
 
-    FloatingActionButton refresh;
+//    FloatingActionButton refresh;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -50,13 +55,18 @@ public class ProjectsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         MainActivity.container.setBackground(null);
-
+        progressproj=view.findViewById(R.id.progress_proj);
+        progressproj.setVisibility(View.GONE);
+        refresh_proj=view.findViewById(R.id.refresh_project);
+        refresh_proj.setRefreshing(true);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_playlist_add_24, getActivity().getTheme()));
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 if (sharedPreferencesorg.getString("selected",null)== null){
-                    //
+                    progressproj.setVisibility(View.VISIBLE);
+                    // TODO add sneekbar
+                    progressproj.setVisibility(View.GONE);
                 }else {
                     MainActivity.navController.navigate(R.id.nav_add_project);
                 }
@@ -70,30 +80,46 @@ public class ProjectsFragment extends Fragment {
         sharedPreferencesProjList = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
         sharedPreferencesorg = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         recyclerView = view.findViewById(R.id.adding_recyclerView);
-        refresh = view.findViewById(R.id.refresh);
-
-        refresh.setOnClickListener(new View.OnClickListener() {
+        refresh_proj.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                progressproj.setVisibility(View.VISIBLE);
+                fetchProfileFromServer();
+                progressproj.setVisibility(View.GONE);
+            }
+        });
+/* refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressproj.setVisibility(View.VISIBLE);
                 fetchProfileFromServer();
+                progressproj.setVisibility(View.GONE);
             }
         });
 
+
+ */
+
         if (sharedPreferencesorg.getString("selected",null)!= null){
             List<Projects> datapref = loadDataOrgfromPrefs();
-
+            progressproj.setVisibility(View.VISIBLE);
             if (datapref == null){
                 Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
                 fetchProfileFromServer();
+
 
             }else {
                 Toast.makeText(getActivity(), "Loaded from shared prefs", Toast.LENGTH_SHORT).show();
                 fetchListofAllProject(loadDataOrgfromPrefs());
             }
+            refresh_proj.setRefreshing(false);
+            progressproj.setVisibility(View.GONE);
         }else {
-            //
+            progressproj.setVisibility(View.VISIBLE);
+            //TODO add sneekbar
+            progressproj.setVisibility(View.GONE);
+            refresh_proj.setRefreshing(false);
         }
-
 
         return view;
     }
@@ -152,6 +178,7 @@ public class ProjectsFragment extends Fragment {
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                                 Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
                                 list.add(projects);
+                                progressproj.setVisibility(View.GONE);
                             }
                             SavetoSharedPrefs(list);
                         }
@@ -159,7 +186,7 @@ public class ProjectsFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        progressproj.setVisibility(View.GONE);
                     }
                 });
     }

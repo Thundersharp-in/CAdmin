@@ -5,13 +5,33 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.ProjectsFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/adding_recyclerView"
+    <ProgressBar
+        android:id="@+id/progress_proj"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressTint="#fff"
+        android:layout_alignParentTop="true"
+        android:progressBackgroundTint="#ffff"
+        android:indeterminateBehavior="repeat"
+        android:indeterminate="true"
+        android:indeterminateTint="#fff"
+        />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_project"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_below="@+id/progress_proj">
+        <androidx.recyclerview.widget.RecyclerView
 
+            android:id="@+id/adding_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+<!--
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/refresh"
         android:layout_width="wrap_content"
@@ -23,4 +43,5 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         />
+        -->
 </RelativeLayout>
