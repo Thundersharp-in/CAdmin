@@ -140,9 +140,15 @@ public class Profile extends Fragment {
                     edit_userphoneNo.setEnabled(false);
                     floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
                     Toast.makeText(getContext(),"Profile edit disabled",Toast.LENGTH_SHORT).show();
-                    image=profile_uri.toString();
+                    if (image != null){
+                        image=profile_uri.toString();
+                        savetoDatabase(profile_uri);
+                    }else {
+                        image = "null";
+                    }
+
                     //userData= new UserData(bio,"dob",email,image,name,phone,FirebaseAuth.getInstance().getUid());
-                    savetoDatabase(profile_uri);//userData,
+
                     progressprofile.setVisibility(View.GONE);
                 }
                 else {
