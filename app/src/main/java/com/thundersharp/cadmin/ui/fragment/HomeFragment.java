@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,11 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +55,10 @@ public class HomeFragment extends Fragment  {
     private List<String> listDataHeader;
     private HashMap<String,List<String>> listHash;
     ProgressBar progressBar;
+    TextView txt_proj_name,txt_proj_id,txt_org_id,txt_desc;
+    ImageView org_image;
+    Button btn_proj_detail;
+    CardView cv;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,7 +90,16 @@ public class HomeFragment extends Fragment  {
         fn3 = root.findViewById(R.id.fn3);
         fn4 = root.findViewById(R.id.fn4);
 
+        txt_proj_name =root.findViewById(R.id.txt_proj_name);
+        txt_proj_id =root.findViewById(R.id.txt_proj_id);
+        txt_org_id =root.findViewById(R.id.txt_org_id);
+        txt_desc =root.findViewById(R.id.txt_desc);
+        org_image =root.findViewById(R.id.org_image);
+        btn_proj_detail =root.findViewById(R.id.btn_proj_detail);
+        cv =root.findViewById(R.id.cv);
+
         loadOrganisation();
+        // TODO loadLatestProject();
         relq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

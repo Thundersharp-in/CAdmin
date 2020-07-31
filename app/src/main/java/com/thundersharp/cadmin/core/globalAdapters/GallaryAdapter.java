@@ -26,16 +26,14 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
     List<String> imageuri;
 
     public GallaryAdapter(Context context , List<String> imageuri){
-
         this.context = context;
         this.imageuri = imageuri;
-
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.grid_image,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.grid_image,parent,false);//grid_image item_org_images
         return new ViewHolder(view);
     }
 
@@ -49,8 +47,7 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
     public int getItemCount() {
         if (imageuri != null){
             return imageuri.size();
-        }else
-            return 0;
+        }else return 0;
 
     }
 
@@ -60,7 +57,7 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            src_icon = itemView.findViewById(R.id.src_icon);
+            src_icon = itemView.findViewById(R.id.src_icon );//src_icon  item_org_image
 
             itemView.setOnClickListener(this);
 

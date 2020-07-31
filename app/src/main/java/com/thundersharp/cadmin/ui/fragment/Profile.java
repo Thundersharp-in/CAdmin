@@ -96,7 +96,7 @@ public class Profile extends Fragment {
         edit_userbio=root.findViewById(R.id.edit_userbio);
         edit_userOrganisations=root.findViewById(R.id.edit_userOrganisations);
         edit_userUid=root.findViewById(R.id.edit_userUid);
-
+       // profile_uri=Uri.parse("https://www.thundersharp.in/logo.png");
         progressprofile = root.findViewById(R.id.progressprofile);
         progressprofile.setVisibility(View.GONE);
 
