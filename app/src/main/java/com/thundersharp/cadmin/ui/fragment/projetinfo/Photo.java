@@ -62,7 +62,8 @@ public class Photo extends Fragment {
     public void loadImagesfromServer(@NonNull String org_key,@NonNull String project_key){
         url.clear();
 
-        FirebaseDatabase.getInstance()
+        FirebaseDatabase
+                .getInstance()
                 .getReference("organisation")
                 .child(org_key)
                 .child("projects")
