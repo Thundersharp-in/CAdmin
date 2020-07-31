@@ -318,32 +318,37 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lay1"
-            android:layout_marginTop="10dp">
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lay1"
+        android:layout_marginTop="10dp">
 
-            <include
-                android:id="@+id/qqq"
-                layout="@layout/latest_project_info"/>
+        <include
+            android:id="@+id/qqq"
+            layout="@layout/latest_project_info"/>
 
-
-            <ExpandableListView
-                android:id="@+id/faqholder"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="@dimen/padding_10"
-                android:layout_marginEnd="@dimen/padding_10"
-                android:scrollbars="none"
-                android:elevation="8dp"
-                android:groupIndicator="@drawable/customlist"
-                android:background="@color/white"
-                android:layout_below="@+id/qqq"/>
-
-        </RelativeLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl1"
+        android:layout_marginTop="10dp">
+        <ExpandableListView
+            android:id="@+id/faqholder"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/padding_10"
+            android:layout_marginEnd="@dimen/padding_10"
+            android:scrollbars="none"
+            android:elevation="8dp"
+            android:groupIndicator="@drawable/customlist"
+            android:background="@color/white"
+            />
 
-
+    </RelativeLayout>
+    </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

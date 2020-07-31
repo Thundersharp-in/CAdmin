@@ -49,13 +49,11 @@ public class Photo extends Fragment {
         project_key = bundle.getString("project_id");
 
         if (org_id == null || project_key == null){
-
+            Toast.makeText(getActivity(),"null objects",Toast.LENGTH_SHORT).show();
         }else {
 
             loadImagesfromServer(org_id,project_key);
         }
-
-
         return view;
     }
 
@@ -77,9 +75,8 @@ public class Photo extends Fragment {
                                 url.add(snapshot1.getValue(String.class));
 
                             }
-
                             GallaryAdapter gallaryAdapter = new GallaryAdapter(getActivity(),url);
-
+                            gallaryrecuycler.setAdapter(gallaryAdapter);
 
                         }else {
 

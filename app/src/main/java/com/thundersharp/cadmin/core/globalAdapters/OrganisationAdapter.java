@@ -22,6 +22,7 @@ import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
+import com.thundersharp.cadmin.ui.fragment.OrginasationDetails;
 
 import java.util.List;
 
@@ -133,13 +134,19 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
         @Override
         public void onClick(View v) {
+
+            OrginasationDetails detail=new OrginasationDetails();
             Bundle bundle=new Bundle();
-            Organisations org = organisations.get(getAdapterPosition());
+            //Organisations org = organisations.get(getAdapterPosition());
             org_details_model details=data.get(getAdapterPosition());
 
-            bundle.putSerializable("data",details); //data.get(getAdapterPosition())
-            bundle.putSerializable("orgs",org); //organisations.get(getAdapterPosition())
+            bundle.putString("org_name",details.getOrganisation_name());
+            bundle.putString("org_desc",details.getCompany_description());
+            bundle.putString("org_id",details.getOrganisation_id());
+            bundle.putString("org_image",details.getCompany_logo());
+            bundle.putString("organiser_id",details.getOrganiser_uid());
 
+            detail.setArguments(bundle);
             //bundle.putParcelable("data",data.get(getAdapterPosition()));
             //bundle.putParcelable("orgs",organisations.get(getAdapterPosition()));
             //bundle.putString("org_id",org_id.toString());

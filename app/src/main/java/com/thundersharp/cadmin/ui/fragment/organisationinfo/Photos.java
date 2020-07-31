@@ -4,57 +4,79 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalAdapters.GallaryAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Photos extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    List<String> url;
+    RecyclerView org_photo_rv;
+    String org_id,project_key;
+    //SharedPreferences sharedPreferences;
 
     public Photos() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Photos.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Photos newInstance(String param1, String param2) {
-        Photos fragment = new Photos();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public Photos(String org_id) {
+        this.org_id = org_id;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photos, container, false);
+        View view=inflater.inflate(R.layout.fragment_photos, container, false);
+
+        org_photo_rv=view.findViewById(R.id.org_photo_rv);
+        url=new ArrayList<>();
+
+        org_photo_rv.setHasFixedSize(true);
+        org_photo_rv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        org_photo_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
+
+        loadFromServer(org_id);
+        return view;
+    }
+
+    private void loadFromServer(@NonNull String org_id) {
+        FirebaseDatabase.getInstance()
+                .getReference("organisation")
+                .child(org_id)
+                .child("org_images")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                                url.add(snapshot1.getValue(String.class));
+                            }
+
+                        }else {
+                            Toast.makeText(getActivity(),"No photo exists",Toast.LENGTH_SHORT).show();
+                        }
+                        GallaryAdapter gallaryAdapter = new GallaryAdapter(getActivity(),url);
+                        org_photo_rv.setAdapter(gallaryAdapter);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }
