@@ -91,7 +91,7 @@ public class ProjectsFragment extends Fragment {
                 progressproj.setVisibility(View.GONE);
             }
         });
-/* refresh.setOnClickListener(new View.OnClickListener() {
+                     /* refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressproj.setVisibility(View.VISIBLE);
