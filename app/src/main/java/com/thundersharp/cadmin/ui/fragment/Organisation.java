@@ -270,10 +270,15 @@ public class Organisation extends Fragment {
         editor.putString("id",data);
         editor.apply();
         if (organisations == null){
+            SharedPreferences.Editor editor3 = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE).edit();
             SharedPreferences.Editor editor2=sharedPreferencesOrglist.edit();
             SharedPreferences.Editor editor1 = preferences.edit();
             editor2.clear();
             editor2.apply();
+
+            editor3.clear();
+            editor3.apply();
+
             editor1.clear();
             editor1.apply();
             Toast.makeText(getActivity(),"No data to display",Toast.LENGTH_LONG).show();

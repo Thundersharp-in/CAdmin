@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +48,7 @@ public class AddProject extends Fragment {
 
     TextInputLayout p_name, p_desc;
     Button add_project;
+    RelativeLayout containerppp;
     String project_description,project_name;
     FirebaseAuth mAuth;
     SharedPreferences preferences;
@@ -70,6 +73,7 @@ public class AddProject extends Fragment {
         p_name=view.findViewById(R.id.add_project_name);
         p_desc=view.findViewById(R.id.add_project_desc);
         add_project=view.findViewById(R.id.buttoncreatep);
+        containerppp = view.findViewById(R.id.containerppp);
         projectsList = new ArrayList<>();
 
         builder=new AlertDialog.Builder(getActivity());
@@ -91,7 +95,8 @@ public class AddProject extends Fragment {
             }
         });
 
-        Toast.makeText(getActivity(),sharedPreferencesorg.getString("selected",null),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),String.valueOf(sharedPreferencesorg.getString("selected",null)),Toast.LENGTH_SHORT).show();
+
         add_project.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +130,13 @@ public class AddProject extends Fragment {
                         createProject(addProjectModel);
                     }else {
                         //TODO add snackbar
+                        Toast.makeText(getActivity(),"No organisation found create one first",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(getView(),"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MainActivity.navController.navigate(R.id.nav_org);
+                            }
+                        }).setActionTextColor(855600).show();
                     }
 
                 }
