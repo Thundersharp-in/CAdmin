@@ -14,12 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="15dp"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:progressTint="#fff"
+        android:progressTint="#090707"
         android:layout_alignParentTop="true"
-        android:progressBackgroundTint="#ffff"
+        android:progressBackgroundTint="#0C0909"
         android:indeterminateBehavior="repeat"
         android:indeterminate="true"
-        android:indeterminateTint="#fff"
+        android:indeterminateTint="#090707"
         />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"

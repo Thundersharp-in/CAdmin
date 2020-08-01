@@ -57,7 +57,7 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            src_icon = itemView.findViewById(R.id.src_icon );//src_icon  item_org_image
+            src_icon = itemView.findViewById(R.id.src_icon );//  item_org_image
 
             itemView.setOnClickListener(this);
 

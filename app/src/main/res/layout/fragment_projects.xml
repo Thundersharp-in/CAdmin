@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:indeterminateBehavior="repeat"
         android:indeterminate="true"
-        android:indeterminateTint="#fff"
+        android:indeterminateTint="#000"
         />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_project"

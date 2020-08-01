@@ -101,6 +101,7 @@ public class Profile extends Fragment {
         edit_userUid=root.findViewById(R.id.edit_userUid);
        // profile_uri=Uri.parse("https://www.thundersharp.in/logo.png");
         progressprofile = root.findViewById(R.id.progressprofile);
+
         progressprofile.setVisibility(View.GONE);
 
         storageReference= FirebaseStorage.getInstance().getReference("Profile Images");
@@ -172,30 +173,6 @@ public class Profile extends Fragment {
                             photoPicker.setType("image/*");
                             startActivityForResult(photoPicker,1);
 
-                            /*
-                            String Display_name = name.getText().toString();
-
-                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                            UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(Display_name).build();
-
-                            firebaseUser.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(getContext(), "Successfully updated", Toast.LENGTH_SHORT).show();
-
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                            */
-
-//                            if (isNameChanged() || isEmailCHanged()){
-//                                Toast.makeText(getContext(), "Data has been changed", Toast.LENGTH_SHORT).show();
-//
 //
 
                         }
@@ -236,27 +213,6 @@ public class Profile extends Fragment {
 
         return root;
     }
-//
-//    private boolean isEmailCHanged() {
-//        if (!DISPLAY_EMAIL.equals(edit_useremail.getText().toString())){
-//            reference.child(String.valueOf(name)).child("email").setValue(edit_useremail.getText().toString());
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
-//    }
-//
-//    private boolean isNameChanged() {
-//        if (!DISPLAY_NAME.equals(edit_username.getText().toString())){
-//            reference.child(String.valueOf(name)).child("name").setValue(edit_username.getText().toString());
-//            return true;
-//        }
-//        else {
-//            return false;
-//        }
-//    }
-
     private void loadDatafromDatabase() {
 
         FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -335,7 +291,20 @@ public class Profile extends Fragment {
                         String url = uri.toString();
 
                         final UserData userData1;
-                        userData1= new UserData(edit_userbio.toString(),"dob",edit_useremail.toString(),url,edit_username.toString(),edit_userphoneNo.toString(),FirebaseAuth.getInstance().getUid(),storgePath);
+                        /*
+                         String name=edit_username.getText().toString();
+                        String bio=edit_userbio.getText().toString();
+                        String email=edit_useremail.getText().toString();
+                        String phone=edit_userphoneNo.getText().toString();
+                         */
+
+                        userData1= new UserData(edit_userbio.getText().toString()
+                                ,"dob"
+                                ,edit_useremail.getText().toString()
+                                ,url,edit_username.getText().toString()
+                                ,edit_userphoneNo.getText().toString()
+                                ,FirebaseAuth.getInstance().getUid()
+                                ,storgePath);
                         FirebaseDatabase
                                 .getInstance()
                                 .getReference("users")

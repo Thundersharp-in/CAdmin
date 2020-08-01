@@ -26,15 +26,9 @@ public class Photos extends Fragment {
 
     List<String> url;
     RecyclerView org_photo_rv;
-    String org_id,project_key;
-    //SharedPreferences sharedPreferences;
+    String org_id;
 
     public Photos() {
-        // Required empty public constructor
-    }
-
-    public Photos(String org_id) {
-        this.org_id = org_id;
     }
 
     @Override

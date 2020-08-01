@@ -108,7 +108,7 @@ public class OrginasationDetails extends Fragment {
 
         TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
         tabAdapter.addFragment(new Users(),null);
-        tabAdapter.addFragment(new Photos(org_id),null);
+        tabAdapter.addFragment(new Photos(),null);
 
 
         viewPager.setAdapter(tabAdapter);

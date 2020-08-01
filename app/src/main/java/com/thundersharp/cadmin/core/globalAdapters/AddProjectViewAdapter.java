@@ -126,7 +126,6 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
             bundle.putString("org_image",org_image);
 
             details.setArguments(bundle);
-            // bundle.putString("project_id",data.get(getAdapterPosition()).project_id);
             MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
 
         }

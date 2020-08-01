@@ -69,9 +69,7 @@ public class ProjectsFragment extends Fragment {
             public void onClick(final View view) {
                 if (sharedPreferencesorg.getString("selected",null)== null){
                     progressproj.setVisibility(View.VISIBLE);
-                    Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
 
-                    // TODO add sneekbar
                     Snackbar.make(cont,"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

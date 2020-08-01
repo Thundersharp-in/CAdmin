@@ -98,7 +98,13 @@ public class ProjectDetails extends Fragment {
         descwhole.setText(proj_desc);
         Glide.with(getContext()).load(org_image).into(org_logo2);
 
-        FirebaseDatabase.getInstance().getReference("organisation").child(org_ids).child("projects").child(proj_id).child("users_uid").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance()
+                .getReference("organisation")
+                .child(org_ids)
+                .child("projects")
+                .child(proj_id)
+                .child("users_uid")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
