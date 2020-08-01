@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/messages_header">
 
@@ -17,8 +18,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
-
+    <PreferenceCategory
+        app:title="@string/sync_header">
         <SwitchPreferenceCompat
             app:key="sync"
             app:title="@string/sync_title" />
@@ -29,7 +30,55 @@
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
             app:title="@string/attachment_title" />
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        app:allowDividerBelow="false"
+        app:allowDividerAbove="false"
+        app:title="General Settings">
+
+        <SwitchPreferenceCompat
+            android:enabled="true"
+            android:icon="@drawable/ic_style_black_24dp"
+            app:defaultValue="false"
+            app:key="theme"
+            app:summaryOff="Switch to dark Theme"
+            app:summaryOn="Switch to light Theme"
+            app:title="Theme" />
+
+        <SwitchPreferenceCompat
+        app:enabled="true"
+        app:defaultValue="false"
+        app:key="update"
+        app:title="Update Profile"
+        app:summaryOff="Update Your profile"
+        app:summaryOn="Updated"/>
+
+        <SwitchPreferenceCompat
+            app:enabled="true"
+            app:defaultValue="false"
+            app:key="@string/clear"
+            app:title="Clear Cache"
+            app:summaryOff="Clear cache memory"
+            app:summaryOn="Cleared cache memory"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:allowDividerBelow="false"
+        app:allowDividerAbove="false"
+        app:title="Account Action">
+        <Preference
+            android:key="btndel"
+            android:summary="Reset every thing on CAdmin."
+            android:title="Reset your Account"
+            app:icon="@drawable/ic_settings_backup_restore_black_24dp" />
+
+        <Preference
+            android:key="btndelforever"
+            android:summary="Delete your CAdmin account ! this is not revertible."
+            android:title="Delete your account."
+            app:icon="@drawable/ic_delete_sweep_black_24dp" />
     </PreferenceCategory>
 
 </PreferenceScreen>
