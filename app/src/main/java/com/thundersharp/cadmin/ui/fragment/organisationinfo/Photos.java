@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.GallaryAdapter;
+import com.thundersharp.cadmin.ui.fragment.OrginasationDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +27,25 @@ public class Photos extends Fragment {
 
     List<String> url;
     RecyclerView org_photo_rv;
-    String org_id;
+    String org_id,project_key;
+    //SharedPreferences sharedPreferences;
 
     public Photos() {
+        // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_photos, container, false);
-
+        org_id = OrginasationDetails.org_id;
         org_photo_rv=view.findViewById(R.id.org_photo_rv);
         url=new ArrayList<>();
 
         org_photo_rv.setHasFixedSize(true);
         org_photo_rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        org_photo_rv.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
+        org_photo_rv.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
 
         loadFromServer(org_id);
         return view;

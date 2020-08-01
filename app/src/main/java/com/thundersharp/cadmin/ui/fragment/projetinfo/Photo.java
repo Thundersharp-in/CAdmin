@@ -42,11 +42,11 @@ public class Photo extends Fragment {
         sharedPreferences =getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         gallaryrecuycler= view.findViewById(R.id.gallaryrecuycler);
         gallaryrecuycler.setHasFixedSize(true);
-        gallaryrecuycler.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        gallaryrecuycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         org_id = sharedPreferences.getString("selected",null);
         Bundle bundle = new Bundle();
-        project_key = bundle.getString("project_id");
+        project_key = ProjectDetails.project_key;
 
         if (org_id == null || project_key == null){
             Toast.makeText(getActivity(),"null objects",Toast.LENGTH_SHORT).show();
@@ -75,6 +75,7 @@ public class Photo extends Fragment {
                                 url.add(snapshot1.getValue(String.class));
 
                             }
+                            Toast.makeText(getActivity(),""+url.size(),Toast.LENGTH_SHORT).show();
                             GallaryAdapter gallaryAdapter = new GallaryAdapter(getActivity(),url);
                             gallaryrecuycler.setAdapter(gallaryAdapter);
 

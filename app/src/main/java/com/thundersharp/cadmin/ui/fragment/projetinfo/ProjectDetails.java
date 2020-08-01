@@ -36,6 +36,7 @@ public class ProjectDetails extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
     CircleImageView org_logo2;
+    public static String project_key;
     String proj_name,proj_desc,proj_id,org_ids,org_image;
 
     @Nullable
@@ -65,12 +66,14 @@ public class ProjectDetails extends Fragment {
         org_logo2 = root.findViewById(R.id.org_logo2);
 
         Bundle bundle =this.getArguments();
+        project_key="null";
         if (getArguments()!=null){
             proj_name=bundle.getString("proj_name");
             proj_desc=bundle.getString("proj_desc");
             proj_id=bundle.getString("proj_id");
             org_ids=bundle.getString("org_id");
             org_image=bundle.getString("org_image");
+            project_key=bundle.getString("proj_id");
             setDetails(proj_name,proj_desc,proj_id,org_ids,org_image);
         }else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
