@@ -91,6 +91,7 @@ public class AddProject extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 MainActivity.navController.navigate(R.id.nav_proj);
             }
         });

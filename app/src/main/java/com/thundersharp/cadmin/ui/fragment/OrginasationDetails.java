@@ -39,7 +39,8 @@ public class OrginasationDetails extends Fragment {
     Button btn_mail_manager,edit_org;
     //Organisations orgs;
     CircleImageView org_logo12;
-    String org_name,org_desc,org_id,org_image,organiser_id;
+    String org_name,org_desc,org_image,organiser_id;
+    public static String org_id;
     int users;
 
     @Override
@@ -62,6 +63,7 @@ public class OrginasationDetails extends Fragment {
         btn_mail_manager=root.findViewById(R.id.btn_mail_manager);
         edit_org=root.findViewById(R.id.edit_org);
         users=0;
+        org_id = "null";
 
         Bundle bundle =this.getArguments();
         if (getArguments()!=null){
@@ -70,6 +72,7 @@ public class OrginasationDetails extends Fragment {
             org_id=bundle.getString("org_id");
             org_image=bundle.getString("org_image");
             organiser_id=bundle.getString("organiser_id");
+            org_id = bundle.getString("org_id");
 
            setDetails(org_name,org_desc,org_id,org_image,organiser_id);
         }else {
@@ -108,7 +111,7 @@ public class OrginasationDetails extends Fragment {
 
         TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
         tabAdapter.addFragment(new Users(),null);
-        tabAdapter.addFragment(new Photos(org_id),null);
+        tabAdapter.addFragment(new Photos(),null);
 
 
         viewPager.setAdapter(tabAdapter);
