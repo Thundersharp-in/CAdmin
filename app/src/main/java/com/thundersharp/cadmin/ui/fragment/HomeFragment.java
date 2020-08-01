@@ -257,32 +257,37 @@ public class HomeFragment extends Fragment  {
         listDataHeader = new ArrayList<>();
         listHash = new HashMap<>();
 
-        listDataHeader.add("When will i get my room id and password ?");
-        listDataHeader.add("Payment successful but wallet not updated.");
-        listDataHeader.add("Cashback is not credited");
-        listDataHeader.add("Refund is still not credited to my account");
-        listDataHeader.add("What is Reward wallet");
-        listDataHeader.add("Where i can use my win wallet balance");
+        listDataHeader.add("How to add new Organisation ?");
+        listDataHeader.add("How to add new Project ?");
+        listDataHeader.add("If you added your projects and not able to see that...");
+        listDataHeader.add("How to check the status of your work");
+        listDataHeader.add("About Finance Section");
+        listDataHeader.add("How to add events ");
 
         List<String> edmtDev = new ArrayList<>();
-        edmtDev.add("Room id and password will be provided 10 minutes before the starting time of the match");
+        edmtDev.add("To add new Organisation you can go to the organisation section then 'add organisation' section will open and there you can add your organisation.");
 
         List<String> androidStudio = new ArrayList<>();
-        androidStudio.add("If the transaction is successful then wait for 72 hrs");
+        androidStudio.add("To add new project go to the project section or click on all projects then 'add project' section will appear on the screen and you can add your projects");
 
 
         List<String> xamarin = new ArrayList<>();
-        xamarin.add("");
+        xamarin.add("if you have added your projects and are not able to see that then just scroll up and check the organisation section");
 
 
         List<String> uwp = new ArrayList<>();
-        uwp.add("If the refund transaction is successful then wait for 7 working days .");
+        uwp.add("to check d status of your work go to the work section and there you will get all the progress report of your work");
 
         List<String> uwp1 = new ArrayList<>();
-        uwp1.add("Reward wallet is not your win wallet amount will get credited to your win reward wallet when you refer your friends. you can partially use your win rewards wallet");
+        uwp1.add("In finance section we have added many basic features for users like : \n" +
+                "• basic calculator\n" +
+                "• scientific calculator\n" +
+                "• currency converter\n" +
+                "• unit converter\n" +
+                "• calendar");
 
         List<String> uwp2 = new ArrayList<>();
-        uwp2.add("Till now the amount in the win wallet can only be used to play tournaments in win app only.");
+        uwp2.add("To add events first go to 'organisation calendar section' . Click on the floating button and then event section will appear there.");
 
 
         listHash.put(listDataHeader.get(0),edmtDev);
