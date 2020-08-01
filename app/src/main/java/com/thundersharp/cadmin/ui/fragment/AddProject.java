@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class AddProject extends Fragment {
 
     TextInputLayout p_name, p_desc;
     Button add_project;
+    RelativeLayout containerppp;
     String project_description,project_name;
     FirebaseAuth mAuth;
     SharedPreferences preferences;
@@ -71,6 +73,7 @@ public class AddProject extends Fragment {
         p_name=view.findViewById(R.id.add_project_name);
         p_desc=view.findViewById(R.id.add_project_desc);
         add_project=view.findViewById(R.id.buttoncreatep);
+        containerppp = view.findViewById(R.id.containerppp);
         projectsList = new ArrayList<>();
 
         builder=new AlertDialog.Builder(getActivity());
@@ -91,6 +94,8 @@ public class AddProject extends Fragment {
                 MainActivity.navController.navigate(R.id.nav_proj);
             }
         });
+
+        Toast.makeText(getActivity(),String.valueOf(sharedPreferencesorg.getString("selected","null")),Toast.LENGTH_SHORT).show();
 
         add_project.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,8 +129,14 @@ public class AddProject extends Fragment {
 
                         createProject(addProjectModel);
                     }else {
-                        Snackbar snackbar = Snackbar.make(v,"Server Error : 404",Snackbar.LENGTH_SHORT);
-                        snackbar.show();
+                        //TODO add snackbar
+
+                        Snackbar.make(getView(),"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MainActivity.navController.navigate(R.id.nav_org);
+                            }
+                        }).setActionTextColor(855600).show();
                     }
 
                 }
@@ -174,12 +185,12 @@ public class AddProject extends Fragment {
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("projects")
                 .child(key)
-                .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .setValue(sharedPreferencesorg.getString("selected","null")).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     projectsList.clear();
-                    Projects projects1 = new Projects(key,true);
+                    Projects projects1 = new Projects(key,sharedPreferencesorg.getString("selected","null"));
                     projectsList.add(projects1);
                     SavetoSharedPrefs(projectsList);
                     dialog.dismiss();
@@ -227,7 +238,7 @@ public class AddProject extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Projects projects1 = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
+                    Projects projects1 = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
                     projectsList.add(projects1);
                 }
                 SavetoSharedPrefs(projectsList);

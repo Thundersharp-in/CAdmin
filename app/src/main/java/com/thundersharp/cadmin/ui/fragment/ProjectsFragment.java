@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class ProjectsFragment extends Fragment {
 
     ProgressBar progressproj;
+    RelativeLayout cont;
     RecyclerView recyclerView;
     List<AddProject_model> data;
     List<Projects> list;
@@ -57,6 +59,7 @@ public class ProjectsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         MainActivity.container.setBackground(null);
         progressproj=view.findViewById(R.id.progress_proj);
+        cont = view.findViewById(R.id.cont);
         progressproj.setVisibility(View.GONE);
         refresh_proj=view.findViewById(R.id.refresh_project);
         refresh_proj.setRefreshing(true);
@@ -69,6 +72,13 @@ public class ProjectsFragment extends Fragment {
                     Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
 
                     // TODO add sneekbar
+                    Snackbar.make(cont,"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            MainActivity.navController.navigate(R.id.nav_org);
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.white)).show();
+
                     progressproj.setVisibility(View.GONE);
                 }else {
                     MainActivity.navController.navigate(R.id.nav_add_project);
@@ -179,7 +189,7 @@ public class ProjectsFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
+                                Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
                                 list.add(projects);
                                 progressproj.setVisibility(View.GONE);
                             }
