@@ -91,6 +91,7 @@ public class AddProject extends Fragment {
             }
         });
 
+        Toast.makeText(getActivity(),sharedPreferencesorg.getString("selected",null),Toast.LENGTH_SHORT).show();
         add_project.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,12 +173,12 @@ public class AddProject extends Fragment {
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("projects")
                 .child(key)
-                .setValue(true).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .setValue(sharedPreferencesorg.getString("selected","null")).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     projectsList.clear();
-                    Projects projects1 = new Projects(key,true);
+                    Projects projects1 = new Projects(key,sharedPreferencesorg.getString("selected","null"));
                     projectsList.add(projects1);
                     SavetoSharedPrefs(projectsList);
                     dialog.dismiss();
@@ -225,7 +226,7 @@ public class AddProject extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Projects projects1 = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
+                    Projects projects1 = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
                     projectsList.add(projects1);
                 }
                 SavetoSharedPrefs(projectsList);

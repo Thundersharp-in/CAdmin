@@ -176,7 +176,7 @@ public class ProjectsFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
+                                Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
                                 list.add(projects);
                                 progressproj.setVisibility(View.GONE);
                             }
