@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +40,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class ProjectsFragment extends Fragment {
 
     ProgressBar progressproj;
+    RelativeLayout cont;
     RecyclerView recyclerView;
     List<AddProject_model> data;
     List<Projects> list;
@@ -56,6 +59,7 @@ public class ProjectsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         MainActivity.container.setBackground(null);
         progressproj=view.findViewById(R.id.progress_proj);
+        cont = view.findViewById(R.id.cont);
         progressproj.setVisibility(View.GONE);
         refresh_proj=view.findViewById(R.id.refresh_project);
         refresh_proj.setRefreshing(true);
@@ -66,6 +70,13 @@ public class ProjectsFragment extends Fragment {
                 if (sharedPreferencesorg.getString("selected",null)== null){
                     progressproj.setVisibility(View.VISIBLE);
                     // TODO add sneekbar
+                    Snackbar.make(cont,"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            MainActivity.navController.navigate(R.id.nav_org);
+                        }
+                    }).setActionTextColor(getResources().getColor(R.color.white)).show();
+
                     progressproj.setVisibility(View.GONE);
                 }else {
                     MainActivity.navController.navigate(R.id.nav_add_project);

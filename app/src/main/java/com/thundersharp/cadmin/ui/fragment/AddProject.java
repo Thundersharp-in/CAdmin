@@ -95,7 +95,7 @@ public class AddProject extends Fragment {
             }
         });
 
-        Toast.makeText(getActivity(),String.valueOf(sharedPreferencesorg.getString("selected",null)),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),String.valueOf(sharedPreferencesorg.getString("selected","null")),Toast.LENGTH_SHORT).show();
 
         add_project.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +130,7 @@ public class AddProject extends Fragment {
                         createProject(addProjectModel);
                     }else {
                         //TODO add snackbar
-                        Toast.makeText(getActivity(),"No organisation found create one first",Toast.LENGTH_SHORT).show();
+
                         Snackbar.make(getView(),"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
