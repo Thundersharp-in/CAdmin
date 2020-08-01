@@ -146,9 +146,7 @@ public class ProjectsFragment extends Fragment {
         final List<AddProject_model> dataorg = new ArrayList<>();
 
         for (int i = 0; i<projects.size(); i++){
-
            //checking the project keys
-
             FirebaseDatabase.getInstance()
                     .getReference("organisation")
                     .child(sharedPreferencesorg.getString("selected",null))

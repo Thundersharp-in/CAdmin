@@ -63,16 +63,15 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         editor.putString("org_id",project.getOrganisation_id());
         editor.putString("proj_desc",project.getProjectDesc());
         editor.apply();
-        holder.reference2.child(project.getOrganisation_id()).child("projects").child(project.getProject_id()).child("description").child(String.valueOf(project.isStatus())).addListenerForSingleValueEvent(new ValueEventListener() {
+        holder.reference2.child(project.getOrganisation_id()).child("projects").child(project.getProject_id()).child("description").child("status").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     holder.complete=snapshot.getValue().toString();
-                    if (holder.complete.equals("true")){
-                       Glide.with(mContext).load(R.drawable.complted).into(holder.status);
-
+                    if (holder.complete.equals(true)){
+                        holder.status.setImageResource(R.drawable.complted);
                     }else {
-                        Glide.with(mContext).load(R.drawable.remove).into(holder.status);
+                        holder.status.setImageResource(R.drawable.remove);
                     }
                 }else {
                     Toast.makeText(mContext, "status unknown", Toast.LENGTH_SHORT).show();
@@ -128,6 +127,7 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
             projectDesc = itemView.findViewById(R.id.projectView_projectBio);
             project_id = itemView.findViewById(R.id.text_organiserUid);
             org_image1=itemView.findViewById(R.id.org_image1);
+            status=itemView.findViewById(R.id.status);
             mCurrent = FirebaseAuth.getInstance().getCurrentUser();
             project_uid = mCurrent.getUid();
             reference1= FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("projects");
@@ -148,7 +148,7 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
             bundle.putString("proj_id",detail.getProject_id());
             bundle.putString("org_id",detail.getOrganisation_id());
             bundle.putString("org_image",org_image);
-
+            bundle.putBoolean("proj_status",detail.isStatus());
             details.setArguments(bundle);
             MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
 
