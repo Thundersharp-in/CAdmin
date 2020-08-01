@@ -1,4 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <declare-styleable name="CircleProgressBar">
+        <attr name="min" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="progress" format="integer" />
+        <attr name="progressbarColor" format="color" />
+        <attr name="progressBarThickness" format="dimension" />
+
+    </declare-styleable>
+
+    <declare-styleable name="Theme">
+        <attr name="backgroundcolor" format="color" />
+        <attr name="textcolor" format="color" />
+        <attr name="tintcolor" format="color" />
+        <attr name="iconPreferenceColor" format="reference|color" />
+        <attr name="android:summaryOff" format="color" />
+        <attr name="homemedelcolor" format="color" />
+        <attr name="progressTint" format="color" />
+        <attr name="textColor2" format="color" />
+        <attr name="tintFloat" format="color" />
+        <attr name="colorbottom" format="color" />
+        <attr name="android:summaryOn" format="color" />
+        <attr name="buttoncolor" format="color" />
+        <attr name="cardBackgroundColor" format="color" />
+        <attr name="buttonTint" format="color" />
+        <attr name="text3" format="color" />
+    </declare-styleable>
+
 </resources>

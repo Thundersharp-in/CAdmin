@@ -120,9 +120,6 @@ public class ProjectsFragment extends Fragment {
             progressproj.setVisibility(View.VISIBLE);
             if (datapref == null){
 
-                imageView.setVisibility(View.VISIBLE);
-                imageView.setImageResource(R.drawable.sad);
-
                 Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
                 fetchProfileFromServer();
 
@@ -200,6 +197,10 @@ public class ProjectsFragment extends Fragment {
                                 progressproj.setVisibility(View.GONE);
                             }
                             SavetoSharedPrefs(list);
+                        }
+                        else {
+                            imageView.setVisibility(View.VISIBLE);
+                            imageView.setImageResource(R.drawable.sad);
                         }
                     }
 
