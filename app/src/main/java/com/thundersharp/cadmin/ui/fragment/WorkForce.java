@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.ProjectDesc;
 import com.thundersharp.cadmin.core.globalAdapters.WorkForceAdapter;
-import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.core.globalmodels.WorkforceModel;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
@@ -30,10 +30,11 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class WorkForce extends Fragment {
 
     ProgressBar progresswf;
-    private AddProject_model project;
+    private ProjectDesc project;
     List<WorkforceModel> workforceModels;
     RecyclerView rv_work_force;
     ImageView imageView;
+    TextView textView;
 
     /**
      * @ spinner to be added for for displaying 1 project at a time in a org. changes apply for manager/employee
@@ -55,7 +56,8 @@ public class WorkForce extends Fragment {
         View view = inflater.inflate(R.layout.fragment_work_force, container, false);
         progresswf=view.findViewById(R.id.progresswork_force);
         progresswf.setVisibility(View.GONE);
-        imageView = view.findViewById(R.id.imageView);
+        imageView = view.findViewById(R.id.projectImage);
+        textView = view.findViewById(R.id.tv);
         workforceModels = new ArrayList<>();
         rv_work_force= view.findViewById(R.id.rv_work_force);
         rv_work_force.setHasFixedSize(true);
@@ -78,8 +80,15 @@ public class WorkForce extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    textView.setVisibility(View.VISIBLE);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageResource(R.drawable.sad);
+                }
                 if (snapshot.exists()){
-                    savemodel(snapshot.getValue(AddProject_model.class));
+                    textView.setVisibility(View.GONE);
+                    imageView.setVisibility(View.GONE);
+                    savemodel(snapshot.getValue(ProjectDesc.class));
                     FirebaseDatabase.getInstance()
                             .getReference("organisation")
                             .child("1234567890")
@@ -117,7 +126,7 @@ public class WorkForce extends Fragment {
         });
     }
 
-    private  void savemodel(AddProject_model projectDesc){
+    private  void savemodel(ProjectDesc projectDesc){
         this.project=projectDesc;
     }
 }

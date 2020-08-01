@@ -1,37 +1,6 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/messages_header">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        app:title="@string/sync_header">
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
-    </PreferenceCategory>
-
     <PreferenceCategory
         app:allowDividerBelow="false"
         app:allowDividerAbove="false"
@@ -39,7 +8,7 @@
 
         <SwitchPreferenceCompat
             android:enabled="true"
-            android:icon="@drawable/ic_baseline_settings_24"
+            app:icon="@drawable/ic_baseline_photo_filter_24"
             app:defaultValue="false"
             app:key="theme"
             app:summaryOff="Switch to dark Theme"
@@ -47,20 +16,41 @@
             app:title="Theme" />
 
         <SwitchPreferenceCompat
-        app:enabled="true"
-        app:defaultValue="false"
-        app:key="update"
-        app:title="Update Profile"
-        app:summaryOff="Update Your profile"
-        app:summaryOn="Updated"/>
+            app:enabled="true"
+            app:defaultValue="false"
+            app:key="update"
+            app:title="Update Profile"
+            app:icon="@drawable/ic_baseline_update_24"
+            app:summaryOff="Update Your profile"
+            app:summaryOn="Update Your profile"/>
 
-        <SwitchPreferenceCompat
+        <Preference
             app:enabled="true"
             app:defaultValue="false"
             app:key="@string/clear"
             app:title="Clear Cache"
+            app:icon="@drawable/ic_baseline_memory_24"
             app:summaryOff="Clear cache memory"
-            app:summaryOn="Cleared cache memory"/>
+            app:summaryOn="Clear cache memory"/>
+
+        <SwitchPreferenceCompat
+            app:enabled="true"
+            app:defaultValue="false"
+            app:key="@string/app_name"
+            app:title="App Update Alert"
+            app:icon="@drawable/ic_baseline_system_update_24"
+            app:summaryOff="On this for getting our app update notification"
+            app:summaryOn="Off this for not getting our app update notification"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <EditTextPreference
+            app:key="signature"
+            app:title="@string/signature_title"
+            app:icon="@drawable/ic_baseline_fingerprint_24"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
@@ -68,17 +58,24 @@
         app:allowDividerBelow="false"
         app:allowDividerAbove="false"
         app:title="Account Action">
-        <Preference
-            android:key="btndel"
-            android:summary="Reset every thing on CAdmin."
-            android:title="Reset your Account"
-            app:icon="@drawable/ic_baseline_settings_24" />
 
         <Preference
             android:key="btndelforever"
             android:summary="Delete your CAdmin account ! this is not revertible."
             android:title="Delete your account."
-            app:icon="@drawable/ic_baseline_delete_outline_24" />
+            app:icon="@drawable/ic_baseline_delete_sweep_24" />
+
+        <Preference
+            android:key="resetOrganisation"
+            android:summary="Delete all organisation."
+            android:title="Reset Organisations"
+            app:icon="@drawable/ic_baseline_group_work_24" />
+
+        <Preference
+            android:key="resetProjects"
+            android:summary="Delete all projects."
+            android:title="Reset All Projects"
+            app:icon="@drawable/ic_baseline_work_24" />
     </PreferenceCategory>
 
 </PreferenceScreen>

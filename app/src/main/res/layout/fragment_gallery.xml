@@ -35,13 +35,28 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
         </androidx.recyclerview.widget.RecyclerView>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:visibility="gone"/>
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/imageView"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:fontFamily="@font/roboto"
+        android:text="No Organisation Added Yet, Please add your Organisation!!!"
+        android:layout_below="@+id/imageView"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>
