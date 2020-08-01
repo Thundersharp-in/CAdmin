@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -123,7 +124,8 @@ public class AddProject extends Fragment {
 
                         createProject(addProjectModel);
                     }else {
-                        //TODO add snackbar
+                        Snackbar snackbar = Snackbar.make(v,"Server Error : 404",Snackbar.LENGTH_SHORT);
+                        snackbar.show();
                     }
 
                 }
