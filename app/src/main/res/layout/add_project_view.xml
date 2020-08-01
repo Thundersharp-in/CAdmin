@@ -24,11 +24,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-
             android:layout_alignParentEnd="true"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
-
             android:layout_margin="2dp"
             >
             <ImageView
@@ -40,18 +38,20 @@
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_margin="2dp"
-                android:text="Status"
-                android:textAlignment="center"
-                android:textColor="#000" />
+                android:src="@drawable/complted"
+                android:background="@color/green_A700"
+                android:layout_gravity="center"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/l2"
+            android:layout_marginEnd="5dp"
             android:orientation="vertical"
             >
             <LinearLayout

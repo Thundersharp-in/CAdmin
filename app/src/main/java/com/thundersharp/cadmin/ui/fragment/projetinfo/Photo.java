@@ -45,7 +45,7 @@ public class Photo extends Fragment {
         gallaryrecuycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         org_id = sharedPreferences.getString("selected",null);
-        Bundle bundle = new Bundle();
+
         project_key = ProjectDetails.project_key;
 
         if (org_id == null || project_key == null){

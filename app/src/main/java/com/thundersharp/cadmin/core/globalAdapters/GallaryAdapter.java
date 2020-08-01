@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
 
     Context context;
     List<String> imageuri;
+    MediaController mediaController;
 
     public GallaryAdapter(Context context , List<String> imageuri){
         this.context = context;

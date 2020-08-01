@@ -65,6 +65,7 @@ public class ProjectsFragment extends Fragment {
         progressproj.setVisibility(View.GONE);
         refresh_proj=view.findViewById(R.id.refresh_project);
         refresh_proj.setRefreshing(true);
+        imageView=view.findViewById(R.id.projectImage);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_playlist_add_24, getActivity().getTheme()));
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,9 +97,11 @@ public class ProjectsFragment extends Fragment {
         refresh_proj.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                refresh_proj.setRefreshing(true);
                 progressproj.setVisibility(View.VISIBLE);
                 fetchProfileFromServer();
                 progressproj.setVisibility(View.GONE);
+                refresh_proj.setRefreshing(false);
             }
         });
                      /* refresh.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +140,7 @@ public class ProjectsFragment extends Fragment {
             progressproj.setVisibility(View.GONE);
             refresh_proj.setRefreshing(false);
         }
-
+        refresh_proj.setRefreshing(false);
         return view;
     }
 

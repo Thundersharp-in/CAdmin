@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,13 +63,36 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         editor.putString("org_id",project.getOrganisation_id());
         editor.putString("proj_desc",project.getProjectDesc());
         editor.apply();
+        holder.reference2.child(project.getOrganisation_id()).child("projects").child(project.getProject_id()).child("description").child(String.valueOf(project.isStatus())).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    holder.complete=snapshot.getValue().toString();
+                    if (holder.complete.equals("true")){
+                       Glide.with(mContext).load(R.drawable.complted).into(holder.status);
 
+                    }else {
+                        Glide.with(mContext).load(R.drawable.remove).into(holder.status);
+                    }
+                }else {
+                    Toast.makeText(mContext, "status unknown", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         holder.reference2.child(project.getOrganisation_id()).child("description").child("company_logo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     holder.org_image=snapshot.getValue().toString();
                     Glide.with(mContext).load(holder.org_image).into(holder.org_image1);
+                }else {
+                    Toast.makeText(mContext, "no org logo found", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -94,8 +118,8 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         DatabaseReference reference1,reference2;
         FirebaseUser mCurrent;
         String project_uid;
-        ImageView org_image1;
-        String org_image;
+        ImageView org_image1,status;
+        String org_image,complete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
