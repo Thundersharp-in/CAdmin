@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class Organisation extends Fragment {
     SwipeRefreshLayout refresh;
     ProgressBar progressorg;
     ImageView imageView;
+    TextView textView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -65,6 +67,7 @@ public class Organisation extends Fragment {
         preferences= getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);
+        textView = root.findViewById(R.id.tv);
         imageView = root.findViewById(R.id.imageView);
         refresh=root.findViewById(R.id.refresh);
         refresh.setRefreshing(true);
@@ -133,7 +136,15 @@ public class Organisation extends Fragment {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()){
+
+                    if (!snapshot.exists()){
+                        textView.setVisibility(View.VISIBLE);
+                        imageView.setVisibility(View.VISIBLE);
+                        imageView.setImageResource(R.drawable.sad);
+                    }
+                    else if (snapshot.exists()){
+                        textView.setVisibility(View.GONE);
+                        imageView.setVisibility(View.GONE);
                         //dataorg.clear();
                         dataorg.add(snapshot.getValue(org_details_model.class));
                         savefetchListofAllOrganisation(dataorg);

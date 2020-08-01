@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,8 @@ public class Photos extends Fragment {
 
     List<String> url;
     RecyclerView org_photo_rv;
+    ImageView org_imageView;
+    TextView org_textView;
     String org_id,project_key;
     //SharedPreferences sharedPreferences;
 
@@ -41,6 +45,8 @@ public class Photos extends Fragment {
         View view=inflater.inflate(R.layout.fragment_photos, container, false);
         org_id = OrginasationDetails.org_id;
         org_photo_rv=view.findViewById(R.id.org_photo_rv);
+        org_imageView = view.findViewById(R.id.org_imageView_photos);
+        org_textView = view.findViewById(R.id.org_tv_photos);
         url=new ArrayList<>();
 
         org_photo_rv.setHasFixedSize(true);
@@ -59,7 +65,14 @@ public class Photos extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()){
+                            org_imageView.setVisibility(View.VISIBLE);
+                            org_imageView.setImageResource(R.drawable.sad);
+                            org_textView.setVisibility(View.VISIBLE);
+                        }
                         if (snapshot.exists()){
+                            org_textView.setVisibility(View.GONE);
+                            org_imageView.setVisibility(View.GONE);
                             for (DataSnapshot snapshot1 : snapshot.getChildren()){
                                 url.add(snapshot1.getValue(String.class));
                             }

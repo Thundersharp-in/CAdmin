@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +33,8 @@ public class Photo extends Fragment {
     RecyclerView gallaryrecuycler;
     String org_id,project_key;
     SharedPreferences sharedPreferences;
+    ImageView imageView;
+    TextView textView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +45,8 @@ public class Photo extends Fragment {
         url = new ArrayList<>();
         sharedPreferences =getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         gallaryrecuycler= view.findViewById(R.id.gallaryrecuycler);
+        imageView = view.findViewById(R.id.imageView_photo);
+        textView = view.findViewById(R.id.tv_photo);
         gallaryrecuycler.setHasFixedSize(true);
         gallaryrecuycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
@@ -70,6 +76,11 @@ public class Photo extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()){
+                            imageView.setVisibility(View.VISIBLE);
+                            imageView.setImageResource(R.drawable.sad);
+                            textView.setVisibility(View.VISIBLE);
+                        }
                         if (snapshot.exists()){
                             for (DataSnapshot snapshot1 : snapshot.getChildren()){
                                 url.add(snapshot1.getValue(String.class));

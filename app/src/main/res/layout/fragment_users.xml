@@ -6,5 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.organisationinfo.Users">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/org_imageView_users"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/org_tv_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No User Added Yet!!!"
+        android:layout_below="@+id/org_imageView_users"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:padding="4dp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto"
+        android:textStyle="italic"
+        android:visibility="gone"/>
 
 </RelativeLayout>

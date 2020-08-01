@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class ProjectsFragment extends Fragment {
 
     ImageView imageView;
+    TextView textView;
     ProgressBar progressproj;
     RelativeLayout cont;
     RecyclerView recyclerView;
@@ -61,7 +63,9 @@ public class ProjectsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         MainActivity.container.setBackground(null);
         progressproj=view.findViewById(R.id.progress_proj);
+        textView = view.findViewById(R.id.tv);
         cont = view.findViewById(R.id.cont);
+        imageView = view.findViewById(R.id.projectImage);
         progressproj.setVisibility(View.GONE);
         refresh_proj=view.findViewById(R.id.refresh_project);
         refresh_proj.setRefreshing(true);
@@ -71,6 +75,7 @@ public class ProjectsFragment extends Fragment {
             public void onClick(final View view) {
                 if (sharedPreferencesorg.getString("selected",null)== null){
                     progressproj.setVisibility(View.VISIBLE);
+
                     Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
 
                     // TODO add sneekbar
@@ -123,7 +128,6 @@ public class ProjectsFragment extends Fragment {
                 Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
                 fetchProfileFromServer();
 
-
             }else {
                 Toast.makeText(getActivity(), "Loaded from shared prefs", Toast.LENGTH_SHORT).show();
                 fetchListofAllProject(loadDataOrgfromPrefs());
@@ -131,6 +135,7 @@ public class ProjectsFragment extends Fragment {
             refresh_proj.setRefreshing(false);
             progressproj.setVisibility(View.GONE);
         }else {
+
             progressproj.setVisibility(View.VISIBLE);
             //TODO add sneekbar
             progressproj.setVisibility(View.GONE);
@@ -157,7 +162,14 @@ public class ProjectsFragment extends Fragment {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()){
+                            if (!snapshot.exists()){
+                                textView.setVisibility(View.VISIBLE);
+                                imageView.setVisibility(View.VISIBLE);
+                                imageView.setImageResource(R.drawable.sad);
+                            }
+                            else if (snapshot.exists()){
+                                textView.setVisibility(View.GONE);
+                                imageView.setVisibility(View.GONE);
                                 dataorg.add(snapshot.getValue(AddProject_model.class));
                                 savefetchListofAllProjects(dataorg);
                                 //checking the size
@@ -190,7 +202,7 @@ public class ProjectsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
+                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                                 Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
                                 list.add(projects);
@@ -198,10 +210,7 @@ public class ProjectsFragment extends Fragment {
                             }
                             SavetoSharedPrefs(list);
                         }
-                        else {
-                            imageView.setVisibility(View.VISIBLE);
-                            imageView.setImageResource(R.drawable.sad);
-                        }
+
                     }
 
                     @Override

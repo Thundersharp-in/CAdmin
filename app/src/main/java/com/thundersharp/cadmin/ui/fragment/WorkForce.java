@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class WorkForce extends Fragment {
     List<WorkforceModel> workforceModels;
     RecyclerView rv_work_force;
     ImageView imageView;
+    TextView textView;
 
     /**
      * @ spinner to be added for for displaying 1 project at a time in a org. changes apply for manager/employee
@@ -54,7 +56,8 @@ public class WorkForce extends Fragment {
         View view = inflater.inflate(R.layout.fragment_work_force, container, false);
         progresswf=view.findViewById(R.id.progresswork_force);
         progresswf.setVisibility(View.GONE);
-        imageView = view.findViewById(R.id.imageView);
+        imageView = view.findViewById(R.id.projectImage);
+        textView = view.findViewById(R.id.tv);
         workforceModels = new ArrayList<>();
         rv_work_force= view.findViewById(R.id.rv_work_force);
         rv_work_force.setHasFixedSize(true);
@@ -77,7 +80,14 @@ public class WorkForce extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()){
+                    textView.setVisibility(View.VISIBLE);
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageResource(R.drawable.sad);
+                }
                 if (snapshot.exists()){
+                    textView.setVisibility(View.GONE);
+                    imageView.setVisibility(View.GONE);
                     savemodel(snapshot.getValue(ProjectDesc.class));
                     FirebaseDatabase.getInstance()
                             .getReference("organisation")
