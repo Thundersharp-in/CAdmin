@@ -71,7 +71,7 @@ public class OrginasationDetails extends Fragment {
             org_image=bundle.getString("org_image");
             organiser_id=bundle.getString("organiser_id");
 
-           setDetails(org_name,org_desc,org_id,org_image,organiser_id);//TODO error
+           setDetails(org_name,org_desc,org_id,org_image,organiser_id);
         }else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
         }
@@ -124,11 +124,9 @@ public class OrginasationDetails extends Fragment {
     private void setDetails(String org_name, String org_desc, final String org_id,final String org_image, String organiser_id) {
         String organiser_id1=organiser_id;
         String image_view=org_image;
-        detail_org_name.setText(org_name);//TODO something
+        detail_org_name.setText(org_name);
         descwhole1.setText(org_desc);
-        //Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo);
         Glide.with(getContext()).load(org_image).into(org_logo12);
-        //org_logo12.setImageURI(Uri.parse(org_image));
         FirebaseDatabase.getInstance()
                 .getReference("organisation")
                 .child(org_id)

@@ -32,12 +32,11 @@
                 android:layout_margin="2dp"
                 >
                 <ImageView
-                    android:id="@+id/profile_image"
+                    android:id="@+id/org_image1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
                     android:padding="2dp"
-
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_launcher" />
 
@@ -56,7 +55,10 @@
                 android:orientation="vertical"
                 >
                 <LinearLayout
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="@dimen/padding_10"
+                    android:layout_marginEnd="@dimen/padding_10"
+                    android:layout_marginBottom="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -68,8 +70,8 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Project :"
-                        android:layout_marginStart="@dimen/padding_10"
-                        android:textColor="#FF9800"
+                        android:textColor="#000000"
+                        android:layout_margin="5dp"
                         android:paddingStart="@dimen/padding_10"
                         android:textSize="15sp"
 
@@ -81,13 +83,17 @@
                         android:layout_marginEnd="@dimen/padding_10"
                         android:layout_weight="1"
                         android:gravity="start"
+                        android:layout_margin="5dp"
                         android:paddingStart="@dimen/padding_10"
                         android:text="Id:15478954"
                         android:textStyle="bold"
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="@dimen/padding_10"
+                    android:layout_marginEnd="@dimen/padding_10"
+                    android:layout_marginBottom="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -99,9 +105,9 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:text="Project Name :"
-                        android:layout_marginStart="@dimen/padding_10"
+                        android:layout_margin="5dp"
                         android:paddingStart="@dimen/padding_10"
-                        android:textColor="#FF9800"
+                        android:textColor="#000000"
                         android:textSize="15sp"
 
                         />
@@ -110,15 +116,18 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/padding_10"
                         android:gravity="start"
+                        android:layout_margin="5dp"
                         android:paddingStart="@dimen/padding_10"
                         android:text="CAdmin"
                         android:textStyle="bold"
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="@dimen/padding_10"
+                    android:layout_marginEnd="@dimen/padding_10"
+                    android:layout_marginBottom="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -128,10 +137,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto"
                         android:text="Project Description :"
-                        android:layout_marginEnd="@dimen/padding_10"
-                        android:layout_marginStart="@dimen/padding_10"
+                        android:layout_margin="5dp"
                         android:paddingStart="@dimen/padding_10"
-                        android:textColor="#FF9800"
+                        android:textColor="#000000"
                         android:textSize="15sp"
 
                         />
@@ -141,12 +149,11 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="2dp"
                         android:gravity="start"
-                        android:layout_marginStart="@dimen/padding_10"
+                        android:layout_margin="5dp"
                         android:paddingStart="@dimen/padding_10"
                         android:text="this is for organisation jgjgpjsmgokigfpodsm,vpmvposmorkvmofkmvofmkvpofmkvof"
-                        android:textStyle="italic"
+                        android:textStyle="normal"
                         android:layout_marginBottom="2dp"
-                        android:layout_marginEnd="@dimen/padding_10"
                         />
 
                 </LinearLayout>

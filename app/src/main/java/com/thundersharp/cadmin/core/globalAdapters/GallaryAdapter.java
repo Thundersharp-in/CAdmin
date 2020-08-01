@@ -33,7 +33,7 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.grid_image,parent,false);//grid_image item_org_images
+        View view = LayoutInflater.from(context).inflate(R.layout.grid_image,parent,false); //item_org_images
         return new ViewHolder(view);
     }
 

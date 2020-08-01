@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class HomeFragment extends Fragment  {
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment  {
     RecyclerView recyclervieworg;
     Animation fadein,fadeout,clockwise;
     HomeOrgAdapter homeOrgAdapter;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences,sf1;
     ExpandableListView faqholder;
     private ExpandableListAdapter listAdapter;
     private List<String> listDataHeader;
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment  {
     TextView txt_proj_name,txt_proj_id,txt_org_id,txt_desc;
     ImageView org_image;
     Button btn_proj_detail;
+    String proj_name,proj_id,org_id,proj_desc;
     CardView cv;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,6 +79,7 @@ public class HomeFragment extends Fragment  {
         clockwise = AnimationUtils.loadAnimation(getActivity(),R.anim.clockwise_rotate);
         recyclervieworg=root.findViewById(R.id.recyclervieworg);
         sharedPreferences = getActivity().getSharedPreferences("all_organisation", Context.MODE_PRIVATE);
+        sf1=getActivity().getSharedPreferences("last_visited_proj", MODE_PRIVATE);
         progressBar=root.findViewById(R.id.progresshome);
         progressBar.setVisibility(View.GONE);
         relq = root.findViewById(R.id.relq);
@@ -99,7 +102,17 @@ public class HomeFragment extends Fragment  {
         cv =root.findViewById(R.id.cv);
 
         loadOrganisation();
-        // TODO loadLatestProject();
+        //TODO add gif
+        proj_name=sf1.getString("proj_name","no project till");
+        proj_id=sf1.getString("proj_id","no project till");
+        org_id=sf1.getString("org_id","no project till");
+        proj_desc=sf1.getString("proj_desc","no project till");
+        txt_proj_name.setText(proj_name);
+        txt_proj_id.setText(proj_id);
+        txt_org_id.setText(org_id);
+        txt_desc.setText(proj_desc);
+
+
         relq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

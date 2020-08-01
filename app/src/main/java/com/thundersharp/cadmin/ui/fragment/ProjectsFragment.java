@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,6 +66,8 @@ public class ProjectsFragment extends Fragment {
             public void onClick(final View view) {
                 if (sharedPreferencesorg.getString("selected",null)== null){
                     progressproj.setVisibility(View.VISIBLE);
+                    Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
+
                     // TODO add sneekbar
                     progressproj.setVisibility(View.GONE);
                 }else {
@@ -130,7 +133,7 @@ public class ProjectsFragment extends Fragment {
 
         for (int i = 0; i<projects.size(); i++){
 
-            Toast.makeText(getContext(),projects.get(i).getProjectKey(),Toast.LENGTH_SHORT).show();
+           //checking the project keys
 
             FirebaseDatabase.getInstance()
                     .getReference("organisation")
@@ -144,7 +147,7 @@ public class ProjectsFragment extends Fragment {
                             if (snapshot.exists()){
                                 dataorg.add(snapshot.getValue(AddProject_model.class));
                                 savefetchListofAllProjects(dataorg);
-                                Toast.makeText(getActivity(), String.valueOf(dataorg.size()), Toast.LENGTH_SHORT).show();
+                                //checking the size
                             }
                             AddProjectViewAdapter addProjectViewAdapter = new AddProjectViewAdapter(getActivity(),dataorg);
                             recyclerView.setAdapter(addProjectViewAdapter);

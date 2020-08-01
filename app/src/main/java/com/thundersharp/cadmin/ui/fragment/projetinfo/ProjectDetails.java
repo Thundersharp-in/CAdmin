@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,17 +14,29 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class ProjectDetails extends Fragment {
 
+    TextView projtittle,descwhole,project_users,no_of_todo;
+    ImageView completed_iv;
+    Button edit_proj,mail_manager;
     TabLayout tabLayout;
     ViewPager viewPager;
+    CircleImageView org_logo2;
+    String proj_name,proj_desc,proj_id,org_ids,org_image;
 
     @Nullable
     @Override
@@ -40,6 +55,27 @@ public class ProjectDetails extends Fragment {
         tabLayout = root.findViewById(R.id.sliding_tabs);
         viewPager = root.findViewById(R.id.viewpager);
 
+        projtittle = root.findViewById(R.id.projtittle);
+        descwhole = root.findViewById(R.id.descwhole);
+        project_users = root.findViewById(R.id.project_users);
+        no_of_todo = root.findViewById(R.id.no_of_todo);
+        completed_iv = root.findViewById(R.id.completed_iv);
+        mail_manager = root.findViewById(R.id.mail_manager);
+        edit_proj = root.findViewById(R.id.edit_proj);
+        org_logo2 = root.findViewById(R.id.org_logo2);
+
+        Bundle bundle =this.getArguments();
+        if (getArguments()!=null){
+            proj_name=bundle.getString("proj_name");
+            proj_desc=bundle.getString("proj_desc");
+            proj_id=bundle.getString("proj_id");
+            org_ids=bundle.getString("org_id");
+            org_image=bundle.getString("org_image");
+            setDetails(proj_name,proj_desc,proj_id,org_ids,org_image);
+        }else {
+            Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
+        }
+
         TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
         tabAdapter.addFragment(new Photo(), null);
         tabAdapter.addFragment(new Files(), null);
@@ -55,5 +91,30 @@ public class ProjectDetails extends Fragment {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);
 
         return root;
+    }
+
+    private void setDetails(String proj_name, String proj_desc, String proj_id, String org_ids,String org_image) {
+        projtittle.setText(proj_name);
+        descwhole.setText(proj_desc);
+        Glide.with(getContext()).load(org_image).into(org_logo2);
+
+        FirebaseDatabase.getInstance().getReference("organisation").child(org_ids).child("projects").child(proj_id).child("users_uid").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    long users=snapshot.getChildrenCount();
+                    project_users.setText(String.valueOf(users));
+
+                }else {
+                    Toast.makeText(getActivity(), "No users are there", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }
