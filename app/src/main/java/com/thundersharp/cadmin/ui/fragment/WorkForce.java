@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ public class WorkForce extends Fragment {
     private ProjectDesc project;
     List<WorkforceModel> workforceModels;
     RecyclerView rv_work_force;
+    ImageView imageView;
 
     /**
      * @ spinner to be added for for displaying 1 project at a time in a org. changes apply for manager/employee
@@ -52,6 +54,7 @@ public class WorkForce extends Fragment {
         View view = inflater.inflate(R.layout.fragment_work_force, container, false);
         progresswf=view.findViewById(R.id.progresswork_force);
         progresswf.setVisibility(View.GONE);
+        imageView = view.findViewById(R.id.imageView);
         workforceModels = new ArrayList<>();
         rv_work_force= view.findViewById(R.id.rv_work_force);
         rv_work_force.setHasFixedSize(true);
@@ -100,6 +103,9 @@ public class WorkForce extends Fragment {
                                 }
                             });
 
+                } else {
+                    imageView.setVisibility(View.VISIBLE);
+                    imageView.setImageResource(R.drawable.sad);
                 }
             }
 

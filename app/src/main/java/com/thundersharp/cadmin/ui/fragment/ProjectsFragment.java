@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class ProjectsFragment extends Fragment {
 
+    ImageView imageView;
     ProgressBar progressproj;
     RelativeLayout cont;
     RecyclerView recyclerView;
@@ -117,6 +119,10 @@ public class ProjectsFragment extends Fragment {
             List<Projects> datapref = loadDataOrgfromPrefs();
             progressproj.setVisibility(View.VISIBLE);
             if (datapref == null){
+
+                imageView.setVisibility(View.VISIBLE);
+                imageView.setImageResource(R.drawable.sad);
+
                 Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
                 fetchProfileFromServer();
 

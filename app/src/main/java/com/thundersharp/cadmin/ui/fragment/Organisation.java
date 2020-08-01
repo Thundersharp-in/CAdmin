@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class Organisation extends Fragment {
     SharedPreferences preferences,sharedPreferencesOrglist;
     SwipeRefreshLayout refresh;
     ProgressBar progressorg;
+    ImageView imageView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,6 +65,7 @@ public class Organisation extends Fragment {
         preferences= getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);
+        imageView = root.findViewById(R.id.imageView);
         refresh=root.findViewById(R.id.refresh);
         refresh.setRefreshing(true);
         progressorg=root.findViewById(R.id.progressorg);
@@ -79,6 +82,10 @@ public class Organisation extends Fragment {
 
         if (datapref == null){
             progressorg.setVisibility(View.VISIBLE);
+
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(R.drawable.sad);
+
             Toast.makeText(getActivity(),"profile server",Toast.LENGTH_SHORT).show();
             fetchProfilefromsever();
             progressorg.setVisibility(View.GONE);
@@ -281,10 +288,16 @@ public class Organisation extends Fragment {
 
             editor1.clear();
             editor1.apply();
+//            project_rv.setVisibility(View.GONE);
+//            imageView.setVisibility(View.VISIBLE);
+//            imageView.setImageResource(R.drawable.sad);
+
             Toast.makeText(getActivity(),"No data to display",Toast.LENGTH_LONG).show();
             refresh.setRefreshing(false);
 
-        }else fetchListofAllOrganisation(organisations);
+        }else
+//            imageView.setVisibility(View.GONE);
+            fetchListofAllOrganisation(organisations);
 
    /*     if (dataprevious == null || dataprevious.isEmpty()){
             String data = gson.toJson(organisations);
