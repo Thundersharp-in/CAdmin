@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +45,8 @@ import com.thundersharp.cadmin.ui.activity.Login_reg;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -72,7 +75,7 @@ public class Profile extends Fragment {
     ProgressBar progressprofile;
     StorageReference  storageReference;
     UserData userData;
-
+    String DISPLAY_NAME , DISPLAY_EMAIL = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -152,7 +155,7 @@ public class Profile extends Fragment {
                     progressprofile.setVisibility(View.GONE);
                 }
                 else {
-                    progressprofile.setVisibility(View.VISIBLE);
+                    //progressprofile.setVisibility(View.VISIBLE);
                     editable = true;
                     loadDatafromDatabase();
                     edit_username.setEnabled(true);
@@ -168,9 +171,36 @@ public class Profile extends Fragment {
                             Intent photoPicker=new Intent(Intent.ACTION_PICK);
                             photoPicker.setType("image/*");
                             startActivityForResult(photoPicker,1);
+
+                            /*
+                            String Display_name = name.getText().toString();
+
+                            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                            UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(Display_name).build();
+
+                            firebaseUser.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getContext(), "Successfully updated", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            */
+
+//                            if (isNameChanged() || isEmailCHanged()){
+//                                Toast.makeText(getContext(), "Data has been changed", Toast.LENGTH_SHORT).show();
+//
+//
+
                         }
                     });
-                    progressprofile.setVisibility(View.GONE);
+                    //progressprofile.setVisibility(View.GONE);
 
                 }
 
@@ -206,6 +236,26 @@ public class Profile extends Fragment {
 
         return root;
     }
+//
+//    private boolean isEmailCHanged() {
+//        if (!DISPLAY_EMAIL.equals(edit_useremail.getText().toString())){
+//            reference.child(String.valueOf(name)).child("email").setValue(edit_useremail.getText().toString());
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
+//
+//    private boolean isNameChanged() {
+//        if (!DISPLAY_NAME.equals(edit_username.getText().toString())){
+//            reference.child(String.valueOf(name)).child("name").setValue(edit_username.getText().toString());
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//    }
 
     private void loadDatafromDatabase() {
 

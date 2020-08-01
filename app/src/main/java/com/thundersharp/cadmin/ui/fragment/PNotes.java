@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.notes.adapters.NotesAdapter;
 import com.thundersharp.cadmin.core.notes.callbacks.MainActionModeCallback;
@@ -256,6 +257,17 @@ public class PNotes extends Fragment implements NoteEventListener{
                         Note swipedNote = notes.get(viewHolder.getAdapterPosition());
                         if (swipedNote != null) {
                             swipeToDelete(swipedNote, viewHolder);
+
+                            /*
+                            Snackbar snackbar = Snackbar.make(getView(),"Deleted",Snackbar.LENGTH_LONG);
+                            snackbar.setAction("Undo", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //TODO undo deleted notes
+                                }
+                            });
+                            snackbar.show();
+                            */
 
                         }
 
