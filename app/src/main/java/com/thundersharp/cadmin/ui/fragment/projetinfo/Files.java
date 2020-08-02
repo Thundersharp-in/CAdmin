@@ -71,7 +71,7 @@ public class Files extends Fragment {
         sharedPreferences =getActivity().getSharedPreferences("selected_org", Context.MODE_PRIVATE);
         filesRecycler= view.findViewById(R.id.recycler_view_all_files);
         filesRecycler.setHasFixedSize(true);
-        filesRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        filesRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 4));
 
 
         fab1.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +117,8 @@ public class Files extends Fragment {
                         if (snapshot.exists()){
                             imageView.setVisibility(View.GONE);
                             textView.setVisibility(View.GONE);
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                            for (DataSnapshot snapshot1 : snapshot.getChildren())
+                            {
                                 url.add(snapshot1.getValue(String.class));
 
                             }
