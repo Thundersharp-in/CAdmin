@@ -2,15 +2,31 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="130dp"
+    android:background="@color/grey_300"
+    android:layout_margin="1dp">
 
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="100dp"
-        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:src="@drawable/pdfred"
+        android:layout_above="@id/namepdf"
         android:layout_margin="4dp"
+        android:padding="@dimen/padding_10"
         android:elevation="5dp"
         android:id="@+id/pdf_viewer"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pdf name"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/namepdf"/>
 
 </RelativeLayout>

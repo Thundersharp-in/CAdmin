@@ -26,6 +26,8 @@ import com.thundersharp.cadmin.core.globalAdapters.GallaryAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
+
 
 public class Photo extends Fragment {
 
@@ -41,6 +43,17 @@ public class Photo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_photo, container, false);
+
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_add_photo_alternate_24,getActivity().getTheme()));
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //selectPdf();
+
+            }
+        });
 
         url = new ArrayList<>();
         sharedPreferences =getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);

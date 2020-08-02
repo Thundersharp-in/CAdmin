@@ -33,14 +33,5 @@
         android:id="@+id/recyclerVideo"
         shimmer:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/upload_videos"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp"
-        android:src="@drawable/ic_add_black_24dp"
-        shimmer:rippleColor="@color/yellow_50"/>
 
 </RelativeLayout>

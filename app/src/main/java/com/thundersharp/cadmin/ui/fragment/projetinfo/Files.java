@@ -35,11 +35,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.PdfAdapter;
+import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class Files extends Fragment {
 
@@ -61,9 +63,18 @@ public class Files extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
+        MainActivity.floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_note_add_24,getActivity().getTheme()));
+
+        MainActivity.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                selectPdf();
+
+            }
+        });
         imageView = view.findViewById(R.id.imageView_files);
         textView = view.findViewById(R.id.tv_files);
-        fab1 = view.findViewById(R.id.upload_files);
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
 
@@ -71,15 +82,8 @@ public class Files extends Fragment {
         sharedPreferences =getActivity().getSharedPreferences("selected_org", Context.MODE_PRIVATE);
         filesRecycler= view.findViewById(R.id.recycler_view_all_files);
         filesRecycler.setHasFixedSize(true);
-        filesRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+        filesRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
-
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectPdf();
-            }
-        });
 
         org_id = sharedPreferences.getString("selected",null);
 
@@ -105,7 +109,7 @@ public class Files extends Fragment {
                 .child(org_id)
                 .child("projects")
                 .child(project_key)
-                .child("images")
+                .child("pdfFiles")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -167,24 +171,30 @@ public class Files extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        String url = taskSnapshot.getMetadata().toString();
-                        DatabaseReference reference = database.getReference("organisation")
-                                .child(org_id)
-                                .child("projects")
-                                .child(project_key)
-                                .child("pdfFiles");
-                        reference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "File Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "File not uploaded", Toast.LENGTH_SHORT).show();
-                                }
+                            public void onSuccess(Uri uri) {
+                                String url = uri.toString();
+                                DatabaseReference reference = database.getReference("organisation")
+                                        .child(org_id)
+                                        .child("projects")
+                                        .child(project_key)
+                                        .child("pdfFiles");
+                                reference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(), "File Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(), "File not uploaded", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
                         });
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -174,6 +174,7 @@ public class WorkForce extends Fragment {
     public void loadDataFromServer(final String key,@NonNull final String orgid){
         //TODO UPDATE THE VALUES TO BE LOADED FROM SHARED PREFRENCES SAVED
         //TODO @GET FROM SPF @DESC (NOT NECESSARY)
+        workforceModels.clear();
         FirebaseDatabase.getInstance()
                 .getReference("organisation")
                 .child(orgid)

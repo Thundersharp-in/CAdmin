@@ -91,6 +91,23 @@ public class ProjectDetails extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_outline_photo_library_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_outline_file_copy_24);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);

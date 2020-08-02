@@ -19,6 +19,8 @@ import com.thundersharp.cadmin.ui.fragment.WorkForce;
 
 import java.util.List;
 
+import thundersharp.timeline.TimelineView;
+
 public class WorkForceAdapter extends RecyclerView.Adapter<WorkForceAdapter.CustomViewHolder> {
 
     Context context;
@@ -35,7 +37,7 @@ public class WorkForceAdapter extends RecyclerView.Adapter<WorkForceAdapter.Cust
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_work_force,null);
-        return new CustomViewHolder(view);
+        return new CustomViewHolder(view,viewType);
     }
 
     @Override
@@ -61,17 +63,20 @@ public class WorkForceAdapter extends RecyclerView.Adapter<WorkForceAdapter.Cust
         ImageView iv;
         TextView starttime,name_proj,id_proj,desc_proj,end_time;
         Button evpand;
+        TimelineView timelineView;
 
-        public CustomViewHolder(@NonNull View itemView) {
+        public CustomViewHolder(@NonNull View itemView ,int viewtype) {
             super(itemView);
             iv = itemView.findViewById(R.id.iv);
-            evpand = itemView.findViewById(R.id.recyclertodo);
-            evpand.setOnClickListener(this);
+            //evpand = itemView.findViewById(R.id.recyclertodo);
+            //evpand.setOnClickListener(this);
             starttime = itemView.findViewById(R.id.starttime);
             end_time = itemView.findViewById(R.id.end_time);
             desc_proj = itemView.findViewById(R.id.desc_proj);
             id_proj = itemView.findViewById(R.id.id_proj);
             name_proj = itemView.findViewById(R.id.name_proj);
+            timelineView = itemView.findViewById(R.id.timeline);
+            timelineView.initLine(viewtype);
 
         }
 

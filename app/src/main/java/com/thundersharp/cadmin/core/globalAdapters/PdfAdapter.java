@@ -1,6 +1,7 @@
 package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.github.barteksc.pdfviewer.PDFView;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.ui.activity.PdfLoader;
 
 import java.util.List;
 
@@ -44,11 +44,17 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.ViewHolder> {
         }else return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView pdfView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
            pdfView = itemView.findViewById(R.id.pdf_viewer);
+           itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            context.startActivity(new Intent(context, PdfLoader.class).putExtra("url",pdfuri.get(getAdapterPosition())));
         }
     }
 }

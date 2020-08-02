@@ -25,6 +25,7 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/progressorg">
 
         <androidx.recyclerview.widget.RecyclerView

@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class Video extends Fragment {
 
@@ -65,9 +66,18 @@ public class Video extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video, container, false);
 
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_slow_motion_video_24,getActivity().getTheme()));
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                selectVideo();
+
+            }
+        });
         imageView = view.findViewById(R.id.imageView_video);
         textView = view.findViewById(R.id.tv_video);
-        fabVideo = view.findViewById(R.id.upload_videos);
 
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageResource(R.drawable.sad);
@@ -81,14 +91,6 @@ public class Video extends Fragment {
         videoRecycler.setHasFixedSize(true);
         videoRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
-
-
-        fabVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectVideo();
-            }
-        });
 
         org_id = sharedPreferences.getString("selected",null);
 
