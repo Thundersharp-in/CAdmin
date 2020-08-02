@@ -63,18 +63,18 @@ public class WorkForce extends Fragment {
         rv_work_force= view.findViewById(R.id.rv_work_force);
         rv_work_force.setHasFixedSize(true);
         progresswf.setVisibility(View.VISIBLE);
-        loadDataFromServer("key1");
-        progresswf.setVisibility(View.GONE);
+        loadDataFromServer("key1","null");
+
 
         return view;
     }
 
-    public void loadDataFromServer(final String key){
+    public void loadDataFromServer(final String key,@NonNull final String orgid){
         //TODO UPDATE THE VALUES TO BE LOADED FROM SHARED PREFRENCES SAVED
         //TODO @GET FROM SPF @DESC (NOT NECESSARY)
         FirebaseDatabase.getInstance()
                 .getReference("organisation")
-                .child("1234567890")
+                .child(orgid)
                 .child("projects")
                 .child(key)
                 .child("description")
@@ -85,14 +85,16 @@ public class WorkForce extends Fragment {
                     textView.setVisibility(View.VISIBLE);
                     imageView.setVisibility(View.VISIBLE);
                     imageView.setImageResource(R.drawable.sad);
+                    progresswf.setVisibility(View.GONE);
                 }
                 if (snapshot.exists()){
                     textView.setVisibility(View.GONE);
                     imageView.setVisibility(View.GONE);
                     savemodel(snapshot.getValue(AddProject_model.class));
+
                     FirebaseDatabase.getInstance()
                             .getReference("organisation")
-                            .child("1234567890")
+                            .child(orgid)
                             .child("projects")
                             .child(key)
                             .child("TODO_id")
@@ -105,6 +107,7 @@ public class WorkForce extends Fragment {
                                         }
                                         WorkForceAdapter workForceAdapter = new WorkForceAdapter(getContext(),workforceModels,project);
                                         rv_work_force.setAdapter(workForceAdapter);
+                                        progresswf.setVisibility(View.GONE);
                                     }
                                 }
 
@@ -114,9 +117,6 @@ public class WorkForce extends Fragment {
                                 }
                             });
 
-                } else {
-                    imageView.setVisibility(View.VISIBLE);
-                    imageView.setImageResource(R.drawable.sad);
                 }
             }
 
