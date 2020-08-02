@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -68,7 +71,7 @@ public class Profile extends Fragment {
     FirebaseUser current_user;
     DatabaseReference reference;
     Uri profile_uri;
-    boolean editable = false;
+    boolean editable = false,somethingchanged = false,profilepicchanged = false;
     SharedPreferences sharedPreferences,organisation;
     Button logout;
     String image;
@@ -115,8 +118,7 @@ public class Profile extends Fragment {
             loadDatafromDatabase();
             progressprofile.setVisibility(View.GONE);
             Toast.makeText(getActivity(),"Loaded from database",Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             progressprofile.setVisibility(View.VISIBLE);
             String organisations=organisation.getString("org","no organisation");
             edit_userOrganisations.setText(organisations);
@@ -136,53 +138,127 @@ public class Profile extends Fragment {
             @Override
             public void onClick(View view) {
                 if (editable){
+
                     progressprofile.setVisibility(View.VISIBLE);
                     editable=false;
                     edit_username.setEnabled(false);
                     edit_userbio.setEnabled(false);
-                    edit_useremail.setEnabled(false);
-                    edit_userphoneNo.setEnabled(false);
-                    floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
-                    Toast.makeText(getContext(),"Profile edit disabled",Toast.LENGTH_SHORT).show();
-                    if (image != null){
-                        image=profile_uri.toString();
-                        savetoDatabase(profile_uri);
-                    }else {
-                        image = "null";
+
+                    if (somethingchanged || profilepicchanged){
+                        UserData userData1 = new UserData(
+                                edit_userbio.getText().toString(),
+                                "dob",
+                                edit_useremail.getText().toString(),
+                                userData.getImage_uri(),
+                                edit_username.getText().toString(),
+                                edit_userphoneNo.getText().toString(),
+                                FirebaseAuth.getInstance().getUid(),
+                                userData.getUri_ref());
+                        savedatatoSharedPref(userData1);
+                        savetoDatabase(userData1);
+
                     }
 
-                    //userData= new UserData(bio,"dob",email,image,name,phone,FirebaseAuth.getInstance().getUid());
-
+                    floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
+                    Toast.makeText(getContext(),"Profile edit saved",Toast.LENGTH_SHORT).show();
                     progressprofile.setVisibility(View.GONE);
                 }
                 else {
-                    //progressprofile.setVisibility(View.VISIBLE);
+
                     editable = true;
-                    loadDatafromDatabase();
                     edit_username.setEnabled(true);
                     edit_userbio.setEnabled(true);
-                    edit_useremail.setEnabled(false);
-                    edit_userphoneNo.setEnabled(false);
 
-                    Toast.makeText(getContext(),"Profile edit enabled",Toast.LENGTH_SHORT).show();
                     floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
-                    profile_image.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent photoPicker=new Intent(Intent.ACTION_PICK);
-                            photoPicker.setType("image/*");
-                            startActivityForResult(photoPicker,1);
-
-//
-
-                        }
-                    });
-                    //progressprofile.setVisibility(View.GONE);
-
+                    Toast.makeText(getContext(),"Profile edit enabled",Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
+
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editable){
+                    Intent photoPicker=new Intent(Intent.ACTION_PICK);
+                    photoPicker.setType("image/*");
+                    startActivityForResult(photoPicker,1);
+                }else {
+                    Snackbar.make(getView(),"Profile pic selection canceled",Snackbar.LENGTH_LONG).show();
+                }
+
+
+
+            }
+        });
+
+
+        edit_userbio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {somethingchanged = true;
+
+            }
+        });
+
+
+        edit_username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                somethingchanged = true;
+            }
+        });
+
+        edit_userbio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (editable){
+                    Toast.makeText(getActivity(),"",Toast.LENGTH_SHORT).show();
+
+                    edit_userbio.requestFocus();
+                    edit_userbio.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            Toast.makeText(getActivity(),charSequence.toString(),Toast.LENGTH_SHORT).show();
+                            somethingchanged = true;
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                        }
+                    });
+
+                }else {
+                    //SNAKBAR
+                }
+            }
+        });
+
+
 
         logout = root.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -213,9 +289,15 @@ public class Profile extends Fragment {
 
         return root;
     }
+
+
     private void loadDatafromDatabase() {
 
-        FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("personal_data").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("personal_data")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -230,28 +312,6 @@ public class Profile extends Fragment {
                     edit_userphoneNo.setText(userData.getPhone_no());
                     edit_userUid.setText(userData.getUid());
                     profile_image.setImageURI(Uri.parse(userData.getImage_uri()));
-                    FirebaseDatabase.getInstance()
-                            .getReference("users")
-                            .child(FirebaseAuth.getInstance().getUid())
-                            .child("organisations").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()){
-                                edit_userOrganisations.setText("");
-                                for (DataSnapshot data:snapshot.getChildren()){
-                                    edit_userOrganisations.append(data.getKey().toString()+"\n ");
-                                }
-
-                            }else{
-                                Toast.makeText(getContext(), " ERROR ", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
                     Toast.makeText(getContext(),userData.getEmail(),Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(getContext(),"SERVER ERROR CODE : 404",Toast.LENGTH_SHORT).show();
@@ -265,149 +325,95 @@ public class Profile extends Fragment {
         });
     }
 
-    private void savetoDatabase( @NonNull final Uri uri){//@NonNull  final UserData userData,
+    private void savetoDatabase( @NonNull  final UserData userData){
+        if (profilepicchanged){
 
-        StorageReference userRef = storageReference.child("/"+FirebaseAuth.getInstance().getUid()+".jpg");
-        userRef.putFile(uri).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(),e.getCause().getMessage().toString(),Toast.LENGTH_LONG).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                final String storgePath = taskSnapshot.getMetadata().getPath();
-                taskSnapshot
-                        .getStorage()
-                        .getDownloadUrl()
-                        .addOnFailureListener(getActivity(), new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getContext(),e.getCause().getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        String url = uri.toString();
+            StorageReference userRef = storageReference.child("/profilepics"+FirebaseAuth.getInstance().getUid()+".jpg");
+            userRef.putFile(Uri.parse(userData.getImage_uri())).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(),e.getCause().getMessage().toString(),Toast.LENGTH_LONG).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    final String storgePath = taskSnapshot.getMetadata().getPath();
+                    taskSnapshot
+                            .getStorage()
+                            .getDownloadUrl()
+                            .addOnFailureListener(getActivity(), new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(),e.getCause().getMessage(),Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            final UserData userData1;
 
-                        final UserData userData1;
-                        /*
-                         String name=edit_username.getText().toString();
-                        String bio=edit_userbio.getText().toString();
-                        String email=edit_useremail.getText().toString();
-                        String phone=edit_userphoneNo.getText().toString();
-                         */
 
-                        userData1= new UserData(edit_userbio.getText().toString()
-                                ,"dob"
-                                ,edit_useremail.getText().toString()
-                                ,url,edit_username.getText().toString()
-                                ,edit_userphoneNo.getText().toString()
-                                ,FirebaseAuth.getInstance().getUid()
-                                ,storgePath);
-                        FirebaseDatabase
-                                .getInstance()
-                                .getReference("users")
-                                .child(userData1.getUid())
-                                .child("personal_data").setValue(userData1)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            savedatatoSharedPref(userData1);
-                                            FirebaseDatabase.getInstance()
-                                                    .getReference("users")
-                                                    .child(userData1.getUid())
-                                                    .child("organisations").addValueEventListener(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    if (snapshot.exists()){
-                                                        edit_userOrganisations.setText("");
-                                                        for (DataSnapshot data:snapshot.getChildren()){
-                                                            edit_userOrganisations.append(data.getKey().toString()+"\n ");
-                                                        }
+                            userData1= new UserData(
+                                    edit_userbio.getText().toString(),
+                                    "dob",
+                                    edit_useremail.getText().toString(),
+                                    url,
+                                    edit_username.getText().toString(),
+                                    edit_userphoneNo.getText().toString(),
+                                    FirebaseAuth.getInstance().getUid(),
+                                    storgePath);
 
-                                                    }else{
-                                                        Toast.makeText(getContext(), " ERROR ", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
-                    }
-
-                });
-            }
-        });
-        /*
-        storageReference.putFile(Uri.parse(userData.getImage_uri())).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask=taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
-                Uri urlImage=uriTask.getResult();
-                image=urlImage.toString();
-                Toast.makeText(getContext(),storageReference.toString(),Toast.LENGTH_LONG).show();
-                UserData userData1;//=userData
-
-                String name=edit_username.getText().toString();
-                String bio=edit_userbio.getText().toString();
-                String email=edit_useremail.getText().toString();
-                String phone=edit_userphoneNo.getText().toString();
-                userData1= new UserData(bio,"dob",email,image,name,phone,FirebaseAuth.getInstance().getUid());
-                FirebaseDatabase
-                        .getInstance()
-                        .getReference("users")
-                        .child(FirebaseAuth.getInstance().getUid())
-                        .child("personal_data").setValue(userData1)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    savedatatoSharedPref(userData);
-                                    FirebaseDatabase.getInstance()
-                                            .getReference("users")
-                                            .child(FirebaseAuth.getInstance().getUid())
-                                            .child("organisations").addValueEventListener(new ValueEventListener() {
+                            FirebaseDatabase
+                                    .getInstance()
+                                    .getReference("users")
+                                    .child(userData1.getUid())
+                                    .child("personal_data").setValue(userData1)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if (snapshot.exists()){
-                                                edit_userOrganisations.setText("");
-                                                for (DataSnapshot data:snapshot.getChildren()){
-                                                    edit_userOrganisations.append(data.getKey().toString()+"\n ");
-
-                                                }
-
-                                            }else{
-                                                Toast.makeText(getContext(), " ERROR ", Toast.LENGTH_SHORT).show();
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                savedatatoSharedPref(userData1);
                                             }
                                         }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
                                     });
-                                }
-                            }
-                        });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
-         */
+                        }
+
+                    });
+                }
+            });
+        }else {
+            final UserData userData1;
+
+
+            userData1= new UserData(
+                    edit_userbio.getText().toString(),
+                    "dob",
+                    edit_useremail.getText().toString(),
+                    userData.getImage_uri(),
+                    edit_username.getText().toString(),
+                    edit_userphoneNo.getText().toString(),
+                    FirebaseAuth.getInstance().getUid(),
+                    userData.getUri_ref());
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("users")
+                    .child(userData1.getUid())
+                    .child("personal_data").setValue(userData1)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                savedatatoSharedPref(userData1);
+                            }
+                        }
+                    });
+        }
+
 
     }
+
+
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -415,12 +421,14 @@ public class Profile extends Fragment {
             profile_uri = data.getData();
             profile_image.setImageURI(profile_uri);
             image=profile_uri.toString();
+            profilepicchanged = true;
         } else {
             if (profile_uri==null){
                 profile_uri=Uri.parse("https://www.thundersharp.in/logo.png");
                 profile_image.setImageURI(profile_uri);
             }else {
                 profile_image.setImageURI(profile_uri);
+
             }
             Toast.makeText(getContext()," You haven't selected the profile image", Toast.LENGTH_SHORT).show();
         }
