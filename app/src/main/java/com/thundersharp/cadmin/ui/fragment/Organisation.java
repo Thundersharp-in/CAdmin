@@ -41,7 +41,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class Organisation extends Fragment {
 
     RecyclerView project_rv;
-    List<org_details_model> data;
+    List<org_details_model> data,dataorg;
     List<Organisations> finalorg;
     SharedPreferences preferences,sharedPreferencesOrglist;
     SwipeRefreshLayout refresh;
@@ -124,7 +124,7 @@ public class Organisation extends Fragment {
 
     private void fetchListofAllOrganisation(@NonNull final List<Organisations> organisations) {
 
-        final List<org_details_model> dataorg = new ArrayList<>();
+         dataorg = new ArrayList<>();
 
         for (int i=0;i<organisations.size();i++){
 
