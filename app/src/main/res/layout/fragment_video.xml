@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.projetinfo.Video">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:id="@+id/imageView_video"
         android:visibility="gone"
         android:layout_centerInParent="true"/>
@@ -25,5 +26,21 @@
         android:fontFamily="@font/roboto"
         android:textStyle="italic"
         android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerVideo"
+        shimmer:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/upload_videos"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_add_black_24dp"
+        shimmer:rippleColor="@color/yellow_50"/>
 
 </RelativeLayout>

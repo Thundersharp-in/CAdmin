@@ -53,9 +53,6 @@ public class Users extends Fragment {
         org_textView = root.findViewById(R.id.org_tv_users);
         rv_org_users=root.findViewById(R.id.rv_org_users);
         btn_add_org_user=root.findViewById(R.id.btn_add_org_user);
-        org_imageView.setVisibility(View.VISIBLE);
-        org_imageView.setImageResource(R.drawable.sad);
-        org_textView.setVisibility(View.VISIBLE);
         org_id = OrginasationDetails.org_id;
         list=new ArrayList<>();
         fetchData(org_id);
@@ -72,7 +69,14 @@ public class Users extends Fragment {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
+                        if (!snapshot.exists()){
+                            org_imageView.setVisibility(View.VISIBLE);
+                            org_imageView.setImageResource(R.drawable.sad);
+                            org_textView.setVisibility(View.VISIBLE);
+                        }
+                        else if (snapshot.exists()){
+                            org_imageView.setVisibility(View.GONE);
+                            org_textView.setVisibility(View.GONE);
                             btn_add_org_user.setVisibility(View.GONE);
                             list.clear();
                             for (DataSnapshot snapshot1 : snapshot.getChildren()){
