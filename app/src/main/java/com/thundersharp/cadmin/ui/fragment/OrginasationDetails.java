@@ -1,6 +1,8 @@
 package com.thundersharp.cadmin.ui.fragment;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,6 +53,7 @@ public class OrginasationDetails extends Fragment {
     CircleImageView org_logo12;
     String org_name,org_desc,org_image,organiser_id,no_of_workforce;
     public static String org_id;
+    ProgressDialog progressDialog;
     int users;
 
     @Override
@@ -101,21 +104,65 @@ public class OrginasationDetails extends Fragment {
             @Override
             public void onClick(View view) {
 
-               // if (orgs.isManager()){
-                    //Alert dilog here
-                    //Toast.makeText(getActivity(), "You have deleted the noe from everywhere", Toast.LENGTH_SHORT).show();
-               // }else{
-                 //   Toast.makeText(getActivity(),"Sorry you can't delete this organisation !",Toast.LENGTH_SHORT).show();
-                //}
-/*
-                FirebaseDatabase.getInstance().getReference("users").child("organisations").child(data.getOrganisation_id()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Delete");
+                builder.setMessage("Are You Really Going To Delete This Data???");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setTitle("Deleting");
+                        progressDialog.setMessage("Deleting please wait!!!");
+                        progressDialog.show();
+
+                        FirebaseDatabase.getInstance().getReference()
+                                .child("organisation")
+                                .child(org_id).removeValue()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            dialog.dismiss();
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+
+                /*
+                if (orgs.isManager()){
+                    Alert dilog here
+                    Toast.makeText(getActivity(), "You have deleted the noe from everywhere", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getActivity(),"Sorry you can't delete this organisation !",Toast.LENGTH_SHORT).show();
+                }
+
+                FirebaseDatabase.getInstance().getReference("users").child("organisations")
+                        .child(data.getOrganisation_id()).removeValue()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
 
                     }
                 });
-*/
+                */
+
                 MainActivity.navController.navigate(R.id.nav_organisation);
             }
         });

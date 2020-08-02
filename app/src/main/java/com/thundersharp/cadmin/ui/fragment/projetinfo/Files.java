@@ -128,7 +128,9 @@ public class Files extends Fragment {
                             }
                             Toast.makeText(getActivity(),""+url.size(),Toast.LENGTH_SHORT).show();
                             PdfAdapter pdfAdapter = new PdfAdapter(getActivity(),url);
+                            pdfAdapter.notifyDataSetChanged();
                             filesRecycler.setAdapter(pdfAdapter);
+
 
                         }else {
 
@@ -210,4 +212,5 @@ public class Files extends Fragment {
             }
         });
     }
+
 }

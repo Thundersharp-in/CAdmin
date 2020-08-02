@@ -86,9 +86,6 @@ public class Organisation extends Fragment {
         if (datapref == null){
             progressorg.setVisibility(View.VISIBLE);
 
-            imageView.setVisibility(View.VISIBLE);
-            imageView.setImageResource(R.drawable.sad);
-
             Toast.makeText(getActivity(),"profile server",Toast.LENGTH_SHORT).show();
             fetchProfilefromsever();
             progressorg.setVisibility(View.GONE);

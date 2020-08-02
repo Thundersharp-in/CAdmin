@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalAdapters.Videos_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,10 +80,8 @@ public class Video extends Fragment {
         });
         imageView = view.findViewById(R.id.imageView_video);
         textView = view.findViewById(R.id.tv_video);
-
-        imageView.setVisibility(View.VISIBLE);
-        imageView.setImageResource(R.drawable.sad);
-        textView.setVisibility(View.VISIBLE);
+        storage = FirebaseStorage.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         mediaController = new MediaController(getContext());
 
@@ -89,7 +89,7 @@ public class Video extends Fragment {
         sharedPreferences =getActivity().getSharedPreferences("selected_org", Context.MODE_PRIVATE);
         videoRecycler= view.findViewById(R.id.recyclerVideo);
         videoRecycler.setHasFixedSize(true);
-        videoRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        videoRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
         org_id = sharedPreferences.getString("selected",null);
@@ -125,13 +125,17 @@ public class Video extends Fragment {
                             textView.setVisibility(View.VISIBLE);
                         }
                         if (snapshot.exists()){
+                            imageView.setVisibility(View.GONE);
+                            textView.setVisibility(View.GONE);
                             for (DataSnapshot snapshot1 : snapshot.getChildren()){
                                 url.add(snapshot1.getValue(String.class));
 
                             }
                             Toast.makeText(getActivity(),""+url.size(),Toast.LENGTH_SHORT).show();
-//                            GallaryAdapter gallaryAdapter = new GallaryAdapter(getActivity(),url);
-//                            filesRecycler.setAdapter(gallaryAdapter);
+                            Videos_Adapter videos_adapter = new Videos_Adapter(getActivity(),url);
+                            videos_adapter.notifyDataSetChanged();
+                            videoRecycler.setAdapter(videos_adapter);
+                            videos_adapter.notifyDataSetChanged();
 
                         }else {
 
@@ -172,24 +176,30 @@ public class Video extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        String url = taskSnapshot.getMetadata().toString();
-                        DatabaseReference reference = database.getReference("organisation")
-                                .child(org_id)
-                                .child("projects")
-                                .child(project_key)
-                                .child("videoFiles");
-                        reference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "File Successfully Uploaded", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    progressDialog.dismiss();
-                                    Toast.makeText(getContext(), "File not uploaded", Toast.LENGTH_SHORT).show();
-                                }
+                            public void onSuccess(Uri uri) {
+                                String url = uri.toString();
+                                DatabaseReference reference = database.getReference("organisation")
+                                        .child(org_id)
+                                        .child("projects")
+                                        .child(project_key)
+                                        .child("videoFiles");
+                                reference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(), "File Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(), "File not uploaded", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
                         });
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -205,4 +215,5 @@ public class Video extends Fragment {
             }
         });
     }
+
 }

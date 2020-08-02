@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerVideo"
-        shimmer:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+        shimmer:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 
 </RelativeLayout>

@@ -3,12 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="1dp"
     android:layout_width="match_parent"
-    android:layout_height="130dp">
+    android:layout_height="120dp">
 
-    <VideoView
+    <ImageView
         android:id="@+id/project_videos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="@dimen/padding_10"
+        android:background="#A5E3A5"/>
+
+    <ImageButton
+        android:id="@+id/play_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+       android:layout_centerInParent="true"
+        android:background="@drawable/ic_baseline_play_circle_filled_24"/>
 
 </RelativeLayout>
