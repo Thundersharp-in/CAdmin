@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="@layout/project_info"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_marginTop="@dimen/padding_10"
     android:orientation="vertical">
 
@@ -26,8 +27,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="@android:color/white" />
 
 </LinearLayout>
