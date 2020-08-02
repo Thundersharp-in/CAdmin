@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.organisationinfo.Users">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_org_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+    <Button
+        android:id="@+id/btn_add_org_user"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/fui_transparent"
+        android:text="No user found add user here >>"
+        />
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/org_imageView_users"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/org_tv_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No User Added Yet!!!"
+        android:layout_below="@+id/org_imageView_users"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:padding="4dp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto"
+        android:textStyle="italic"
+        android:visibility="gone"/>
 
 </RelativeLayout>

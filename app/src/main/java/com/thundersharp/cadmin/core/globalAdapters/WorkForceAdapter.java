@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.core.globalmodels.WorkforceModel;
 import com.thundersharp.cadmin.ui.fragment.WorkForce;
 
@@ -22,9 +23,9 @@ public class WorkForceAdapter extends RecyclerView.Adapter<WorkForceAdapter.Cust
 
     Context context;
     List<WorkforceModel> model;
-    ProjectDesc description;
+    AddProject_model description;
 
-    public WorkForceAdapter(Context context,List<WorkforceModel> data,ProjectDesc projectDesc ){
+    public WorkForceAdapter(Context context,List<WorkforceModel> data,AddProject_model projectDesc ){
         this.context = context;
         this.model=data;
         this.description = projectDesc;
@@ -40,9 +41,9 @@ public class WorkForceAdapter extends RecyclerView.Adapter<WorkForceAdapter.Cust
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         WorkforceModel workforceModel = model.get(position);
-        holder.name_proj.setText(description.getProject_name());
+        holder.name_proj.setText(description.getProjectName());
         holder.id_proj.setText(workforceModel.getProject_Key());
-        holder.desc_proj.setText(description.getDescribe());
+        holder.desc_proj.setText(description.getProjectDesc());
         holder.starttime.setText(workforceModel.getStarttime());
         holder.end_time.setText(workforceModel.getEndtime());
         Glide.with(context).load(R.drawable.avatar1).into(holder.iv);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,7 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            src_icon = itemView.findViewById(R.id.src_icon );//src_icon  item_org_image
+            src_icon = itemView.findViewById(R.id.src_icon );//  item_org_image
 
             itemView.setOnClickListener(this);
 

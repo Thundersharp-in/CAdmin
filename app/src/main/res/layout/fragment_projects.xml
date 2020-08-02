@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.ProjectsFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/projectImage"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:fontFamily="@font/roboto"
+        android:text="No Project Added Yet, Please add some projects!!!"
+        android:layout_below="@+id/projectImage"
+        android:visibility="gone"/>
     <ProgressBar
         android:id="@+id/progress_proj"
         android:layout_width="match_parent"
@@ -43,10 +64,4 @@
         android:layout_marginEnd="20dp"
         />
         -->
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/projectImage"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
 </RelativeLayout>

@@ -12,4 +12,25 @@
         android:id="@+id/gallaryrecuycler"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:id="@+id/imageView_photo"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/tv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nothing to show yet!!!"
+        android:layout_below="@+id/imageView_photo"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:padding="4dp"
+        android:textColor="#000"
+        android:fontFamily="@font/roboto"
+        android:textStyle="italic"
+        android:visibility="gone"/>
+
 </RelativeLayout>

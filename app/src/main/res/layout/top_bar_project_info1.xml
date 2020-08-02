@@ -98,6 +98,7 @@
         android:layout_toEndOf="@id/org_logo12">
 
         <LinearLayout
+            android:id="@+id/layout_work_force"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

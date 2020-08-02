@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,13 +63,35 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         editor.putString("org_id",project.getOrganisation_id());
         editor.putString("proj_desc",project.getProjectDesc());
         editor.apply();
+        holder.reference2.child(project.getOrganisation_id()).child("projects").child(project.getProject_id()).child("description").child("status").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    holder.complete=snapshot.getValue().toString();
+                    if (holder.complete.equals(true)){
+                        holder.status.setImageResource(R.drawable.complted);
+                    }else {
+                        holder.status.setImageResource(R.drawable.remove);
+                    }
+                }else {
+                    Toast.makeText(mContext, "status unknown", Toast.LENGTH_SHORT).show();
+                }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         holder.reference2.child(project.getOrganisation_id()).child("description").child("company_logo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     holder.org_image=snapshot.getValue().toString();
                     Glide.with(mContext).load(holder.org_image).into(holder.org_image1);
+                }else {
+                    Toast.makeText(mContext, "no org logo found", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -94,8 +117,8 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
         DatabaseReference reference1,reference2;
         FirebaseUser mCurrent;
         String project_uid;
-        ImageView org_image1;
-        String org_image;
+        ImageView org_image1,status;
+        String org_image,complete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +127,7 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
             projectDesc = itemView.findViewById(R.id.projectView_projectBio);
             project_id = itemView.findViewById(R.id.text_organiserUid);
             org_image1=itemView.findViewById(R.id.org_image1);
+            status=itemView.findViewById(R.id.status);
             mCurrent = FirebaseAuth.getInstance().getCurrentUser();
             project_uid = mCurrent.getUid();
             reference1= FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid()).child("projects");
@@ -124,9 +148,8 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
             bundle.putString("proj_id",detail.getProject_id());
             bundle.putString("org_id",detail.getOrganisation_id());
             bundle.putString("org_image",org_image);
-
+            bundle.putBoolean("proj_status",detail.isStatus());
             details.setArguments(bundle);
-            // bundle.putString("project_id",data.get(getAdapterPosition()).project_id);
             MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
 
         }

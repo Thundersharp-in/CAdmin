@@ -38,6 +38,7 @@ public class ProjectDetails extends Fragment {
     CircleImageView org_logo2;
     public static String project_key;
     String proj_name,proj_desc,proj_id,org_ids,org_image;
+    Boolean status;
 
     @Nullable
     @Override
@@ -74,7 +75,8 @@ public class ProjectDetails extends Fragment {
             org_ids=bundle.getString("org_id");
             org_image=bundle.getString("org_image");
             project_key=bundle.getString("proj_id");
-            setDetails(proj_name,proj_desc,proj_id,org_ids,org_image);
+            status=bundle.getBoolean("proj_status");
+            setDetails(proj_name,proj_desc,proj_id,org_ids,org_image,status);
         }else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
         }
@@ -96,12 +98,24 @@ public class ProjectDetails extends Fragment {
         return root;
     }
 
-    private void setDetails(String proj_name, String proj_desc, String proj_id, String org_ids,String org_image) {
+    private void setDetails(String proj_name, String proj_desc, String proj_id, String org_ids,String org_image,Boolean status)
+    {
         projtittle.setText(proj_name);
         descwhole.setText(proj_desc);
         Glide.with(getContext()).load(org_image).into(org_logo2);
+        if (status.equals(true)){
+            completed_iv.setImageResource(R.drawable.complted);
+        }else {
+            completed_iv.setImageResource(R.drawable.remove);
+        }
 
-        FirebaseDatabase.getInstance().getReference("organisation").child(org_ids).child("projects").child(proj_id).child("users_uid").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance()
+                .getReference("organisation")
+                .child(org_ids)
+                .child("projects")
+                .child(proj_id)
+                .child("users_uid")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
