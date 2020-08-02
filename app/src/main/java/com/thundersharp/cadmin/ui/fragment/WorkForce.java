@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.ProjectDesc;
 import com.thundersharp.cadmin.core.globalAdapters.WorkForceAdapter;
+import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.core.globalmodels.WorkforceModel;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
@@ -30,7 +31,7 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 public class WorkForce extends Fragment {
 
     ProgressBar progresswf;
-    private ProjectDesc project;
+    private AddProject_model project;
     List<WorkforceModel> workforceModels;
     RecyclerView rv_work_force;
     ImageView imageView;
@@ -88,7 +89,7 @@ public class WorkForce extends Fragment {
                 if (snapshot.exists()){
                     textView.setVisibility(View.GONE);
                     imageView.setVisibility(View.GONE);
-                    savemodel(snapshot.getValue(ProjectDesc.class));
+                    savemodel(snapshot.getValue(AddProject_model.class));
                     FirebaseDatabase.getInstance()
                             .getReference("organisation")
                             .child("1234567890")
@@ -126,7 +127,7 @@ public class WorkForce extends Fragment {
         });
     }
 
-    private  void savemodel(ProjectDesc projectDesc){
+    private  void savemodel(AddProject_model projectDesc){
         this.project=projectDesc;
     }
 }

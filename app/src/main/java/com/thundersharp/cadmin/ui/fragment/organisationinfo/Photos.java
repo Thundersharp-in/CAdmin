@@ -31,7 +31,7 @@ public class Photos extends Fragment {
     RecyclerView org_photo_rv;
     ImageView org_imageView;
     TextView org_textView;
-    String org_id,project_key;
+    String org_id;
     //SharedPreferences sharedPreferences;
 
     public Photos() {

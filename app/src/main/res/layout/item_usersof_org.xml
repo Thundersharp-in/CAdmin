@@ -25,7 +25,7 @@
             android:textSize="15sp"
             android:textColor="#000"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             />
         <TextView
             android:id="@+id/users_data"
@@ -35,7 +35,7 @@
             android:textSize="15sp"
             android:textColor="#000"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             />
         <View

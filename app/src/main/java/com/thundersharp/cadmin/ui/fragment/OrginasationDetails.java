@@ -1,11 +1,14 @@
 package com.thundersharp.cadmin.ui.fragment;
 
+import android.app.AlertDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,11 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
+import com.thundersharp.cadmin.core.globalAdapters.UsersAdapter;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.ui.fragment.organisationinfo.Photos;
 import com.thundersharp.cadmin.ui.fragment.organisationinfo.Users;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,9 +46,10 @@ public class OrginasationDetails extends Fragment {
     ViewPager viewPager;
     TextView detail_org_name,descwhole1,no_of_employee,no_of_projects,no_of_managers;
     Button btn_mail_manager,edit_org;
+    LinearLayout layout_work_force;
     //Organisations orgs;
     CircleImageView org_logo12;
-    String org_name,org_desc,org_image,organiser_id;
+    String org_name,org_desc,org_image,organiser_id,no_of_workforce;
     public static String org_id;
     int users;
 
@@ -53,7 +63,7 @@ public class OrginasationDetails extends Fragment {
        // final org_details_model data = savedInstanceState.getParcelable("data");
        // final Organisations orgs=savedInstanceState.getParcelable("orgs");
 
-
+        layout_work_force=root.findViewById(R.id.layout_work_force);
         org_logo12=root.findViewById(R.id.org_logo12);
         detail_org_name=root.findViewById(R.id.detail_org_name);
         descwhole1=root.findViewById(R.id.descwhole1);
@@ -63,8 +73,10 @@ public class OrginasationDetails extends Fragment {
         btn_mail_manager=root.findViewById(R.id.btn_mail_manager);
         edit_org=root.findViewById(R.id.edit_org);
         users=0;
+        no_of_employee.setText("0");
         org_id = "null";
 
+       // total_no_of_workforce();
         Bundle bundle =this.getArguments();
         if (getArguments()!=null){
             org_name=bundle.getString("org_name");
@@ -75,6 +87,7 @@ public class OrginasationDetails extends Fragment {
             org_id = bundle.getString("org_id");
 
            setDetails(org_name,org_desc,org_id,org_image,organiser_id);
+            fetchWorkForce(org_id,no_of_workforce);
         }else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
         }
@@ -121,7 +134,32 @@ public class OrginasationDetails extends Fragment {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
 
+
         return root;
+    }
+
+
+    private void fetchWorkForce(String org_id, final String no_of_workforce) {
+        FirebaseDatabase.getInstance().getReference("organisation")
+                .child(org_id)
+                .child("org_users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    long l=snapshot.getChildrenCount();
+                    no_of_employee.setText(String.valueOf(l));
+                    //TODO
+                }else {
+                    Toast.makeText(getActivity(), "no users found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+       //TODO ADDING USERS
     }
 
     private void setDetails(String org_name, String org_desc, final String org_id,final String org_image, String organiser_id) {
@@ -141,10 +179,100 @@ public class OrginasationDetails extends Fragment {
                     for (DataSnapshot snapshot1:snapshot.getChildren()){
                         long projects_no=snapshot1.getChildrenCount();
                         no_of_projects.setText(Long.toString(projects_no));
+                        layout_work_force.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //add dilog
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setTitle("User Uid here");
+                                View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.add_user_to_org,null);
+                                final EditText user_uid_here=view1.findViewById(R.id.txt_user_uid);
+                                final Button btn_verify_users=view1.findViewById(R.id.btn_verify_users);
+                                builder.setCancelable(true);
+                                builder.setView(view1);
+                                btn_verify_users.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        final String user_uid =user_uid_here.getEditableText().toString();
+                                        FirebaseDatabase.getInstance().getReference("users").child(user_uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                                                if (snapshot.exists()){
+                                                    //Toast.makeText(getActivity(), "sent request to user ", Toast.LENGTH_SHORT).show();
+
+                                                    FirebaseDatabase.getInstance()
+                                                            .getReference("organisation")
+                                                            .child(org_id)
+                                                            .child("org_users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                                            String user_no="0";
+                                                            if (snapshot.exists()){
+                                                                for (DataSnapshot snapshot11:snapshot.getChildren()){
+                                                                    user_no=snapshot11.getKey();
+                                                                }
+                                                                int next_user=Integer.parseInt(user_no)+1;
+                                                                FirebaseDatabase.getInstance()
+                                                                        .getReference("organisation")
+                                                                        .child(org_id)
+                                                                        .child("org_users")
+                                                                        .child(String.valueOf(next_user))
+                                                                        .setValue(user_uid).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()){
+                                                                            savetousernode(org_id,user_uid);
+
+                                                                            Toast.makeText(getActivity(), "User Added", Toast.LENGTH_SHORT).show();
+
+                                                                            //TODO cancel dilog cancel
+                                                                        }else{
+                                                                            Toast.makeText(getActivity(), "Something went wrong !", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+
+                                                                    }
+                                                                });
+
+                                                            }
+
+
+
+
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+                                                    });
+
+                                                }else {
+                                                    Toast.makeText(getActivity(), "OOPS! Sorry no user exists for this uid try something else !", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                                    }
+                                });
+                                builder.show();
+
+                            }
+                        });
                     }
                 }
                 else {
                     no_of_projects.setText("0");
+
                 }
 
             }
@@ -154,6 +282,27 @@ public class OrginasationDetails extends Fragment {
 
             }
         });
+    }
+
+    private void savetousernode(String org_id, String user_uid) {
+
+        FirebaseDatabase.getInstance().getReference("users")
+                .child(user_uid)
+                .child("organisations")
+                .child(org_id).child(org_id).setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Toast.makeText(getActivity(), "Uploaded to user", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     /**

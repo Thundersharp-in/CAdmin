@@ -25,7 +25,6 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
 
     Context context;
     List<String> imageuri;
-    MediaController mediaController;
 
     public GallaryAdapter(Context context , List<String> imageuri){
         this.context = context;
