@@ -95,11 +95,6 @@ public class OrginasationDetails extends Fragment {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
         }
 
-        //data=(org_details_model) bundle.getSerializable("data") ;//savedInstanceState.getSerializable("data")
-        //orgs=(Organisations)bundle.getSerializable("orgs");
-
-
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

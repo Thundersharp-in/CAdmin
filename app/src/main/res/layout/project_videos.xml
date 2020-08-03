@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginBottom="3dp"
         android:background="#A5E3A5"/>
 
     <ImageButton
