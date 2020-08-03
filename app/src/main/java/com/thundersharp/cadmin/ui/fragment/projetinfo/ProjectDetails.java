@@ -121,7 +121,7 @@ public class ProjectDetails extends Fragment {
         descwhole.setText(proj_desc);
         Glide.with(getContext()).load(org_image).into(org_logo2);
         if (status.equals(true)){
-            completed_iv.setImageResource(R.drawable.complted);
+            completed_iv.setImageResource(R.drawable.remove);
         }else {
             completed_iv.setImageResource(R.drawable.remove);
         }
