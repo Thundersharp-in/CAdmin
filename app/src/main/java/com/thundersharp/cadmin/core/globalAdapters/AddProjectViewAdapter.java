@@ -69,7 +69,7 @@ public class AddProjectViewAdapter extends RecyclerView.Adapter<AddProjectViewAd
                 if (snapshot.exists()){
                     holder.complete=snapshot.getValue().toString();
                     if (holder.complete.equals(true)){
-                        holder.status.setImageResource(R.drawable.complted);
+                        holder.status.setImageResource(R.drawable.remove);
                     }else {
                         holder.status.setImageResource(R.drawable.remove);
                     }
