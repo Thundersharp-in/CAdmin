@@ -8,6 +8,8 @@ The documentation of our project will be defining its future aspects.It is the t
 The completed App link:
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX (Will be updated soon)
 
+The devlopement phase app link : https://github.com/Thundersharp-in/CAdmin/releases/download/1.0/app-debug.apk
+
 OBJECTIVES AND GOALS 
 1. The most probable goal followed by the application is Digital India and basic other deployment moves.
 2. We have been certain about making task easier for groups and individual's in maintaining the projects and implementing success which will be guaranteed if the time is managed properly.
