@@ -95,11 +95,14 @@ public class Photo extends Fragment {
                             textView.setVisibility(View.VISIBLE);
                         }
                         if (snapshot.exists()){
+                            imageView.setVisibility(View.GONE);
+                            textView.setVisibility(View.GONE);
                             for (DataSnapshot snapshot1 : snapshot.getChildren()){
                                 url.add(snapshot1.getValue(String.class));
                             }
                             Toast.makeText(getActivity(),""+url.size(),Toast.LENGTH_SHORT).show();
                             GallaryAdapter gallaryAdapter = new GallaryAdapter(getActivity(),url);
+                            gallaryAdapter.notifyDataSetChanged();
                             gallaryrecuycler.setAdapter(gallaryAdapter);
 
                         }else {

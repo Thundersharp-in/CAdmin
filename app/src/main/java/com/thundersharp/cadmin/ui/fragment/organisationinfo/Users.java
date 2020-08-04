@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,6 +41,7 @@ public class Users extends Fragment {
     String org_id;
     RecyclerView rv_org_users;
     List<String> list;
+    FloatingActionButton showUser;
    // Button btn_add_org_user;
 
     public Users() {
@@ -52,12 +54,26 @@ public class Users extends Fragment {
         org_imageView = root.findViewById(R.id.org_imageView_users);
         org_textView = root.findViewById(R.id.org_tv_users);
         rv_org_users=root.findViewById(R.id.rv_org_users);
+        showUser = root.findViewById(R.id.add_user);
        // btn_add_org_user=root.findViewById(R.id.btn_add_org_user);
         org_id = OrginasationDetails.org_id;
         list=new ArrayList<>();
         fetchData(org_id);
 
+        showUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater1 = getLayoutInflater();
+                View alert = inflater1.inflate(R.layout.add_users,null);
+                builder.setView(alert);
+                builder.setCancelable(true);
+                builder.show();
+            }
+        });
+
         return root;
+
     }
 
     private void fetchData(final String org_id) {
