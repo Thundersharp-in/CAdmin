@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -36,6 +37,7 @@ import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.ui.fragment.organisationinfo.Photos;
 import com.thundersharp.cadmin.ui.fragment.organisationinfo.Users;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,6 +56,8 @@ public class OrginasationDetails extends Fragment {
     String org_name,org_desc,org_image,organiser_id,no_of_workforce;
     public static String org_id;
     ProgressDialog progressDialog;
+    Boolean manager=false;
+    List<String> managers;
     int users;
 
     @Override
@@ -65,7 +69,7 @@ public class OrginasationDetails extends Fragment {
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24,getActivity().getTheme()));
        // final org_details_model data = savedInstanceState.getParcelable("data");
        // final Organisations orgs=savedInstanceState.getParcelable("orgs");
-
+        managers=new ArrayList<>();
         layout_work_force=root.findViewById(R.id.layout_work_force);
         org_logo12=root.findViewById(R.id.org_logo12);
         detail_org_name=root.findViewById(R.id.detail_org_name);
@@ -91,55 +95,303 @@ public class OrginasationDetails extends Fragment {
 
            setDetails(org_name,org_desc,org_id,org_image,organiser_id);
             fetchWorkForce(org_id,no_of_workforce);
+
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   // deletingorganisations(org_id);
+                    deleteorgfromorgnode(org_id);
+                }
+            });
+
+
         }else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
+
         }
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+
+        tabLayout = root.findViewById(R.id.sliding_tabs1);
+        viewPager = root.findViewById(R.id.viewpager1);
+
+        TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
+        tabAdapter.addFragment(new Users(),null);
+        tabAdapter.addFragment(new Photos(),null);
+
+
+        viewPager.setAdapter(tabAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
+
+
+        return root;
+    }
+
+    private void deleteorgfromorgnode(final String org_id) {
+        FirebaseDatabase.getInstance().getReference("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("organisations")
+                .child(org_id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String manager=String.valueOf(snapshot.getValue());
+                    if (manager.equals("true")){
+                        deleteorg(org_id);
+                    }
+                }else {
+                    Toast.makeText(getActivity(), "Sorry you are not the member of this company !", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Delete");
-                builder.setMessage("Are You Really Going To Delete This Data???");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void deletingorganisations(final String org_id) {
+        FirebaseDatabase.getInstance().getReference("organisation")
+                .child(org_id)
+                .child("managers")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(final DialogInterface dialog, int which) {
-                        progressDialog = new ProgressDialog(getActivity());
-                        progressDialog.setTitle("Deleting");
-                        progressDialog.setMessage("Deleting please wait!!!");
-                        progressDialog.show();
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                //managers.add(snapshot1.getKey());
+                                if (FirebaseAuth.getInstance().getUid().equals(snapshot1.getKey())){
+                                    //manager=true;
+                                   // deleteorg(org_id,true);
+                                    break;
 
-                        FirebaseDatabase.getInstance().getReference()
-                                .child("organisation")
-                                .child(org_id).removeValue()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            dialog.dismiss();
-                                            progressDialog.dismiss();
-                                            Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
+                                    //manager=false;
+                                   // deleteorg(org_id,false);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+    //TODO delete projects from user node
+
+    private void deleteorg(final String org_id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Delete");
+        builder.setMessage("Are You Really Going To Delete This Data  ?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setTitle("Deleting");
+                progressDialog.setMessage("Deleting please wait!!!");
+                progressDialog.show();
+                FirebaseDatabase.getInstance().getReference("organisation")
+                        .child(org_id)
+                        .child("org_users")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                        FirebaseDatabase.getInstance().getReference("users")
+                                                .child(snapshot1.getKey())
+                                                .child("organisations")
+                                                .child(org_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()){
+                                                    Toast.makeText(getActivity(), "All members are removed from this ", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }else {
+                                    Toast.makeText(getActivity(), "This organisation doesn't contain any member", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
                             }
                         });
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
+                FirebaseDatabase.getInstance().getReference("organisation")
+                        .child(org_id)
+                        .child("managers")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()){
+                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                        FirebaseDatabase.getInstance().getReference("users")
+                                                .child(snapshot1.getKey())
+                                                .child("organisations")
+                                                .child(org_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(getActivity(), "All managers are removed from this organisation ", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }else {
+                                    Toast.makeText(getActivity(), "This organisation doesn't contain any manager", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                /*
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                FirebaseDatabase.getInstance().getReference()
+                        .child("organisation")
+                        .child(org_id).removeValue()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialog.dismiss();
+                                    progressDialog.dismiss();
+                                    MainActivity.navController.navigate(R.id.nav_organisation);
+                                    Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+        /*
+          if (key){
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Delete");
+                    builder.setMessage("Are You Really Going To Delete This Data  ?");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, int which) {
+                            progressDialog = new ProgressDialog(getActivity());
+                            progressDialog.setTitle("Deleting");
+                            progressDialog.setMessage("Deleting please wait!!!");
+                            progressDialog.show();
+                            FirebaseDatabase.getInstance().getReference("organisation")
+                                    .child(org_id)
+                                    .child("org_users")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                            FirebaseDatabase.getInstance().getReference("users")
+                                                    .child(snapshot1.getKey())
+                                                    .child("organisations")
+                                                    .child(org_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()){
+                                                        //TODO somthing for manager node
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            FirebaseDatabase.getInstance().getReference("organisation")
+                                    .child(org_id)
+                                    .child("managers")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()){
+                                                for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                                    FirebaseDatabase.getInstance().getReference("users")
+                                                            .child(snapshot1.getKey())
+                                                            .child("organisations")
+                                                            .child(org_id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()){
+
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                            FirebaseDatabase.getInstance().getReference()
+                                    .child("organisation")
+                                    .child(org_id).removeValue()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                dialog.dismiss();
+                                                progressDialog.dismiss();
+                                                MainActivity.navController.navigate(R.id.nav_organisation);
+                                                Toast.makeText(getActivity(), "Deleted", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+
+    }
+});
+        }else {
+        Toast.makeText(getContext(),"You are not a manager consult to manager for this action to be perrformed" ,Toast.LENGTH_SHORT).show();
+        }
+         */
+        /*
                 if (orgs.isManager()){
                     Alert dilog here
                     Toast.makeText(getActivity(), "You have deleted the noe from everywhere", Toast.LENGTH_SHORT).show();
@@ -158,26 +410,6 @@ public class OrginasationDetails extends Fragment {
                 });
                 */
 
-                MainActivity.navController.navigate(R.id.nav_organisation);
-            }
-        });
-        tabLayout = root.findViewById(R.id.sliding_tabs1);
-        viewPager = root.findViewById(R.id.viewpager1);
-
-        TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
-        tabAdapter.addFragment(new Users(),null);
-        tabAdapter.addFragment(new Photos(),null);
-
-
-        viewPager.setAdapter(tabAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
-
-
-        return root;
     }
 
 
@@ -281,10 +513,6 @@ public class OrginasationDetails extends Fragment {
                                                                 });
 
                                                             }
-
-
-
-
                                                         }
 
                                                         @Override
@@ -307,18 +535,14 @@ public class OrginasationDetails extends Fragment {
                                     }
                                 });
                                 builder.show();
-
                             }
                         });
                     }
                 }
                 else {
                     no_of_projects.setText("0");
-
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

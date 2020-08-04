@@ -49,6 +49,7 @@ import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -74,11 +75,10 @@ public class Profile extends Fragment {
     boolean editable = false,somethingchanged = false,profilepicchanged = false;
     SharedPreferences sharedPreferences,organisation;
     Button logout;
-    String image;
+    String image,orgs;
     ProgressBar progressprofile;
     StorageReference  storageReference;
     UserData userData;
-    String DISPLAY_NAME , DISPLAY_EMAIL = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,7 +102,6 @@ public class Profile extends Fragment {
         edit_userbio=root.findViewById(R.id.edit_userbio);
         edit_userOrganisations=root.findViewById(R.id.edit_userOrganisations);
         edit_userUid=root.findViewById(R.id.edit_userUid);
-       // profile_uri=Uri.parse("https://www.thundersharp.in/logo.png");
         progressprofile = root.findViewById(R.id.progressprofile);
 
         progressprofile.setVisibility(View.GONE);
@@ -120,8 +119,8 @@ public class Profile extends Fragment {
             Toast.makeText(getActivity(),"Loaded from database",Toast.LENGTH_SHORT).show();
         } else {
             progressprofile.setVisibility(View.VISIBLE);
-            String organisations=organisation.getString("org","no organisation");
-            edit_userOrganisations.setText(organisations);
+            orgs=organisation.getString("org","no organisation");
+            edit_userOrganisations.setText(orgs);
             userData = loadDatafromPrefs();
             name.setText(userData.getName());
             edit_username.setText(userData.getName());
@@ -157,9 +156,40 @@ public class Profile extends Fragment {
                         savedatatoSharedPref(userData1);
                         savetoDatabase(userData1);
 
+                    }else {
+                        FirebaseDatabase.getInstance().getReference("users")
+                                .child(FirebaseAuth.getInstance().getUid())
+                                .child("organisations")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()){
+                                            edit_userOrganisations.setText("");
+                                            for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                                // org.add(snapshot1.getKey());
+                                                edit_userOrganisations.append(snapshot1.getKey()+"\n");
+                                            }
+                                            orgs=edit_userOrganisations.getText().toString();
+                                            saveorgtosaredpref(orgs);
+                                            SharedPreferences.Editor editor1=organisation.edit();
+                                            editor1.clear();
+                                            editor1.putString("org",orgs);
+                                            editor1.apply();
+                                        }
+                                        else {
+                                            Toast.makeText(getActivity(), "snapshort not exist", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(getActivity(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
 
-                    floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
+                    floatingActionButton.setImageDrawable(getResources()
+                            .getDrawable(R.drawable.ic_baseline_edit_24,getActivity().getTheme()));
                     Toast.makeText(getContext(),"Profile edit saved",Toast.LENGTH_SHORT).show();
                     progressprofile.setVisibility(View.GONE);
                 }
@@ -169,7 +199,8 @@ public class Profile extends Fragment {
                     edit_username.setEnabled(true);
                     edit_userbio.setEnabled(true);
 
-                    floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
+                    floatingActionButton.setImageDrawable(getResources()
+                            .getDrawable(R.drawable.ic_baseline_save_24,getActivity().getTheme()));
                     Toast.makeText(getContext(),"Profile edit enabled",Toast.LENGTH_SHORT).show();
                 }
 
@@ -186,8 +217,6 @@ public class Profile extends Fragment {
                 }else {
                     Snackbar.make(getView(),"Profile pic selection canceled",Snackbar.LENGTH_LONG).show();
                 }
-
-
 
             }
         });
@@ -208,7 +237,6 @@ public class Profile extends Fragment {
 
             }
         });
-
 
         edit_username.addTextChangedListener(new TextWatcher() {
             @Override
@@ -253,7 +281,7 @@ public class Profile extends Fragment {
                     });
 
                 }else {
-                    //SNAKBAR
+                    Snackbar.make(getView(),"Description editable is not enabled !",Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -292,7 +320,32 @@ public class Profile extends Fragment {
 
 
     private void loadDatafromDatabase() {
+        FirebaseDatabase.getInstance().getReference("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("organisations")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot snapshot1:snapshot.getChildren()){
+                               // org.add(snapshot1.getKey());
+                                edit_userOrganisations.append(snapshot1.getKey()+"\n");
+                                Toast.makeText(getActivity(), snapshot1.getKey(), Toast.LENGTH_SHORT).show();
+                            }
+                            orgs=edit_userOrganisations.getText().toString();
+                            saveorgtosaredpref(orgs);
 
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "snapshort not exist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         FirebaseDatabase.getInstance()
                 .getReference("users")
                 .child(FirebaseAuth.getInstance().getUid())
@@ -323,6 +376,15 @@ public class Profile extends Fragment {
 
             }
         });
+    }
+
+    private void saveorgtosaredpref(String orgs) {
+
+        SharedPreferences.Editor editor1=organisation.edit();
+        editor1.clear();
+        editor1.putString("org",orgs);
+        editor1.apply();
+
     }
 
     private void savetoDatabase( @NonNull  final UserData userData){
@@ -376,6 +438,29 @@ public class Profile extends Fragment {
                                             }
                                         }
                                     });
+                            edit_userOrganisations.setText("");
+                            FirebaseDatabase.getInstance().getReference("users")
+                                    .child(FirebaseAuth.getInstance().getUid())
+                                    .child("organisations")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()){
+                                                for (DataSnapshot snapshot1:snapshot.getChildren()){
+
+                                                    edit_userOrganisations.append(snapshot1.getKey()+"\n");
+                                                }
+                                                orgs=edit_userOrganisations.getText().toString();
+                                               saveorgtosaredpref(orgs);
+                                            }else {
+                                                Toast.makeText(getActivity(), "snapshort not exist", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
 
                         }
 
@@ -395,6 +480,7 @@ public class Profile extends Fragment {
                     edit_userphoneNo.getText().toString(),
                     FirebaseAuth.getInstance().getUid(),
                     userData.getUri_ref());
+
             FirebaseDatabase
                     .getInstance()
                     .getReference("users")
@@ -406,6 +492,31 @@ public class Profile extends Fragment {
                             if (task.isSuccessful()){
                                 savedatatoSharedPref(userData1);
                             }
+                        }
+                    });
+            edit_userOrganisations.setText("");
+            FirebaseDatabase.getInstance().getReference("users")
+                    .child(FirebaseAuth.getInstance().getUid())
+                    .child("organisations")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                    edit_userOrganisations.append(snapshot1.getKey()+"\n");
+
+                                }
+                                orgs=edit_userOrganisations.getText().toString();
+                                saveorgtosaredpref(orgs);
+
+                            }else {
+                                Toast.makeText(getActivity(), "snapshort not exist", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
                     });
         }
@@ -444,7 +555,7 @@ public class Profile extends Fragment {
 
         SharedPreferences.Editor editor1=organisation.edit();
         editor1.clear();
-        editor1.putString("org",edit_userOrganisations.getText().toString());
+        editor1.putString("org",orgs);
         editor1.apply();
     }
     private UserData loadDatafromPrefs() {

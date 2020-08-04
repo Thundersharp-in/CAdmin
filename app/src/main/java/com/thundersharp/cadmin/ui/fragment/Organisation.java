@@ -43,7 +43,7 @@ public class Organisation extends Fragment {
     RecyclerView project_rv;
     List<org_details_model> data,dataorg;
     List<Organisations> finalorg;
-    SharedPreferences preferences,sharedPreferencesOrglist;
+    SharedPreferences preferences,sharedPreferencesOrglist,org;
     SwipeRefreshLayout refresh;
     ProgressBar progressorg;
     ImageView imageView;
@@ -64,6 +64,7 @@ public class Organisation extends Fragment {
 
         data=new ArrayList<>();
         finalorg = new ArrayList<>();
+        org= getActivity().getSharedPreferences("organisations", Context.MODE_PRIVATE);
         preferences= getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);
@@ -297,15 +298,15 @@ public class Organisation extends Fragment {
 
             editor1.clear();
             editor1.apply();
-//            project_rv.setVisibility(View.GONE);
+                        //            project_rv.setVisibility(View.GONE);
 //            imageView.setVisibility(View.VISIBLE);
 //            imageView.setImageResource(R.drawable.sad);
+//            imageView.setVisibility(View.GONE);
 
             Toast.makeText(getActivity(),"No data to display",Toast.LENGTH_LONG).show();
             refresh.setRefreshing(false);
 
         }else
-//            imageView.setVisibility(View.GONE);
             fetchListofAllOrganisation(organisations);
 
    /*     if (dataprevious == null || dataprevious.isEmpty()){

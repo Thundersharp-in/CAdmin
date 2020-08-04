@@ -97,20 +97,19 @@ public class Photo extends Fragment {
                         if (snapshot.exists()){
                             for (DataSnapshot snapshot1 : snapshot.getChildren()){
                                 url.add(snapshot1.getValue(String.class));
-
                             }
                             Toast.makeText(getActivity(),""+url.size(),Toast.LENGTH_SHORT).show();
                             GallaryAdapter gallaryAdapter = new GallaryAdapter(getActivity(),url);
                             gallaryrecuycler.setAdapter(gallaryAdapter);
 
                         }else {
-
+                            Toast.makeText(getActivity(),"something went wrong !",Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(getActivity(),error.getMessage().toString(),Toast.LENGTH_SHORT).show();
                     }
                 });
     }

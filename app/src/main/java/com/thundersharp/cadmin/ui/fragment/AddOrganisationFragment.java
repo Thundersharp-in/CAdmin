@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,14 +50,13 @@ import java.util.Random;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
-
 public class AddOrganisationFragment extends Fragment {
 
     ImageView upload_org_logo;
-    TextInputLayout upload_org_name,upload_org_desc,upload_org_motto;
+    TextInputLayout upload_org_name,upload_org_desc;
     Button btn_upload_org;
     Uri org_logo_uri;
-    String logo_url,org_name,org_description,organiser_name,organiser_uid;
+    String org_name,org_description,organiser_name,organiser_uid;
     SharedPreferences pref;
     List<Organisations> organisations;
     UserData userData;
@@ -67,9 +67,7 @@ public class AddOrganisationFragment extends Fragment {
     String logourl;
     Dialog dialog;
 
-    private void savecompanylogourl(@NonNull String logo_url){
-        this.logourl= logo_url;
-    }
+    private void savecompanylogourl(@NonNull String logo_url){ this.logourl= logo_url; }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,7 +105,7 @@ public class AddOrganisationFragment extends Fragment {
                                                                   // upload_org_motto= view.findViewById(R.id.upload_org_motto);
         upload_org_desc=view.findViewById(R.id.upload_org_desc);
         btn_upload_org=view.findViewById(R.id.btn_upload_org);
-        logo_url="";
+        logourl="";
         org_description="";
         org_name="";
 
@@ -146,15 +144,12 @@ public class AddOrganisationFragment extends Fragment {
                      upload_org_desc.getEditText().setError("Required !");
                      upload_org_desc.getEditText().requestFocus();
                      dialog.dismiss();
-
-                 }else if (logourl.isEmpty()){
-                     upload_org_logo.setImageResource(R.drawable.organisation);
-                     Toast.makeText(getContext(), "Logo not selected ", Toast.LENGTH_SHORT).show();
+                 }else if (logourl.equals("")){
+                    // upload_org_logo.setImageResource(R.drawable.organisation);
+                     Snackbar.make(getView(),"Logo not selected ",Snackbar.LENGTH_LONG).show();
                      dialog.dismiss();
-
                  }else{
                      uploadtofirebaseStorage(org_logo_uri,gen());
-
                  }
 
             }
@@ -180,6 +175,26 @@ public class AddOrganisationFragment extends Fragment {
             }
         });
 
+        FirebaseDatabase.getInstance().getReference("organisation")
+                .child(model.getOrganisation_id())
+                .child("managers")
+                .child("1")
+                .setValue(FirebaseAuth.getInstance().getUid())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(getActivity(), "Now you are the manager if this group", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getActivity(), "OOPS ! Sorry you can't create this group", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void savetoUsers(@NonNull final String key) {
@@ -417,7 +432,7 @@ public class AddOrganisationFragment extends Fragment {
                                         storgePath,
                                         org_id,
                                         org_name,
-                                        userData.getName(),
+                                        userData.getName(),   // organiser_name
                                         organiser_uid);
 
                                 createorganisation(org_details_model_list);
@@ -425,17 +440,7 @@ public class AddOrganisationFragment extends Fragment {
 
                             }
                         });
-
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
                     }
                 });
-
     }
 }
