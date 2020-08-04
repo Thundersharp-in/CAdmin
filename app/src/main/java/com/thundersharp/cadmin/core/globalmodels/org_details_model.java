@@ -12,7 +12,7 @@ public class org_details_model implements Serializable {
     public String organiser_name;
     public String organiser_uid;
 
-    public org_details_model() {
+    public org_details_model(String org_name, String desc) {
     }
 
     public org_details_model(String company_description, String company_logo, String logo_ref, String organisation_id, String organisation_name, String organiser_name, String organiser_uid) {

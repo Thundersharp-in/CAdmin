@@ -259,7 +259,6 @@ public class AddOrganisationFragment extends Fragment {
             editor.clear();
             editor.putString("id",data);
             editor.apply();
-
         }
         else {
 
@@ -272,9 +271,7 @@ public class AddOrganisationFragment extends Fragment {
             editor.apply();
             fetchlistofAllOrg(organisations);
         }
-
     }
-
     private void fetchfromdatabase(){
         FirebaseDatabase.getInstance()
                 .getReference("users")
@@ -290,14 +287,12 @@ public class AddOrganisationFragment extends Fragment {
                 }
                 SavetoSharedPrefs(organisations);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-
     private void fetchlistofAllOrg(List<Organisations> organisations){
 
         final List<org_details_model> org = new ArrayList<>();
@@ -312,20 +307,17 @@ public class AddOrganisationFragment extends Fragment {
                     .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()){
+                            if (snapshot.exists()) {
                                 org.add(snapshot.getValue(org_details_model.class));
                                 storetosharedpref(org);
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
                         }
                     });
         }
     }
-
     private void storetosharedpref(List<org_details_model> org_detail){
 
         List<org_details_model> org_details_models = getDataOrg();
@@ -338,7 +330,6 @@ public class AddOrganisationFragment extends Fragment {
             editor.putString("org",data);
             editor.apply();
         }else {
-
             org_detail.addAll(org_details_models);
             Gson gson = new Gson();
             String data=gson.toJson(org_detail);
@@ -348,9 +339,6 @@ public class AddOrganisationFragment extends Fragment {
             editor.apply();
 
         }
-
-
-
     }
 
     private List<Organisations> getData(){
