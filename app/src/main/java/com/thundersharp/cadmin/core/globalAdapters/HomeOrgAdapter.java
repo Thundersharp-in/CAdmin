@@ -25,6 +25,7 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
 
     private Context context;
     private List<org_details_model> data;
+
     public HomeOrgAdapter(Context context, List<org_details_model> data ) {
         this.context = context;
         this.data = data;
@@ -69,21 +70,17 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
         holder.radioselector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("selected",model.getOrganisation_id());
                 editor.apply();
                 notifyDataSetChanged();
                 notifyItemChanged(position);
-
             }
         });
 
         Glide.with(context).load(model.getCompany_logo()).into(holder.orglogo);
         holder.org_name.setText(model.getOrganisation_name());
         holder.orgid.setText(model.getOrganisation_id());
-
-
     }
 //check shared pref is null org name match if sav then checkrd else not checked
     //if not null get adapterposition =0

@@ -169,6 +169,7 @@ public class ProjectsFragment extends Fragment {
                             }
                             AddProjectViewAdapter addProjectViewAdapter = new AddProjectViewAdapter(getActivity(),dataorg);
                             recyclerView.setAdapter(addProjectViewAdapter);
+
                         }
 
                         @Override

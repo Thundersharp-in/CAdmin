@@ -64,8 +64,8 @@ public class Organisation extends Fragment {
 
         data=new ArrayList<>();
         finalorg = new ArrayList<>();
-        org= getActivity().getSharedPreferences("organisations", Context.MODE_PRIVATE);
-        preferences= getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
+        org = getActivity().getSharedPreferences("organisations", Context.MODE_PRIVATE);
+        preferences = getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);
         textView = root.findViewById(R.id.tv);
@@ -122,7 +122,7 @@ public class Organisation extends Fragment {
 
     private void fetchListofAllOrganisation(@NonNull final List<Organisations> organisations) {
 
-         dataorg = new ArrayList<>();
+        final List<org_details_model> dataorg1 = new ArrayList<>();
 
         for (int i=0;i<organisations.size();i++){
 
@@ -144,23 +144,18 @@ public class Organisation extends Fragment {
                         textView.setVisibility(View.GONE);
                         imageView.setVisibility(View.GONE);
                         //dataorg.clear();
-                        dataorg.add(snapshot.getValue(org_details_model.class));
-                        savefetchListofAllOrganisation(dataorg);
-                        //Toast.makeText(getContext(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
+                        dataorg1.add(snapshot.getValue(org_details_model.class));
+                        savefetchListofAllOrganisation(dataorg1);
                     }
-                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg,organisations);
+                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg1,organisations);
                     project_rv.setAdapter(organisationAdapter);
-                    refresh.setRefreshing(false);
+                    //refresh.setRefreshing(false);
                 }
-
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
                 }
             });
-
-
         }
         //Toast.makeText(getActivity(),String.valueOf(dataorg.size()),Toast.LENGTH_SHORT).show();
     }
@@ -260,7 +255,6 @@ public class Organisation extends Fragment {
         }else{
             dummy = new ArrayList<>();
         }
-
         return dummy;
     }
 
