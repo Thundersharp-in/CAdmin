@@ -2,6 +2,7 @@ package com.thundersharp.cadmin.core.globalAdapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
+import com.thundersharp.cadmin.ui.activity.MainActivity;
+import com.thundersharp.cadmin.ui.fragment.OrginasationDetails;
 
 import java.util.List;
 
@@ -109,6 +112,19 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
         @Override
         public void onClick(View v) {
 
+            OrginasationDetails detail=new OrginasationDetails();
+            Bundle bundle=new Bundle();
+            org_details_model details=data.get(getAdapterPosition());
+
+            bundle.putString("org_name",details.getOrganisation_name());
+            bundle.putString("org_desc",details.getCompany_description());
+            bundle.putString("org_id",details.getOrganisation_id());
+            bundle.putString("org_image",details.getCompany_logo());
+            bundle.putString("organiser_id",details.getOrganiser_uid());
+
+            detail.setArguments(bundle);
+
+            MainActivity.navController.navigate(R.id.nav_org_details,bundle);
         }
     }
 }

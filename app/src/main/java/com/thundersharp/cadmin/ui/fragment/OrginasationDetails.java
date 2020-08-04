@@ -50,14 +50,13 @@ public class OrginasationDetails extends Fragment {
     ViewPager viewPager;
     TextView detail_org_name,descwhole1,no_of_employee,no_of_projects,no_of_managers;
     Button btn_mail_manager,edit_org;
-    LinearLayout layout_work_force;
+    LinearLayout layout_work_force,managers;
     //Organisations orgs;
     CircleImageView org_logo12;
     String org_name,org_desc,org_image,organiser_id,no_of_workforce;
     public static String org_id;
     ProgressDialog progressDialog;
     Boolean manager=false;
-    List<String> managers;
     int users;
 
     @Override
@@ -69,7 +68,12 @@ public class OrginasationDetails extends Fragment {
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24,getActivity().getTheme()));
        // final org_details_model data = savedInstanceState.getParcelable("data");
        // final Organisations orgs=savedInstanceState.getParcelable("orgs");
-        managers=new ArrayList<>();
+        managers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO add dilog to add  a manager
+            }
+        });
         layout_work_force=root.findViewById(R.id.layout_work_force);
         org_logo12=root.findViewById(R.id.org_logo12);
         detail_org_name=root.findViewById(R.id.detail_org_name);
@@ -105,7 +109,8 @@ public class OrginasationDetails extends Fragment {
             });
 
 
-        }else {
+        }
+        else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
 
         }
@@ -451,7 +456,7 @@ public class OrginasationDetails extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     for (DataSnapshot snapshot1:snapshot.getChildren()){
-                        long projects_no=snapshot1.getChildrenCount();
+                        long projects_no=snapshot.getChildrenCount();
                         no_of_projects.setText(Long.toString(projects_no));
                         layout_work_force.setOnClickListener(new View.OnClickListener() {
                             @Override
