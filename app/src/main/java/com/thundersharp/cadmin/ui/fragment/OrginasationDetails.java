@@ -29,7 +29,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
@@ -38,12 +37,9 @@ import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 import com.thundersharp.cadmin.ui.fragment.organisationinfo.Photos;
 import com.thundersharp.cadmin.ui.fragment.organisationinfo.Users;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
 public class OrginasationDetails extends Fragment {
@@ -57,9 +53,11 @@ public class OrginasationDetails extends Fragment {
     CircleImageView org_logo12;
     Button org_update_btn;
     String org_name, org_desc, org_image, organiser_id, no_of_workforce;
+    String logo,logoref,managername,managerid;
     public static String org_id;
     ProgressDialog progressDialog;
-    Boolean manager = false;
+    org_details_model org_details_model1;
+   // Boolean manager = false;
     List<String> managers;
     int users;
 
@@ -100,7 +98,7 @@ public class OrginasationDetails extends Fragment {
 
             setDetails(org_name, org_desc, org_id, org_image, organiser_id);
             fetchWorkForce(org_id, no_of_workforce);
-            updateData(org_id,org_name,org_desc);
+            updateData(org_id);
 
 
 
@@ -138,14 +136,10 @@ public class OrginasationDetails extends Fragment {
         return root;
     }
 
-    private void updateData(final String org_id, String org_name, String org_desc) {
+    private void updateData(final String org_id) {
         org_update_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                final DatabaseReference reference = database.getReference();
-
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 final LayoutInflater inflater1 = getLayoutInflater();
                 View alertLayout = inflater1.inflate(R.layout.update_organisation, null);
@@ -172,15 +166,37 @@ public class OrginasationDetails extends Fragment {
                             update_desc.requestFocus();
                             return;
                         }else {
-                            org_details_model orgDetailsModel = new org_details_model(
-                                    update_desc.getEditText().getText().toString(),
-                                    "",
-                                    "",
-                                    "",
-                                    update_name.getEditText().getText().toString(),
-                                    "",
-                                    "");
-                            FirebaseDatabase.getInstance().getReference("organisation").child(org_id).child("description");
+
+                            FirebaseDatabase.getInstance()
+                                    .getReference("organisation")
+                                    .child(org_id)
+                                    .child("description")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()){
+                                                org_details_model1 = snapshot.getValue(org_details_model.class);
+                                                logo=  org_details_model1.getCompany_logo();
+                                                logoref=org_details_model1.getLogo_ref();
+                                                managername=org_details_model1.getOrganiser_name();
+                                                managerid=org_details_model1.getOrganiser_uid();
+                                                org_details_model orgDetailsModel = new org_details_model(
+                                                        update_name.getEditText().getText().toString(),
+                                                        logo,
+                                                        logoref,
+                                                        org_id,
+                                                        update_desc.getEditText().getText().toString(),
+                                                        managername,
+                                                        managerid);
+                                                updateorg(orgDetailsModel,org_id);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
                         }
                     }
                 });
@@ -195,6 +211,28 @@ public class OrginasationDetails extends Fragment {
             }
         });
             }
+
+    private void updateorg(final org_details_model orgDetailsModel, String org_id) {
+        FirebaseDatabase.getInstance()
+                .getReference("organisation")
+                .child(org_id)
+                .child("description")
+                .setValue(orgDetailsModel)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    detail_org_name.setText(orgDetailsModel.getOrganisation_name());
+                    descwhole1.setText(orgDetailsModel.getCompany_description());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void deleteorgfromorgnode(final String org_id) {
         FirebaseDatabase.getInstance().getReference("users")
@@ -219,36 +257,6 @@ public class OrginasationDetails extends Fragment {
             }
         });
     }
-
-    private void deletingorganisations(final String org_id) {
-        FirebaseDatabase.getInstance().getReference("organisation")
-                .child(org_id)
-                .child("managers")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                //managers.add(snapshot1.getKey());
-                                if (FirebaseAuth.getInstance().getUid().equals(snapshot1.getKey())) {
-                                    //manager=true;
-                                    // deleteorg(org_id,true);
-                                    break;
-
-                                    //manager=false;
-                                    // deleteorg(org_id,false);
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
-    //TODO delete projects from user node
 
     private void deleteorg(final String org_id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
