@@ -3,6 +3,7 @@ package com.thundersharp.cadmin.ui.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -31,8 +32,10 @@ import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.ExpandableListAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.HomeOrgAdapter;
+import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
+import com.thundersharp.cadmin.ui.fragment.projetinfo.ProjectDetails;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -57,6 +60,8 @@ public class HomeFragment extends Fragment  {
     private HashMap<String,List<String>> listHash;
     ProgressBar progressBar;
     TextView txt_proj_name,txt_proj_id,txt_org_id,txt_desc;
+    TextView textView,textView1;
+    ImageView imageView,imageView1;
     ImageView org_image;
     Button btn_proj_detail;
     String proj_name,proj_id,org_id,proj_desc;
@@ -100,18 +105,12 @@ public class HomeFragment extends Fragment  {
         org_image =root.findViewById(R.id.org_image);
         btn_proj_detail =root.findViewById(R.id.btn_proj_detail);
         cv =root.findViewById(R.id.cv);
-
+        textView = root.findViewById(R.id.tv1);
+        imageView = root.findViewById(R.id.imageView1);
+        textView1 = root.findViewById(R.id.tv2);
+        imageView1 = root.findViewById(R.id.imageView2);
         loadOrganisation();
-        //TODO add gif
-        proj_name=sf1.getString("proj_name","no project till");
-        proj_id=sf1.getString("proj_id","no project till");
-        org_id=sf1.getString("org_id","no project till");
-        proj_desc=sf1.getString("proj_desc","no project till");
-        txt_proj_name.setText(proj_name);
-        txt_proj_id.setText(proj_id);
-        txt_org_id.setText(org_id);
-        txt_desc.setText(proj_desc);
-
+        loadLatestproject();
 
         relq.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,13 +140,48 @@ public class HomeFragment extends Fragment  {
             }
         });
 
-
         initData();
         listAdapter = new ExpandableListAdapter(getActivity(),listDataHeader,listHash);
         faqholder.setAdapter(listAdapter);
 
-
         return root;
+    }
+
+    private void loadLatestproject() {
+
+        if (sf1.getString("proj_name","no project till").equals("no project till")){
+            textView1.setVisibility(View.VISIBLE);
+            imageView1.setVisibility(View.VISIBLE);
+        }else {
+            textView1.setVisibility(View.GONE);
+            imageView1.setVisibility(View.GONE);
+            proj_name=sf1.getString("proj_name","no project till");
+            proj_id=sf1.getString("proj_id","no project till");
+            org_id=sf1.getString("org_id","no project till");
+            proj_desc=sf1.getString("proj_desc","no project till");
+            txt_proj_name.setText(proj_name);
+            txt_proj_id.setText(proj_id);
+            txt_org_id.setText(org_id);
+            txt_desc.setText(proj_desc);
+            btn_proj_detail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProjectDetails details=new ProjectDetails();
+                    Bundle bundle = new Bundle();
+                   // AddProject_model detail=data.get(getAdapterPosition());
+                    bundle.putString("proj_name",proj_name);
+                    bundle.putString("proj_desc",proj_desc);
+                    bundle.putString("proj_id",proj_id);
+                    bundle.putString("org_id",org_id);
+                    bundle.putString("org_image","org_image");//TODO images not set
+                    bundle.putBoolean("proj_status",false);//TODO status not set
+                    details.setArguments(bundle);
+                    MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
+                }
+            });
+
+        }
+
     }
 
     @Override
@@ -243,12 +277,18 @@ public class HomeFragment extends Fragment  {
     }
 
     private void loadOrganisation(){
+        textView.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE);
         List<org_details_model> org_details_models = loadOrgdetailfromPrefs();
         if (org_details_models !=null){
+            textView.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
             homeOrgAdapter = new HomeOrgAdapter(getActivity(),org_details_models);
             recyclervieworg.setAdapter(homeOrgAdapter);
-
         }else {
+            textView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            imageView.setImageResource(R.drawable.sad);
             Toast.makeText(getActivity(),"No organisations",Toast.LENGTH_SHORT).show();
         }
 
