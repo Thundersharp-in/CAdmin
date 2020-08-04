@@ -97,9 +97,9 @@ public class OrginasationDetails extends Fragment {
             organiser_id=bundle.getString("organiser_id");
             org_id = bundle.getString("org_id");
 
-           setDetails(org_name,org_desc,org_id,org_image,organiser_id);
+            setDetails(org_name,org_desc,org_id,org_image,organiser_id);
             fetchWorkForce(org_id,no_of_workforce);
-
+            uploadmanager(org_id);
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,8 +131,25 @@ public class OrginasationDetails extends Fragment {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
 
-
         return root;
+    }
+
+    private void uploadmanager(final String org_id) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Manager Uid here");
+        View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.add_user_to_org,null);
+        final EditText user_uid_here=view1.findViewById(R.id.txt_user_uid);
+        final Button btn_verify_users=view1.findViewById(R.id.btn_verify_users);
+        builder.setCancelable(true);
+        builder.setView(view1);
+        btn_verify_users.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String user_uid =user_uid_here.getEditableText().toString();
+                //TODO here
+            }
+        });
+        builder.show();
     }
 
     private void deleteorgfromorgnode(final String org_id) {
@@ -458,6 +475,7 @@ public class OrginasationDetails extends Fragment {
                     for (DataSnapshot snapshot1:snapshot.getChildren()){
                         long projects_no=snapshot.getChildrenCount();
                         no_of_projects.setText(Long.toString(projects_no));
+
                         layout_work_force.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
