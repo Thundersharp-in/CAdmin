@@ -93,13 +93,13 @@ public class Files extends Fragment {
             Toast.makeText(getActivity(),"null objects",Toast.LENGTH_SHORT).show();
         }else {
 
-            loadImagesfromServer(org_id,project_key);
+            loadFilesfromServer(org_id,project_key);
         }
 
         return view;
     }
 
-    private void loadImagesfromServer(String org_id, String project_key) {
+    private void loadFilesfromServer(String org_id, String project_key) {
 
         url.clear();
 

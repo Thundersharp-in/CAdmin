@@ -162,7 +162,14 @@ public class ProjectsFragment extends Fragment {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()){
+                            if (!snapshot.exists()){
+                                textView.setVisibility(View.VISIBLE);
+                                imageView.setVisibility(View.VISIBLE);
+                                imageView.setImageResource(R.drawable.sad);
+                            }
+                            else if (snapshot.exists()){
+                                textView.setVisibility(View.GONE);
+                                imageView.setVisibility(View.GONE);
                                 dataorg.add(snapshot.getValue(AddProject_model.class));
                                 savefetchListofAllProjects(dataorg);
                                 //checking the size
@@ -196,14 +203,7 @@ public class ProjectsFragment extends Fragment {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()){
-                            textView.setVisibility(View.VISIBLE);
-                            imageView.setVisibility(View.VISIBLE);
-                            imageView.setImageResource(R.drawable.sad);
-                        }
-                         else if (snapshot.exists()){
-                            textView.setVisibility(View.GONE);
-                            imageView.setVisibility(View.GONE);
+                         if (snapshot.exists()){
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                                 Projects projects = new Projects(dataSnapshot.getKey(),dataSnapshot.getValue(String.class));
                                 list.add(projects);

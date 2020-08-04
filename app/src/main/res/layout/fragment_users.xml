@@ -42,4 +42,12 @@
         android:textStyle="italic"
         android:visibility="gone"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_user"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_add_black_24dp"/>
+
 </RelativeLayout>
