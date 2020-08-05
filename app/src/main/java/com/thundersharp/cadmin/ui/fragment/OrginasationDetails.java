@@ -57,7 +57,6 @@ public class OrginasationDetails extends Fragment {
     ProgressDialog progressDialog;
     org_details_model org_details_model1;
     UserData userData;
-   // Boolean manager = false;
     List<String> managers;
     int users;
 
@@ -68,7 +67,9 @@ public class OrginasationDetails extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_orginasation_details, container, false);
         MainActivity.container.setBackground(null);
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24, getActivity().getTheme()));
+        floatingActionButton.setImageDrawable(getResources()
+                .getDrawable(R.drawable.ic_baseline_delete_outline_24,
+                getActivity().getTheme()));
         // final org_details_model data = savedInstanceState.getParcelable("data");
         // final Organisations orgs=savedInstanceState.getParcelable("orgs");
         managers = new ArrayList<>();
@@ -85,6 +86,7 @@ public class OrginasationDetails extends Fragment {
         managerr=root.findViewById(R.id.managers);
         users = 0;
         no_of_employee.setText("0");
+
         org_id = "null";
 
         // total_no_of_workforce();
@@ -96,12 +98,6 @@ public class OrginasationDetails extends Fragment {
             org_image = bundle.getString("org_image");
             organiser_id = bundle.getString("organiser_id");
             org_id = bundle.getString("org_id");
-            org_update_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updateData(org_id);
-                }
-            });
 
             setDetails(org_name, org_desc, org_id, org_image, organiser_id);
             fetchWorkForce(org_id, no_of_workforce);
@@ -116,12 +112,22 @@ public class OrginasationDetails extends Fragment {
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // deletingorganisations(org_id);
                     deleteorgfromorgnode(org_id);
                 }
             });
+            org_update_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateData(org_id);
+                }
+            });
 
-
+            btn_mail_manager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   // mailtomanager(org_id,FirebaseAuth.getInstance().getUid());
+                }
+            });
         } else {
             Toast.makeText(getContext(), "no data found", Toast.LENGTH_SHORT).show();
 
@@ -142,7 +148,6 @@ public class OrginasationDetails extends Fragment {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
-
 
         return root;
     }
@@ -215,6 +220,8 @@ public class OrginasationDetails extends Fragment {
                         dialog.dismiss();
                     }
                 });
+
+                alert.show();
 
             }
 
@@ -530,9 +537,9 @@ public class OrginasationDetails extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                long projects_no = snapshot1.getChildrenCount();
-                                no_of_projects.setText(Long.toString(projects_no));
+                            long projects_no = snapshot.getChildrenCount();
+                            no_of_projects.setText(Long.toString(projects_no));
+
                                 layout_work_force.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -607,7 +614,7 @@ public class OrginasationDetails extends Fragment {
                                         builder.show();
                                     }
                                 });
-                            }
+
                         } else {
                             no_of_projects.setText("0");
                         }
