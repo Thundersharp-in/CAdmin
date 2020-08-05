@@ -86,9 +86,7 @@ public class ProjectDetails extends Fragment {
                 builder.setView(alert);
                 builder.setCancelable(true);
 
-                final EditText editTo = alert.findViewById(R.id.et_to);
-                final EditText editSub = alert.findViewById(R.id.et_subject);
-                final EditText editMessage = alert.findViewById(R.id.et_message);
+                final TextView editTo = alert.findViewById(R.id.et_to);
                 final Button send = alert.findViewById(R.id.send_txt);
                 final Button cancel = alert.findViewById(R.id.cancel_text);
 
@@ -101,20 +99,10 @@ public class ProjectDetails extends Fragment {
                             editTo.setError("required");
                             return;
 
-                        } else if (editSub.getText().toString().isEmpty()) {
-                            editSub.setError("required");
-                            return;
-
-                        } else if (editMessage.getText().toString().isEmpty()) {
-                            editMessage.setError("required");
-                            return;
-
                         } else {
                             dialog.dismiss();
                             Intent intent = new Intent(Intent.ACTION_VIEW,
                                     Uri.parse("mailto:"+editTo.getText().toString()));
-                            intent.putExtra(Intent.EXTRA_SUBJECT, editSub.getText().toString());
-                            intent.putExtra(Intent.EXTRA_TEXT, editMessage.getText().toString());
                             startActivity(intent);
                         }
                     }

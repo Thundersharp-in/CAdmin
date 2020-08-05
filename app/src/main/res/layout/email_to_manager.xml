@@ -42,7 +42,7 @@
                 android:textSize="20sp"
                 android:gravity="center"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/et_to"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,55 +50,48 @@
                 android:background="@android:color/transparent"/>
         </LinearLayout>
 
-        <EditText
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_managers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/et_subject"
-            android:hint="Subject:"
-            android:layout_marginHorizontal="5dp"
-            android:padding="@dimen/padding_10"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/send_btn"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:id="@+id/et_message"
-            android:hint="Message..."
-            android:layout_marginHorizontal="5dp"
-            android:padding="@dimen/padding_10"
-            android:gravity="top"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/send_btn"/>
+            android:layout_marginVertical="15dp"
+            android:layout_marginHorizontal="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="2"
             android:orientation="horizontal"
+            android:layout_marginHorizontal="2dp"
             android:layout_marginBottom="@dimen/padding_10"
             android:layout_marginTop="@dimen/padding_10">
 
             <Button
                 android:id="@+id/cancel_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="cancel"
                 android:textSize="20sp"
                 app:elevation="5dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginRight="25dp"
                 android:textColor="#fff"
                 android:background="@drawable/button_background"
                 />
 
             <Button
                 android:id="@+id/send_txt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Send"
                 android:textSize="20sp"
                 app:elevation="5dp"
                 android:textColor="#fff"
-                android:layout_marginLeft="125dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginBottom="2dp"
                 android:layout_marginRight="15dp"
                 android:background="@drawable/button_background"/>
         </LinearLayout>

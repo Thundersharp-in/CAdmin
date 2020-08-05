@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,11 +30,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalAdapters.ManagerModelsAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
@@ -98,7 +102,6 @@ public class OrginasationDetails extends Fragment {
             org_id = bundle.getString("org_id");
             org_image = bundle.getString("org_image");
             organiser_id = bundle.getString("organiser_id");
-            org_id = bundle.getString("org_id");
             org_update_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,19 +111,25 @@ public class OrginasationDetails extends Fragment {
 
             btn_mail_manager.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(final View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     LayoutInflater inflater1 = getLayoutInflater();
                     View alert = inflater1.inflate(R.layout.email_to_manager, null);
                     builder.setView(alert);
                     builder.setCancelable(true);
+                    final Dialog dialog = builder.create();
 
-                    final EditText editTo = alert.findViewById(R.id.et_to);
-                    final EditText editSub = alert.findViewById(R.id.et_subject);
-                    final EditText editMessage = alert.findViewById(R.id.et_message);
+
+                    final List<String> list;
+                    final TextView editTo = alert.findViewById(R.id.et_to);
                     final Button send = alert.findViewById(R.id.send_txt);
                     final Button cancel = alert.findViewById(R.id.cancel_text);
-                    final Dialog dialog = builder.create();
+                    final RecyclerView recyclerView = alert.findViewById(R.id.all_managers);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerView.setHasFixedSize(true);
+
+                    list = new ArrayList<>();
+
 
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -128,22 +137,36 @@ public class OrginasationDetails extends Fragment {
                             if (editTo.getText().toString().isEmpty()) {
                                 editTo.setError("required");
                                 return;
+                            }
+                            else {
 
-                            } else if (editSub.getText().toString().isEmpty()) {
-                                editSub.setError("required");
-                                return;
+                                FirebaseDatabase.getInstance()
+                                        .getReference("organisation")
+                                        .child(org_id)
+                                        .child("managers")
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()){
+                                                    //TODO not showing manager name
+                                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                        Toast.makeText(getContext(), dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
+                                                       list.add((String) dataSnapshot.getValue());
+                                                    }
+                                                }
+                                                final ManagerModelsAdapter adapter = new ManagerModelsAdapter(getContext(),list);
+                                                recyclerView.setAdapter(adapter);
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
-                            } else if (editMessage.getText().toString().isEmpty()) {
-                                editMessage.setError("required");
-                                return;
+                                            }
+                                        });
 
-                            } else {
-                                dialog.dismiss();
-                               Intent intent = new Intent(Intent.ACTION_VIEW,
-                                       Uri.parse("mailto:"+editTo.getText().toString()));
-                               intent.putExtra(Intent.EXTRA_SUBJECT, editSub.getText().toString());
-                               intent.putExtra(Intent.EXTRA_TEXT, editMessage.getText().toString());
-                               startActivity(intent);
+//                               Intent intent = new Intent(Intent.ACTION_VIEW,
+//                                       Uri.parse("mailto:"+editTo.getText().toString()));
+//                               startActivity(intent);
+//                                dialog.dismiss();
                             }
                         }
                     });

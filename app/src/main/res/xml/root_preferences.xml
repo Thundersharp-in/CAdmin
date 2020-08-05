@@ -15,15 +15,6 @@
             app:summaryOn="Switch to light Theme"
             app:title="Theme" />
 
-        <SwitchPreferenceCompat
-            app:enabled="true"
-            app:defaultValue="false"
-            app:key="update"
-            app:title="Update Profile"
-            app:icon="@drawable/ic_baseline_update_24"
-            app:summaryOff="Update Your profile"
-            app:summaryOn="Update Your profile"/>
-
         <Preference
             app:enabled="true"
             app:defaultValue="false"
