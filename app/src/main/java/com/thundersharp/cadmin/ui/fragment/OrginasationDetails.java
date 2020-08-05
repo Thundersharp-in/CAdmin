@@ -96,17 +96,22 @@ public class OrginasationDetails extends Fragment {
             org_image = bundle.getString("org_image");
             organiser_id = bundle.getString("organiser_id");
             org_id = bundle.getString("org_id");
+            org_update_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateData(org_id);
+                }
+            });
 
             setDetails(org_name, org_desc, org_id, org_image, organiser_id);
             fetchWorkForce(org_id, no_of_workforce);
-            updateData(org_id);
+
             managerr.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     uploadmanager(org_id);
                 }
             });
-
 
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,9 +148,6 @@ public class OrginasationDetails extends Fragment {
     }
 
     private void updateData(final String org_id) {
-        org_update_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 final LayoutInflater inflater1 = getLayoutInflater();
                 View alertLayout = inflater1.inflate(R.layout.update_organisation, null);
@@ -214,8 +216,6 @@ public class OrginasationDetails extends Fragment {
                     }
                 });
 
-            }
-        });
             }
 
     private void updateorg(final org_details_model orgDetailsModel, String org_id) {
