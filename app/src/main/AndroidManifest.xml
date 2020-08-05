@@ -16,6 +16,8 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+
+
         <activity android:name=".ui.activity.PdfLoader"></activity>
         <activity android:name=".ui.activity.WeightConverter" />
         <activity android:name=".ui.activity.TemperatureConverter" />

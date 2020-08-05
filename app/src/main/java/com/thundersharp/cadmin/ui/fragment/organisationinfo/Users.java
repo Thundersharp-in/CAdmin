@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -21,8 +22,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
@@ -42,6 +47,9 @@ public class Users extends Fragment {
     RecyclerView rv_org_users;
     List<String> list;
     FloatingActionButton showUser;
+
+    MyAdapter adapter;
+    List<UserData> userList;
    // Button btn_add_org_user;
 
     public Users() {
@@ -66,6 +74,7 @@ public class Users extends Fragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater1 = getLayoutInflater();
                 View alert = inflater1.inflate(R.layout.add_users,null);
+
                 builder.setView(alert);
                 builder.setCancelable(true);
                 builder.show();
