@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
@@ -63,7 +66,7 @@ public class OrginasationDetails extends Fragment {
 
     @SuppressLint("CutPasteId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_orginasation_details, container, false);
@@ -88,7 +91,7 @@ public class OrginasationDetails extends Fragment {
         org_id = "null";
 
         // total_no_of_workforce();
-        Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
         if (getArguments() != null) {
             org_name = bundle.getString("org_name");
             org_desc = bundle.getString("org_desc");
@@ -100,6 +103,59 @@ public class OrginasationDetails extends Fragment {
                 @Override
                 public void onClick(View v) {
                     updateData(org_id);
+                }
+            });
+
+            btn_mail_manager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater1 = getLayoutInflater();
+                    View alert = inflater1.inflate(R.layout.email_to_manager, null);
+                    builder.setView(alert);
+                    builder.setCancelable(true);
+
+                    final EditText editTo = alert.findViewById(R.id.et_to);
+                    final EditText editSub = alert.findViewById(R.id.et_subject);
+                    final EditText editMessage = alert.findViewById(R.id.et_message);
+                    final Button send = alert.findViewById(R.id.send_txt);
+                    final Button cancel = alert.findViewById(R.id.cancel_text);
+                    final Dialog dialog = builder.create();
+
+                    send.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (editTo.getText().toString().isEmpty()) {
+                                editTo.setError("required");
+                                return;
+
+                            } else if (editSub.getText().toString().isEmpty()) {
+                                editSub.setError("required");
+                                return;
+
+                            } else if (editMessage.getText().toString().isEmpty()) {
+                                editMessage.setError("required");
+                                return;
+
+                            } else {
+                                dialog.dismiss();
+                               Intent intent = new Intent(Intent.ACTION_VIEW,
+                                       Uri.parse("mailto:"+editTo.getText().toString()));
+                               intent.putExtra(Intent.EXTRA_SUBJECT, editSub.getText().toString());
+                               intent.putExtra(Intent.EXTRA_TEXT, editMessage.getText().toString());
+                               startActivity(intent);
+                            }
+                        }
+                    });
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.show();
                 }
             });
 

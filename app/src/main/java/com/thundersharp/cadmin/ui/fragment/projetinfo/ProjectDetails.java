@@ -2,11 +2,14 @@ package com.thundersharp.cadmin.ui.fragment.projetinfo;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +76,60 @@ public class ProjectDetails extends Fragment {
         mail_manager = root.findViewById(R.id.mail_manager);
         edit_proj = root.findViewById(R.id.edit_proj);
         org_logo2 = root.findViewById(R.id.org_logo2);
+
+        mail_manager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater1 = getLayoutInflater();
+                View alert = inflater1.inflate(R.layout.email_to_manager, null);
+                builder.setView(alert);
+                builder.setCancelable(true);
+
+                final EditText editTo = alert.findViewById(R.id.et_to);
+                final EditText editSub = alert.findViewById(R.id.et_subject);
+                final EditText editMessage = alert.findViewById(R.id.et_message);
+                final Button send = alert.findViewById(R.id.send_txt);
+                final Button cancel = alert.findViewById(R.id.cancel_text);
+
+                 final Dialog dialog = builder.create();
+
+                send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (editTo.getText().toString().isEmpty()) {
+                            editTo.setError("required");
+                            return;
+
+                        } else if (editSub.getText().toString().isEmpty()) {
+                            editSub.setError("required");
+                            return;
+
+                        } else if (editMessage.getText().toString().isEmpty()) {
+                            editMessage.setError("required");
+                            return;
+
+                        } else {
+                            dialog.dismiss();
+                            Intent intent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("mailto:"+editTo.getText().toString()));
+                            intent.putExtra(Intent.EXTRA_SUBJECT, editSub.getText().toString());
+                            intent.putExtra(Intent.EXTRA_TEXT, editMessage.getText().toString());
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
         Bundle bundle =this.getArguments();
         project_key="null";
