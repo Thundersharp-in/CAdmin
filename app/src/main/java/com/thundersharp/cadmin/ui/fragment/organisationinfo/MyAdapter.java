@@ -14,14 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.auth.data.model.User;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.chats.core.users.getall.GetUsersContract;
+import com.thundersharp.cadmin.core.globalmodels.UserData;
 
 import java.util.List;
 
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     Context context;
-    List<User> userList;
+    List<UserData> userList;
 
-    public MyAdapter(Context context, List<User> userList) {
+    public MyAdapter(Context context, List<UserData> userList) {
         this.context = context;
         this.userList = userList;
     }
@@ -39,8 +40,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        User user = userList.get(position);
-        holder.name.setText(user.getName());
+        final UserData data = userList.get(position);
+        holder.name.setText(data.getName());
         
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

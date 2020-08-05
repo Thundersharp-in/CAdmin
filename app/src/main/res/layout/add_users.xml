@@ -8,8 +8,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/org_add_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/addUser"/>
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/addUser"

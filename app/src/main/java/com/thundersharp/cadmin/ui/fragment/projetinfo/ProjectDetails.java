@@ -1,5 +1,7 @@
 package com.thundersharp.cadmin.ui.fragment.projetinfo;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +17,18 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
+import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -35,6 +42,7 @@ public class ProjectDetails extends Fragment {
     Button edit_proj,mail_manager;
     TabLayout tabLayout;
     ViewPager viewPager;
+    AddProject_model addProject_model;
     CircleImageView org_logo2;
     public static String project_key;
     String proj_name,proj_desc,proj_id,org_ids,org_image;
@@ -76,6 +84,14 @@ public class ProjectDetails extends Fragment {
             org_image=bundle.getString("org_image");
             project_key=bundle.getString("proj_id");
             status=bundle.getBoolean("proj_status");
+
+            edit_proj.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateData(proj_id);
+                }
+
+            });
             setDetails(proj_name,proj_desc,proj_id,org_ids,org_image,status);
         }else {
             Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
@@ -113,6 +129,98 @@ public class ProjectDetails extends Fragment {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);
 
         return root;
+    }
+
+    private void updateData(final String proj_id) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.update_project_details,null);
+
+        builder.setView(view);
+        builder.setCancelable(true);
+
+        final Button update_button = view.findViewById(R.id.update_btn);
+        final Button can = view.findViewById(R.id.update_cancel);
+        final TextInputLayout update_name = view.findViewById(R.id.update_proj_name);
+        final TextInputLayout update_desc = view.findViewById(R.id.update_proj_desc);
+
+        final Dialog dialog = builder.create();
+
+        update_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (update_name.getEditText().getText().toString().isEmpty()){
+                    update_name.setError("required!");
+                    update_name.requestFocus();
+                    return;
+                } else if (update_desc.getEditText().getText().toString().isEmpty()){
+                    update_desc.setError("required!");
+                    update_desc.requestFocus();
+                    return;
+                }else {
+                    FirebaseDatabase.getInstance()
+                            .getReference("organisation")
+                            .child(org_ids)
+                            .child("projects")
+                            .child(proj_id)
+                            .child("description")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        addProject_model = snapshot.getValue(AddProject_model.class);
+
+                                        AddProject_model model = new AddProject_model(
+                                                update_name.getEditText().getText().toString(),
+                                                update_desc.getEditText().getText().toString(),
+                                                proj_id,
+                                                org_ids,
+                                                false);
+                                        UpdateProj(model,proj_id);
+                                    }
+                                }
+
+                                private void UpdateProj(final AddProject_model model, String proj_id) {
+                                    FirebaseDatabase.getInstance()
+                                            .getReference("organisation")
+                                            .child(org_ids)
+                                            .child("projects")
+                                            .child(proj_id)
+                                            .child("description")
+                                            .setValue(model)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()){
+                                                        dialog.dismiss();
+                                                        Toast.makeText(getActivity(), "Update Done", Toast.LENGTH_SHORT).show();
+                                                        projtittle.setText(model.getProjectName());
+                                                        descwhole.setText(model.getProjectDesc());
+                                                    }
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                }
+            }
+        });
+        can.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     private void setDetails(String proj_name, String proj_desc, String proj_id, String org_ids,String org_image,Boolean status)

@@ -183,6 +183,8 @@ public class OrginasationDetails extends Fragment {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if (snapshot.exists()){
+
+                                                dialog.dismiss();
                                                 org_details_model1 = snapshot.getValue(org_details_model.class);
                                                 logo=  org_details_model1.getCompany_logo();
                                                 logoref=org_details_model1.getLogo_ref();
@@ -215,6 +217,8 @@ public class OrginasationDetails extends Fragment {
                         dialog.dismiss();
                     }
                 });
+
+                alert.show();
 
             }
 
