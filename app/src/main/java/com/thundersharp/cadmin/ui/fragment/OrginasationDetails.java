@@ -125,7 +125,7 @@ public class OrginasationDetails extends Fragment {
             btn_mail_manager.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   // mailtomanager(org_id,FirebaseAuth.getInstance().getUid());
+                    mailtomanager(org_id,organiser_id);
                 }
             });
         } else {
@@ -150,6 +150,27 @@ public class OrginasationDetails extends Fragment {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
 
         return root;
+    }
+
+    private void mailtomanager(String org_id, String organiser_id) {
+        FirebaseDatabase.getInstance().getReference("organisation")
+                .child(org_id)
+                .child("managers")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                        }else
+                            {
+                            Toast.makeText(getActivity(), "No manager found !", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void updateData(final String org_id) {
