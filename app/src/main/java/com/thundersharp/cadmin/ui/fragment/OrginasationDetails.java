@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,11 +30,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalAdapters.ManagerModelsAdapter;
 import com.thundersharp.cadmin.core.globalAdapters.TabAdapter;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
@@ -57,19 +64,18 @@ public class OrginasationDetails extends Fragment {
     ProgressDialog progressDialog;
     org_details_model org_details_model1;
     UserData userData;
+   // Boolean manager = false;
     List<String> managers;
     int users;
 
     @SuppressLint("CutPasteId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_orginasation_details, container, false);
         MainActivity.container.setBackground(null);
-        floatingActionButton.setImageDrawable(getResources()
-                .getDrawable(R.drawable.ic_baseline_delete_outline_24,
-                getActivity().getTheme()));
+        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24, getActivity().getTheme()));
         // final org_details_model data = savedInstanceState.getParcelable("data");
         // final Organisations orgs=savedInstanceState.getParcelable("orgs");
         managers = new ArrayList<>();
@@ -86,18 +92,95 @@ public class OrginasationDetails extends Fragment {
         managerr=root.findViewById(R.id.managers);
         users = 0;
         no_of_employee.setText("0");
-
         org_id = "null";
 
         // total_no_of_workforce();
-        Bundle bundle = this.getArguments();
+        final Bundle bundle = this.getArguments();
         if (getArguments() != null) {
             org_name = bundle.getString("org_name");
             org_desc = bundle.getString("org_desc");
             org_id = bundle.getString("org_id");
             org_image = bundle.getString("org_image");
             organiser_id = bundle.getString("organiser_id");
-            org_id = bundle.getString("org_id");
+            org_update_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateData(org_id);
+                }
+            });
+
+            btn_mail_manager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater inflater1 = getLayoutInflater();
+                    View alert = inflater1.inflate(R.layout.email_to_manager, null);
+                    builder.setView(alert);
+                    builder.setCancelable(true);
+                    final Dialog dialog = builder.create();
+
+
+                    final List<String> list;
+                    final TextView editTo = alert.findViewById(R.id.et_to);
+                    final Button send = alert.findViewById(R.id.send_txt);
+                    final Button cancel = alert.findViewById(R.id.cancel_text);
+                    final RecyclerView recyclerView = alert.findViewById(R.id.all_managers);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerView.setHasFixedSize(true);
+
+                    list = new ArrayList<>();
+
+
+                    send.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (editTo.getText().toString().isEmpty()) {
+                                editTo.setError("required");
+                                return;
+                            }
+                            else {
+
+                                FirebaseDatabase.getInstance()
+                                        .getReference("organisation")
+                                        .child(org_id)
+                                        .child("managers")
+                                        .addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()){
+                                                    //TODO not showing manager name
+                                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                        Toast.makeText(getContext(), dataSnapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
+                                                       list.add((String) dataSnapshot.getValue());
+                                                    }
+                                                }
+                                                final ManagerModelsAdapter adapter = new ManagerModelsAdapter(getContext(),list);
+                                                recyclerView.setAdapter(adapter);
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+
+//                               Intent intent = new Intent(Intent.ACTION_VIEW,
+//                                       Uri.parse("mailto:"+editTo.getText().toString()));
+//                               startActivity(intent);
+//                                dialog.dismiss();
+                            }
+                        }
+                    });
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.show();
+                }
+            });
 
             setDetails(org_name, org_desc, org_id, org_image, organiser_id);
             fetchWorkForce(org_id, no_of_workforce);
@@ -112,22 +195,12 @@ public class OrginasationDetails extends Fragment {
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // deletingorganisations(org_id);
                     deleteorgfromorgnode(org_id);
                 }
             });
-            org_update_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updateData(org_id);
-                }
-            });
 
-            btn_mail_manager.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mailtomanager(org_id,organiser_id);
-                }
-            });
+
         } else {
             Toast.makeText(getContext(), "no data found", Toast.LENGTH_SHORT).show();
 
@@ -149,28 +222,8 @@ public class OrginasationDetails extends Fragment {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
 
+
         return root;
-    }
-
-    private void mailtomanager(String org_id, String organiser_id) {
-        FirebaseDatabase.getInstance().getReference("organisation")
-                .child(org_id)
-                .child("managers")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                        }else
-                            {
-                            Toast.makeText(getActivity(), "No manager found !", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getActivity(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     private void updateData(final String org_id) {
@@ -560,9 +613,9 @@ public class OrginasationDetails extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            long projects_no = snapshot.getChildrenCount();
-                            no_of_projects.setText(Long.toString(projects_no));
-
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                long projects_no = snapshot1.getChildrenCount();
+                                no_of_projects.setText(Long.toString(projects_no));
                                 layout_work_force.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -637,7 +690,7 @@ public class OrginasationDetails extends Fragment {
                                         builder.show();
                                     }
                                 });
-
+                            }
                         } else {
                             no_of_projects.setText("0");
                         }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/manager_name"
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="wrap_content"
+            android:hint="Manager Name"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:layout_marginBottom="2dp"
+            android:padding="5dp"
+            android:textSize="20sp"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/manager_check_box"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="2dp"/>
+
+    </LinearLayout>
+</RelativeLayout>
