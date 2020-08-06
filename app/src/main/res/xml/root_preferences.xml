@@ -18,7 +18,7 @@
         <Preference
             app:enabled="true"
             app:defaultValue="false"
-            app:key="@string/clear"
+            app:key="ClearCache"
             app:title="Clear Cache"
             app:icon="@drawable/ic_baseline_memory_24"
             app:summaryOff="Clear cache memory"
@@ -27,7 +27,7 @@
         <SwitchPreferenceCompat
             app:enabled="true"
             app:defaultValue="false"
-            app:key="@string/app_name"
+            app:key="update_alert"
             app:title="App Update Alert"
             app:icon="@drawable/ic_baseline_system_update_24"
             app:summaryOff="On this for getting our app update notification"
@@ -57,16 +57,10 @@
             app:icon="@drawable/ic_baseline_delete_sweep_24" />
 
         <Preference
-            android:key="resetOrganisation"
-            android:summary="Delete all organisation."
-            android:title="Reset Organisations"
-            app:icon="@drawable/ic_baseline_group_work_24" />
-
-        <Preference
-            android:key="resetProjects"
-            android:summary="Delete all projects."
-            android:title="Reset All Projects"
-            app:icon="@drawable/ic_baseline_work_24" />
+            app:key="btnLogout"
+            android:summary="Logout from this app"
+            android:title="Login with other email"
+            app:icon="@drawable/ic_round_exit_to_app_24"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
