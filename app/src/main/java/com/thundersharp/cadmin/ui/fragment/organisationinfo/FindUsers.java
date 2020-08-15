@@ -52,7 +52,6 @@ public class FindUsers extends Fragment {
 
         userList = new ArrayList<>();
 
-        
         //getAllUsers();
         return root;
     }

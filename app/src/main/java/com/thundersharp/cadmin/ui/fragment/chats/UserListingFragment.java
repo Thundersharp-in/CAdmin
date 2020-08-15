@@ -1,6 +1,5 @@
 package com.thundersharp.cadmin.ui.fragment.chats;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabLayout;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.chats.adapters.UserListingPagerAdapter;
@@ -21,6 +18,7 @@ import com.thundersharp.cadmin.ui.activity.MainActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class UserListingFragment extends Fragment {
     private Toolbar mToolbar;
     private TabLayout mTabLayoutUserListing;
@@ -39,11 +37,9 @@ public class UserListingFragment extends Fragment {
         context.startActivity(intent);
     }
 
-
     public UserListingFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,6 +77,4 @@ public class UserListingFragment extends Fragment {
 
         // mLogoutPresenter = new LogoutPresenter(this);
     }
-
-
 }

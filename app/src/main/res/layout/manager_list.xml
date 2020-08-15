@@ -25,6 +25,7 @@
             android:padding="5dp"
             android:textSize="20sp"/>
 
+
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/manager_check_box"
             android:layout_width="0dp"

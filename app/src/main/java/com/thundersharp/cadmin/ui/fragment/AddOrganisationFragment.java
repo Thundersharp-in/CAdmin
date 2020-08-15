@@ -13,12 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -80,7 +78,12 @@ public class AddOrganisationFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.fragment_add_organisation, container, false);
         MainActivity.container.setBackground(null);
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_delete_outline_24,getActivity().getTheme()));
+        floatingActionButton
+                .setImageDrawable(getResources()
+                        .getDrawable(R.drawable
+                                .ic_baseline_delete_outline_24
+                                ,getActivity()
+                                        .getTheme()));
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,10 +102,8 @@ public class AddOrganisationFragment extends Fragment {
         builder.setView(view1);
         dialog = builder.create();
 
-
         upload_org_logo=view.findViewById(R.id.upload_org_logo);
         upload_org_name=view.findViewById(R.id.upload_org_name);
-                                                                  // upload_org_motto= view.findViewById(R.id.upload_org_motto);
         upload_org_desc=view.findViewById(R.id.upload_org_desc);
         btn_upload_org=view.findViewById(R.id.btn_upload_org);
         logourl="";
@@ -178,8 +179,8 @@ public class AddOrganisationFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference("organisation")
                 .child(model.getOrganisation_id())
                 .child("managers")
-                .child("1")
-                .setValue(FirebaseAuth.getInstance().getUid())
+                .child(userData.getUid())
+                .setValue(userData.getName()+"\n"+userData.getEmail()+"\n"+userData.getPhone_no()+"\n"+userData.getUid())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -216,7 +217,6 @@ public class AddOrganisationFragment extends Fragment {
                     MainActivity.navController.navigate(R.id.nav_organisation);
                     getActivity().sendBroadcast(new Intent("refreshPref"));
                     dialog.dismiss();
-
                 }else {
                     dialog.dismiss();
                     Toast.makeText(getContext(),"INTERNAL ERROR : "+task.getException().getCause().getMessage(),Toast.LENGTH_SHORT).show();
@@ -382,7 +382,6 @@ public class AddOrganisationFragment extends Fragment {
     }
 
     private void uploadtofirebaseStorage(@NonNull Uri path, @NonNull final String org_id){
-
         //Uri file = Uri.fromFile(new File(path));
         StorageReference riversRef = storageReference.child("/"+org_id+".jpg");
 
@@ -397,7 +396,6 @@ public class AddOrganisationFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
                         final String storgePath = taskSnapshot.getMetadata().getPath();
                         taskSnapshot
                                 .getStorage()
@@ -420,11 +418,10 @@ public class AddOrganisationFragment extends Fragment {
                                         storgePath,
                                         org_id,
                                         org_name,
-                                        userData.getName(),   // organiser_name
+                                        userData.getName(),
                                         organiser_uid);
 
                                 createorganisation(org_details_model_list);
-                                //savecompanylogourl(url);
 
                             }
                         });

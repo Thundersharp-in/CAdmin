@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.UsersAdapter;
+import com.thundersharp.cadmin.core.globalmodels.ManagerModels;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.ui.fragment.OrginasationDetails;
@@ -41,19 +42,14 @@ import java.util.List;
 
 public class Users extends Fragment {
 
-    ImageView org_imageView;
-    TextView org_textView;
+    ImageView org_imageView; //if no data
+    TextView org_textView;  //if no data
     String org_id;
     RecyclerView rv_org_users;
-    List<String> list;
-    FloatingActionButton showUser;
+    List<ManagerModels> managerModelsList;
+    UserData userList;
 
-    MyAdapter adapter;
-    List<UserData> userList;
-   // Button btn_add_org_user;
-
-    public Users() {
-    }
+    public Users() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,164 +58,179 @@ public class Users extends Fragment {
         org_imageView = root.findViewById(R.id.org_imageView_users);
         org_textView = root.findViewById(R.id.org_tv_users);
         rv_org_users=root.findViewById(R.id.rv_org_users);
-        showUser = root.findViewById(R.id.add_user);
+       // showUser = root.findViewById(R.id.add_user);
        // btn_add_org_user=root.findViewById(R.id.btn_add_org_user);
         org_id = OrginasationDetails.org_id;
-        list=new ArrayList<>();
+
+        managerModelsList=new ArrayList<>();
         fetchData(org_id);
-
-        showUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater1 = getLayoutInflater();
-                View alert = inflater1.inflate(R.layout.add_users,null);
-
-                builder.setView(alert);
-                builder.setCancelable(true);
-                builder.show();
-            }
-        });
 
         return root;
 
     }
 
     private void fetchData(final String org_id) {
-
         FirebaseDatabase.getInstance()
                 .getReference("organisation")
                 .child(org_id)
                 .child("org_users")
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists()){
+                        if (snapshot.exists()){
+                            org_imageView.setVisibility(View.GONE);
+                            org_textView.setVisibility(View.GONE);
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                                ManagerModels users = new ManagerModels(snapshot1.getKey(),snapshot1.getValue(String.class));
+                                managerModelsList.add(users);
+                            }
+
+                        } else
+                            if (!snapshot.exists()) {
                             org_imageView.setVisibility(View.VISIBLE);
                             org_imageView.setImageResource(R.drawable.sad);
                             org_textView.setVisibility(View.VISIBLE);
+
                             org_imageView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                                    builder.setTitle("User Uid here");
+                                    builder.setTitle(" Enter User Uid here");
                                     View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.add_user_to_org,null);
                                     final EditText  user_uid_here=view1.findViewById(R.id.txt_user_uid);
                                     final Button btn_verify_users=view1.findViewById(R.id.btn_verify_users);
                                     builder.setCancelable(true);
                                     builder.setView(view1);
+
                                     btn_verify_users.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             final String user_uid =user_uid_here.getEditableText().toString();
-                                            FirebaseDatabase.getInstance()
-                                                    .getReference("users")
-                                                    .child(user_uid)
-                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                                                            if (snapshot.exists()){
-
-                                                                FirebaseDatabase.getInstance().getReference("users")
-                                                                        .child(user_uid)
-                                                                        .child("organisations")
-                                                                        .child(org_id).child(org_id).setValue(false).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful()){
-                                                                            Toast.makeText(getActivity(), "Uploaded to user", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
-
-                                                                //TODO Add to user node
-                                                                //Toast.makeText(getActivity(), "sent request to user ", Toast.LENGTH_SHORT).show();
-                                                                FirebaseDatabase.getInstance()
-                                                                        .getReference("organisation")
-                                                                        .child(org_id)
-                                                                        .child("org_users")
-                                                                        .child("1")
-                                                                        .setValue(user_uid).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful()){
-                                                                            Toast.makeText(getActivity(), "User Added", Toast.LENGTH_SHORT).show();
-                                                                            for (DataSnapshot snapshot1:snapshot.getChildren()){
-                                                                                list.add(snapshot1.getValue(String.class));
-                                                                                org_imageView.setVisibility(View.GONE);
-                                                                                org_imageView.setImageResource(R.drawable.sad);
-                                                                                org_textView.setVisibility(View.GONE);
-                                                                            }
-
-                                                                            //TODO cancel dilog cancel
-                                                                        }else{
-                                                                            Toast.makeText(getActivity(), "Something went wrong !", Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-
-                                                                    }
-                                                                });
-                                                            }else {
-                                                                Toast.makeText(getActivity(), "OOPS! Sorry no user exists for this uid try something else !", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                                        }
-                                                    });
+                                            if (user_uid.isEmpty()){
+                                                user_uid_here.setError("Required !");
+                                                user_uid_here.requestFocus();
+                                            }else {
+                                                checkdatafromusers(org_id,user_uid);
+                                            }
                                         }
                                     });
                                     builder.show();
+
+
                                 }
                             });
-                        }
-                        else if (snapshot.exists()){
-                            org_imageView.setVisibility(View.GONE);
-                            org_textView.setVisibility(View.GONE);
-                            //btn_add_org_user.setVisibility(View.GONE);
-                            list.clear();
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()){
-                                list.add(snapshot1.getValue(String.class));
-                            }
 
                         }else {
-
-                           // btn_add_org_user.setVisibility(View.VISIBLE);
                             org_imageView.setVisibility(View.VISIBLE);
                             org_imageView.setImageResource(R.drawable.sad);
                             org_textView.setVisibility(View.VISIBLE);
-                            /**
-                             *  btn_add_org_user.setOnClickListener(new View.OnClickListener() {
-                             *                                 @Override
-                             *                                 public void onClick(View v) {
-                             *
-                             *                                    // Toast.makeText(getActivity(), "no users found", Toast.LENGTH_SHORT).show();
-                             *                                     //TODO alert dilog for adding  users
-                             *
-                             *                                 }
-                             *                             });
-                             */
-
+                            Toast.makeText(getActivity(), "OOPS! Something went wrong ....  !", Toast.LENGTH_SHORT).show();
                         }
 
-                        UsersAdapter usersAdapter=new UsersAdapter(getActivity(),list);
+                        UsersAdapter usersAdapter=new UsersAdapter(getActivity(),managerModelsList);
                         rv_org_users.setAdapter(usersAdapter);
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(getActivity(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
+    }
+
+    private void checkdatafromusers(final String org_id,final String user_uid) {
+        FirebaseDatabase
+                .getInstance()
+                .getReference("users")
+                .child(user_uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+
+                            FirebaseDatabase
+                                    .getInstance().getReference("users")
+                                    .child(user_uid)
+                                    .child("organisations")
+                                    .child(org_id)
+                                    .setValue(false)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                setDatatoOrg(org_id,user_uid);
+                                            }else {
+                                                Toast.makeText(getActivity(), "OOps ! something went wrong try again !", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }else {
+                            Toast.makeText(getActivity(), "No such user found to be registered with this application try another !", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void setDatatoOrg(final String org_id, String user_uid) {
+
+        FirebaseDatabase
+                .getInstance()
+                .getReference("users")
+                .child(user_uid)
+                .child("personal_data")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                     if (snapshot.exists()){
+                         for (DataSnapshot snapshot1:snapshot.getChildren()){
+                             userList=snapshot1.getValue(UserData.class);
+
+                             String uid=userList.getUid();
+                             String userdata=userList.getName()+"\n"+userList.getEmail()+"\n"+userList.getPhone_no()+"\n"+userList.getUid();;
+
+                             FirebaseDatabase.getInstance().getReference("organisation")
+                                     .child(org_id)
+                                     .child("org_users")
+                                     .child(uid)
+                                     .setValue(userdata)
+                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                         @Override
+                                         public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Toast.makeText(getActivity(), "All values set ", Toast.LENGTH_SHORT).show();
+                                            }
+                                         }
+                                     }).addOnFailureListener(new OnFailureListener() {
+                                 @Override
+                                 public void onFailure(@NonNull Exception e) {
+                                     Toast.makeText(getActivity(), e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                 }
+                             });
+                             org_imageView.setVisibility(View.GONE);
+                             org_imageView.setImageResource(R.drawable.sad);
+                             org_textView.setVisibility(View.GONE);
+                         }
+
+                     }  else {
+                         Toast.makeText(getActivity(), "user data missing", Toast.LENGTH_SHORT).show();
+                     }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getActivity(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 }

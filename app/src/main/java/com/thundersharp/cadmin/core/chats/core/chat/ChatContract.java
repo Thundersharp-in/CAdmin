@@ -1,7 +1,6 @@
 package com.thundersharp.cadmin.core.chats.core.chat;
 
 import android.content.Context;
-
 import com.thundersharp.cadmin.core.chats.model.Chat;
 
 

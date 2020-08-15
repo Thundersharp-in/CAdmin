@@ -14,15 +14,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
+import com.thundersharp.cadmin.core.globalmodels.ManagerModels;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
     Context context;
-    List<String> userDataList;
+    List<ManagerModels> userDataList;
 
-    public UsersAdapter(Context context, List<String> userDataList) {
+    public UsersAdapter(Context context, List<ManagerModels> userDataList) {
         this.context = context;
         this.userDataList = userDataList;
     }
@@ -36,29 +37,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final String data = userDataList.get(position);
-        FirebaseDatabase.getInstance()
-                .getReference("users")
-                .child(data)
-                .child("personal_data")
-                .child("name")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                  //  UserData userData=dataList.get(position);
-                    holder.users_data.setText(snapshot.getValue().toString());
-                }
-               // holder.users_uid.setText(data.getUid());
-                //holder.users_data.setText(data.getName() +"\n" + data.getUid()+"\n"+data.getEmail());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-     holder.users_uid.setText(data);
+        final ManagerModels data = userDataList.get(position);
+        holder.users_data.setText(data.getInfo());
+        holder.users_uid.setText(data.getUseruid());
     }
 
     @Override

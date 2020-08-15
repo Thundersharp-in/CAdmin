@@ -57,9 +57,7 @@ public class Organisation extends Fragment {
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp,getActivity().getTheme()));
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                MainActivity.navController.navigate(R.id.nav_org);
-            }
+            public void onClick(View view) { MainActivity.navController.navigate(R.id.nav_org); }
         });
 
         data=new ArrayList<>();
@@ -90,7 +88,9 @@ public class Organisation extends Fragment {
             Toast.makeText(getActivity(),"profile server",Toast.LENGTH_SHORT).show();
             fetchProfilefromsever();
             progressorg.setVisibility(View.GONE);
-        }else {
+        }
+        else
+            {
             progressorg.setVisibility(View.VISIBLE);
             Toast.makeText(getActivity(),"data server",Toast.LENGTH_SHORT).show();
 
@@ -111,6 +111,7 @@ public class Organisation extends Fragment {
                     getorgdetailfromPref(loadDataOrgfromPrefs());
                     getActivity().recreate();
                     progressorg.setVisibility(View.GONE);
+                    refresh.setRefreshing(false);
                 }
             }
         };
@@ -149,7 +150,7 @@ public class Organisation extends Fragment {
                     }
                     OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg1,organisations);
                     project_rv.setAdapter(organisationAdapter);
-                    //refresh.setRefreshing(false);
+                    refresh.setRefreshing(false);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -165,11 +166,9 @@ public class Organisation extends Fragment {
         List<org_details_model> datapref = loadOrgdetailfromPrefs();
 
         if (datapref==null){
-            //Data not found on shared prefs checking server
             fetchListofAllOrganisation(model);
         }else{
-            //Data found on shared prefs
-            refresh.setRefreshing(false);
+           refresh.setRefreshing(false);
             List<org_details_model> dataorg = new  ArrayList<>();
             Gson gson=new Gson();
             for (int i=0;i<model.size();i++){
@@ -181,7 +180,6 @@ public class Organisation extends Fragment {
                 OrganisationAdapter organisationAdapter =new OrganisationAdapter(getActivity(),dataorg,model);
                 project_rv.setAdapter(organisationAdapter);
         }
-
             //dataorg.add(loadOrgdetailfromPrefs().size(),org_details_model.class);
             // OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg);
             //                    project_rv.setAdapter(organisationAdapter);
@@ -203,7 +201,6 @@ public class Organisation extends Fragment {
                         Organisations organisations = new Organisations(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
                         finalorg.add(organisations);
                     }
-
                     SavetoSharedPrefs(finalorg);
                 }else {
                     SavetoSharedPrefs(null);

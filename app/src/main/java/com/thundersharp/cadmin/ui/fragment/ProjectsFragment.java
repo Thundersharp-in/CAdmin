@@ -38,7 +38,6 @@ import java.util.List;
 
 import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionButton;
 
-
 public class ProjectsFragment extends Fragment {
 
     ImageView imageView;
@@ -54,12 +53,10 @@ public class ProjectsFragment extends Fragment {
             sharedPreferencesProjList,
             sharedPreferencesorg;
 
-//    FloatingActionButton refresh;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_projects, container, false);
         MainActivity.container.setBackground(null);
         progressproj=view.findViewById(R.id.progress_proj);
@@ -76,9 +73,8 @@ public class ProjectsFragment extends Fragment {
                 if (sharedPreferencesorg.getString("selected",null)== null){
                     progressproj.setVisibility(View.VISIBLE);
 
-                    Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
+                   // Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
 
-                    // TODO add sneekbar
                     Snackbar.make(cont,"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -87,6 +83,7 @@ public class ProjectsFragment extends Fragment {
                     }).setActionTextColor(getResources().getColor(R.color.white)).show();
 
                     progressproj.setVisibility(View.GONE);
+                    refresh_proj.setRefreshing(false);
                 }else {
                     MainActivity.navController.navigate(R.id.nav_add_project);
                 }
@@ -137,7 +134,7 @@ public class ProjectsFragment extends Fragment {
         }else {
 
             progressproj.setVisibility(View.VISIBLE);
-            //TODO add sneekbar
+            Snackbar.make(cont,"No data found",Snackbar.LENGTH_LONG).show();
             progressproj.setVisibility(View.GONE);
             refresh_proj.setRefreshing(false);
         }
@@ -211,9 +208,7 @@ public class ProjectsFragment extends Fragment {
                             }
                             SavetoSharedPrefs(list);
                         }
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         progressproj.setVisibility(View.GONE);
@@ -267,11 +262,9 @@ public class ProjectsFragment extends Fragment {
             String data = preferences.getString("id","null");
             Type type = new TypeToken<ArrayList<Projects>>(){}.getType();
             dummy = gson.fromJson(data,type);
-
         }else {
             dummy = new ArrayList<>();
         }
-
         return dummy;
     }
 }
