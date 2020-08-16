@@ -60,24 +60,31 @@ public class Files extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
-        MainActivity.floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_note_add_24,getActivity().getTheme()));
-        //todo add files
-        //todo delete files
-        MainActivity.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                selectPdf();
-
-            }
-        });
+//        MainActivity.floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_note_add_24,getActivity().getTheme()));
+//
+//        MainActivity.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                selectPdf();
+//
+//            }
+//        });
         imageView = view.findViewById(R.id.imageView_files);
         textView = view.findViewById(R.id.tv_files);
+        fab1 = view.findViewById(R.id.project_add_files);
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPdf();
+            }
+        });
 
         url = new ArrayList<>();
         sharedPreferences =getActivity().getSharedPreferences("selected_org", Context.MODE_PRIVATE);

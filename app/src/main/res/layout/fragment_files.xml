@@ -33,5 +33,14 @@
         android:layout_height="match_parent"
         shimmer:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/project_add_files"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_add_black_24dp"
+        shimmer:fabSize="mini"
+        tools:ignore="RelativeOverlap" />
+
 
 </RelativeLayout>

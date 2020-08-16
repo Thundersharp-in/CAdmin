@@ -61,6 +61,7 @@ public class Video extends Fragment {
     MediaController mediaController;
     Uri uri;
     List<String> url;
+    FloatingActionButton videoAdds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,24 +69,29 @@ public class Video extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video, container, false);
 
+        //floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_slow_motion_video_24,getActivity().getTheme()));
+//
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                selectVideo();
+//
+//            }
+//        });
 
-        //todo add video
-        //todo delete video
-
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_slow_motion_video_24,getActivity().getTheme()));
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                selectVideo();
-
-            }
-        });
         imageView = view.findViewById(R.id.imageView_video);
         textView = view.findViewById(R.id.tv_video);
+        videoAdds = view.findViewById(R.id.project_videos_add);
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
+
+        videoAdds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectVideo();
+            }
+        });
 
         mediaController = new MediaController(getContext());
 
