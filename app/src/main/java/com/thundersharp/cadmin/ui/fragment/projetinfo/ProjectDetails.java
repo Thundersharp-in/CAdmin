@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class ProjectDetails extends Fragment {
     public static String project_key;
     String proj_name,proj_desc,proj_id,org_ids,org_image;
     Boolean status;
+    LinearLayout llproject_user,ll_todo;
 
     @Nullable
     @Override
@@ -57,13 +59,11 @@ public class ProjectDetails extends Fragment {
         View root= inflater.inflate(R.layout.project_info, container, false);
 
         MainActivity.container.setBackground(null);
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_group_add_24,getActivity().getTheme()));
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //MainActivity.navController.navigate(R.id.nav_chats);
-            }
-        });
+        floatingActionButton.
+                setImageDrawable(getResources().
+                        getDrawable(R.drawable.ic_baseline_delete_outline_24,
+                                getActivity().getTheme()));   //ic_outline_group_add_24
+
 
         tabLayout = root.findViewById(R.id.sliding_tabs);
         viewPager = root.findViewById(R.id.viewpager);
@@ -76,48 +76,8 @@ public class ProjectDetails extends Fragment {
         mail_manager = root.findViewById(R.id.mail_manager);
         edit_proj = root.findViewById(R.id.edit_proj);
         org_logo2 = root.findViewById(R.id.org_logo2);
-
-        mail_manager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater1 = getLayoutInflater();
-                View alert = inflater1.inflate(R.layout.email_to_manager, null);
-                builder.setView(alert);
-                builder.setCancelable(true);
-
-                final TextView editTo = alert.findViewById(R.id.et_to);
-                final Button send = alert.findViewById(R.id.send_txt);
-                final Button cancel = alert.findViewById(R.id.cancel_text);
-
-                 final Dialog dialog = builder.create();
-
-                send.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (editTo.getText().toString().isEmpty()) {
-                            editTo.setError("required");
-                            return;
-
-                        } else {
-                            dialog.dismiss();
-                            Intent intent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("mailto:"+editTo.getText().toString()));
-                            startActivity(intent);
-                        }
-                    }
-                });
-
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-
-                builder.show();
-            }
-        });
+        llproject_user=root.findViewById(R.id.ll_project_user);
+        ll_todo=root.findViewById(R.id.ll_todo);
 
         Bundle bundle =this.getArguments();
         project_key="null";
@@ -130,16 +90,48 @@ public class ProjectDetails extends Fragment {
             project_key=bundle.getString("proj_id");
             status=bundle.getBoolean("proj_status");
 
-            edit_proj.setOnClickListener(new View.OnClickListener() {
+            setDetails(proj_name,proj_desc);
+            fetchworkforce(org_ids,proj_id);
+            fetchtodo(org_ids,proj_id);
+            fetchprojectstatus(org_ids,proj_id);
+
+            mail_manager.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) { mailmanger(); //todo mail manager
+                }
+            });
+            ll_todo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    updateData(proj_id);
+                   //todo add todo
                 }
+            });
+            llproject_user.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //todo add user
+                }
+            });
+
+            //todo add manager
+
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {//todo delete project
+                }
+            });
+
+            edit_proj.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) { updateData(proj_id);   //todo edit project
+                      }
 
             });
-            setDetails(proj_name,proj_desc,proj_id,org_ids,org_image,status);
-        }else {
-            Toast.makeText(getContext(),"no data found", Toast.LENGTH_SHORT).show();
+
+        }
+        else {
+            Toast.makeText(getContext(),"no project found", Toast.LENGTH_SHORT).show();
+            MainActivity.navController.navigate(R.id.nav_proj);
         }
 
         TabAdapter tabAdapter = new TabAdapter(getParentFragmentManager());
@@ -174,6 +166,122 @@ public class ProjectDetails extends Fragment {
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_video_library_24);
 
         return root;
+    }
+
+    private void fetchprojectstatus(String org_ids, String proj_id) {
+        FirebaseDatabase
+                .getInstance()
+                .getReference("organisation")
+                .child(org_ids)
+                .child("projects")
+                .child(proj_id)
+                .child("description")
+                .child("status")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            if (snapshot.getValue().equals(true)){
+                                completed_iv.setImageResource(R.drawable.tw__composer_logo_blue);
+                            }else {
+                                completed_iv.setImageResource(R.drawable.remove);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void fetchtodo(String org_ids, String proj_id) {
+        FirebaseDatabase.getInstance()
+                .getReference("organisation")
+                .child(org_ids)
+                .child("projects")
+                .child(proj_id)
+                .child("TODO_id")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            no_of_todo.setText(String.valueOf(snapshot.getChildrenCount()));
+                        }else {
+                            no_of_todo.setText("0");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void fetchworkforce(String org_ids, String proj_id) {
+        FirebaseDatabase
+                .getInstance()
+                .getReference("organisation")
+                .child(org_ids)
+                .child("projects")
+                .child(proj_id)
+                .child("users_uid")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            project_users.setText(String.valueOf(snapshot.getChildrenCount()));
+                        }else {
+                            project_users.setText("0");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void mailmanger() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater1 = getLayoutInflater();
+        View alert = inflater1.inflate(R.layout.email_to_manager, null);
+        builder.setView(alert);
+        builder.setCancelable(true);
+
+        final TextView editTo = alert.findViewById(R.id.et_to);
+        final Button send = alert.findViewById(R.id.send_txt);
+        final Button cancel = alert.findViewById(R.id.cancel_text);
+
+        final Dialog dialog = builder.create();
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editTo.getText().toString().isEmpty()) {
+                    editTo.setError("required");
+                    return;
+
+                } else {
+                    dialog.dismiss();
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("mailto:"+editTo.getText().toString()));
+                    startActivity(intent);
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
     }
 
     private void updateData(final String proj_id) {
@@ -268,40 +376,9 @@ public class ProjectDetails extends Fragment {
         builder.show();
     }
 
-    private void setDetails(String proj_name, String proj_desc, String proj_id, String org_ids,String org_image,Boolean status)
-    {
+    private void setDetails(String proj_name, String proj_desc) {
         projtittle.setText(proj_name);
         descwhole.setText(proj_desc);
         Glide.with(getContext()).load(org_image).into(org_logo2);
-        if (status.equals(true)){
-            completed_iv.setImageResource(R.drawable.remove);
-        }else {
-            completed_iv.setImageResource(R.drawable.remove);
-        }
-
-        FirebaseDatabase.getInstance()
-                .getReference("organisation")
-                .child(org_ids)
-                .child("projects")
-                .child(proj_id)
-                .child("users_uid")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    long users=snapshot.getChildrenCount();
-                    project_users.setText(String.valueOf(users));
-
-                }else {
-                    Toast.makeText(getActivity(), "No users are there", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
     }
 }

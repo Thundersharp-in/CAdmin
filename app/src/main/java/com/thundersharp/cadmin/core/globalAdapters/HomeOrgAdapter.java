@@ -104,6 +104,7 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
             orgid = itemView.findViewById(R.id.orgid);
             radioselector = itemView.findViewById(R.id.radioselector);
             sharedPreferences = context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+            itemView.setOnClickListener(this);
         }
 
         @Override

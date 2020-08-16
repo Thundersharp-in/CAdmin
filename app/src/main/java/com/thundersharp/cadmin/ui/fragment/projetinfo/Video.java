@@ -68,6 +68,10 @@ public class Video extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video, container, false);
 
+
+        //todo add video
+        //todo delete video
+
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_slow_motion_video_24,getActivity().getTheme()));
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

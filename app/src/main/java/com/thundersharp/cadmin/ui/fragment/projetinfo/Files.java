@@ -64,7 +64,8 @@ public class Files extends Fragment {
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
         MainActivity.floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_outline_note_add_24,getActivity().getTheme()));
-
+             //todo add files
+        //todo delete files
         MainActivity.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
