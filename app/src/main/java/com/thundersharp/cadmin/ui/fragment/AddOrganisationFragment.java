@@ -54,7 +54,7 @@ public class AddOrganisationFragment extends Fragment {
     TextInputLayout upload_org_name,upload_org_desc;
     Button btn_upload_org;
     Uri org_logo_uri;
-    String org_name,org_description,organiser_name,organiser_uid;
+    String org_name,org_description,organiser_uid;
     SharedPreferences pref;
     List<Organisations> organisations;
     UserData userData;

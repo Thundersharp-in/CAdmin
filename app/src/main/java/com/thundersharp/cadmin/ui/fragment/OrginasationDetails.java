@@ -141,6 +141,7 @@ public class OrginasationDetails extends Fragment {
                 public void onClick(View v) { addusertoorg(org_id);
                 }
             });
+            //todo delete manager
             //todo mail manager to be done
             btn_mail_manager.setOnClickListener(new View.OnClickListener() {
                 @Override

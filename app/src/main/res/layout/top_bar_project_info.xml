@@ -100,6 +100,7 @@
         android:layout_toEndOf="@id/org_logo2">
 
         <LinearLayout
+            android:id="@+id/ll_project_user"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -133,6 +134,7 @@
             android:layout_marginBottom="5dp"/>
 
         <LinearLayout
+            android:id="@+id/ll_todo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -184,7 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="Compleated"
+                android:text="Completed"
                 android:textColor="#000"
                 android:textSize="15sp"/>
 

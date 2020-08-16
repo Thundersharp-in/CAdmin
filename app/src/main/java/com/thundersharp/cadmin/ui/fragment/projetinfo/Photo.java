@@ -78,7 +78,7 @@ public class Photo extends Fragment {
         sharedPreferences =getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         gallaryrecuycler= view.findViewById(R.id.gallaryrecuycler);
         imageView = view.findViewById(R.id.imageView_photo);
-        addImages = view.findViewById(R.id.project_images_add);
+        addImages = view.findViewById(R.id.add_project_photo);
         storage = FirebaseStorage.getInstance();
         database = FirebaseDatabase.getInstance();
         textView = view.findViewById(R.id.tv_photo);
@@ -169,7 +169,7 @@ public class Photo extends Fragment {
 
         final String fileName = System.currentTimeMillis()+"";
         StorageReference storageReference = storage.getReference();
-        storageReference.child("images").child(fileName).putFile(data)
+        storageReference.child("Images").child(fileName).putFile(data)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

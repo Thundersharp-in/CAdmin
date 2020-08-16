@@ -34,11 +34,14 @@
         android:visibility="gone"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/project_images_add"
+        android:id="@+id/add_project_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="mini"
         android:src="@drawable/ic_add_black_24dp"
-        android:layout_alignParentEnd="true"/>
-
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        app:fabSize="mini"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        />
 </RelativeLayout>

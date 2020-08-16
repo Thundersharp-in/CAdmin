@@ -137,7 +137,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
             OrginasationDetails detail=new OrginasationDetails();
             Bundle bundle=new Bundle();
-            //Organisations org = organisations.get(getAdapterPosition());
             org_details_model details=data.get(getAdapterPosition());
 
             bundle.putString("org_name",details.getOrganisation_name());
@@ -147,10 +146,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
             bundle.putString("organiser_id",details.getOrganiser_uid());
 
             detail.setArguments(bundle);
-            //bundle.putParcelable("data",data.get(getAdapterPosition()));
-            //bundle.putParcelable("orgs",organisations.get(getAdapterPosition()));
-            //bundle.putString("org_id",org_id.toString());
-
             MainActivity.navController.navigate(R.id.nav_org_details,bundle);
         }
     }
