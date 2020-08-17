@@ -80,7 +80,8 @@ public class GallaryAdapter extends RecyclerView.Adapter<GallaryAdapter.ViewHold
                 }
 
                 @Override
-                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                public boolean onResourceReady(GlideDrawable resource
+                        , String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                     progressBar.setVisibility(View.GONE);
                     return false;
                 }

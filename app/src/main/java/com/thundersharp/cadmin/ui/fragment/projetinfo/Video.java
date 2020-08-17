@@ -51,7 +51,7 @@ public class Video extends Fragment {
 
     ImageView imageView;
     TextView textView;
-    FloatingActionButton fabVideo;
+   // FloatingActionButton fabVideo;
     RecyclerView videoRecycler;
     FirebaseStorage storage;
     FirebaseDatabase database;
@@ -66,11 +66,13 @@ public class Video extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_video, container, false);
 
-        //floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_slow_motion_video_24,getActivity().getTheme()));
-//
+        //floatingActionButton.setImageDrawable(getResources()
+        // .getDrawable(R.drawable.ic_baseline_slow_motion_video_24,
+        //getActivity().getTheme()));
+
 //        floatingActionButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

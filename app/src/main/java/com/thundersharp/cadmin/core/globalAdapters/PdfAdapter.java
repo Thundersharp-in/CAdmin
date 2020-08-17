@@ -1,17 +1,24 @@
 package com.thundersharp.cadmin.core.globalAdapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.chrisbanes.photoview.PhotoView;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.ui.activity.PdfLoader;
 
+import java.io.File;
 import java.util.List;
 
 public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.ViewHolder> {
@@ -55,6 +62,25 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.ViewHolder> {
         @Override
         public void onClick(View view) {
             context.startActivity(new Intent(context, PdfLoader.class).putExtra("url",pdfuri.get(getAdapterPosition())));
+           /*
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view1 = LayoutInflater.from(context).inflate(R.layout.full_pdf_viewer,null);
+            WebView webView = view1.findViewById(R.id.pdf_files);
+            final ProgressBar progressBar = view1.findViewById(R.id.progresspdf);
+            progressBar.setVisibility(View.VISIBLE);
+
+            File file=new File(pdfuri.get(getAdapterPosition()));
+            Intent target=new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(Uri.fromFile(file),"application/pdf");
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            Intent intent=Intent.createChooser(target,"Open File");
+            context.startActivity(intent);
+
+            builder.setCancelable(true);
+            builder.setView(view1);
+            builder.show();
+
+            */
         }
     }
 }

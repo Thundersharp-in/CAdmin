@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.thundersharp.cadmin.R;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 public  class Videos_Adapter extends RecyclerView.Adapter<Videos_Adapter.ViewHolder>{
     Context context;
     List<String> videos_url;
+    String url;
 
     public Videos_Adapter(Context context, List<String> videos_url) {
         this.context = context;
@@ -37,7 +39,7 @@ public  class Videos_Adapter extends RecyclerView.Adapter<Videos_Adapter.ViewHol
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String url = videos_url.get(position);
+        url = videos_url.get(position);
 
     }
 
@@ -48,7 +50,7 @@ public  class Videos_Adapter extends RecyclerView.Adapter<Videos_Adapter.ViewHol
         }else return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder  {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView project_videos;
 
@@ -56,9 +58,29 @@ public  class Videos_Adapter extends RecyclerView.Adapter<Videos_Adapter.ViewHol
             super(itemView);
             project_videos = itemView.findViewById(R.id.project_videos);//  item_org_image
 
-
+            itemView.setOnClickListener(this);
         }
 
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view1 = LayoutInflater.from(context).inflate(R.layout.full_screen_video_view,null);
+            VideoView videoView = view1.findViewById(R.id.full_screen_video);
+            final ProgressBar progressBar = view1.findViewById(R.id.progressvideo);
+            progressBar.setVisibility(View.VISIBLE);
+
+            MediaController mediaController=new MediaController(context);
+            videoView.setVideoPath(videos_url.get(getAdapterPosition()));
+            mediaController.setMediaPlayer(videoView);
+            videoView.setMediaController(mediaController);
+            videoView.requestFocus();
+            videoView.start();
+            progressBar.setVisibility(View.GONE);
+
+            builder.setCancelable(true);
+            builder.setView(view1);
+            builder.show();
+        }
     }
 }
 
