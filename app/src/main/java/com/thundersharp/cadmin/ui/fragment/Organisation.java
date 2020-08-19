@@ -127,7 +127,6 @@ public class Organisation extends Fragment {
 
         for (int i=0;i<organisations.size();i++){
 
-           // final Boolean[] manager = {false};
              final int pos=i;
             FirebaseDatabase
                     .getInstance()
@@ -149,7 +148,6 @@ public class Organisation extends Fragment {
                         //dataorg.clear();
                         dataorg1.add(snapshot.getValue(org_details_model.class));
                         value=organisations.get(pos).isManager();
-                        //manager[0] =organisations.get(pos).manager;
                         savefetchListofAllOrganisation(dataorg1);
                     }
                     OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg1,organisations,value);
@@ -191,7 +189,6 @@ public class Organisation extends Fragment {
         }
     }
 
-
     private void fetchProfilefromsever(){
 
         finalorg.clear();
@@ -228,7 +225,6 @@ public class Organisation extends Fragment {
             return gson.fromJson(data,type);
         }else return null;
     }
-
 
     private List<Organisations> loadDataOrgfromPrefs(){
 

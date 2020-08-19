@@ -19,6 +19,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +70,8 @@ public class HomeFragment extends Fragment  {
     ImageView org_image;
     Button btn_proj_detail;
     String proj_name,proj_id,org_id,proj_desc;
-    CardView cv;
+    LinearLayout lpi;
+    //CardView cv;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -108,7 +110,8 @@ public class HomeFragment extends Fragment  {
         txt_desc =root.findViewById(R.id.txt_desc);
         org_image =root.findViewById(R.id.org_image);
         btn_proj_detail =root.findViewById(R.id.btn_proj_detail);
-        cv =root.findViewById(R.id.qqq);
+        //cv =root.findViewById(R.id.qqq);
+        lpi=root.findViewById(R.id.lpi);
         textView = root.findViewById(R.id.tv1);
         imageView = root.findViewById(R.id.imageView1);
         textView1 = root.findViewById(R.id.tv2);
@@ -118,10 +121,12 @@ public class HomeFragment extends Fragment  {
             textView1.setVisibility(View.VISIBLE);
             imageView1.setVisibility(View.VISIBLE);
             imageView1.setImageResource(R.drawable.sad);
-            cv.setVisibility(View.GONE);
+            lpi.setVisibility(View.GONE);
+            //cv.setVisibility(View.GONE);
         }else {
             textView1.setVisibility(View.GONE);
             imageView1.setVisibility(View.GONE);
+            lpi.setVisibility(View.VISIBLE);
             proj_name=sf1.getString("proj_name","no project till");
             proj_id=sf1.getString("proj_id","no project till");
             org_id=sf1.getString("org_id","no project till");

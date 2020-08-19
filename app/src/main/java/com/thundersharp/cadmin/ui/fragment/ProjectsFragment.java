@@ -49,13 +49,11 @@ public class ProjectsFragment extends Fragment {
     Boolean orgmanager=false;
     List<AddProject_model> data;
     List<Projects> list;
-
-   // List<Organisations> finalorg;
     SwipeRefreshLayout refresh_proj;
     SharedPreferences
             preferences,
             sharedPreferencesProjList,
-            sharedPreferencesorg,org;//,sfprojectuserassigned
+            sharedPreferencesorg,org;
 
 
     @Override
@@ -70,17 +68,18 @@ public class ProjectsFragment extends Fragment {
         progressproj.setVisibility(View.GONE);
         refresh_proj=view.findViewById(R.id.refresh_project);
         refresh_proj.setRefreshing(true);
-        floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_playlist_add_24, getActivity().getTheme()));
-
+        floatingActionButton
+                .setImageDrawable(getResources()
+                        .getDrawable(R.drawable
+                                .ic_baseline_playlist_add_24
+                                ,getActivity().getTheme()));
 
         data = new ArrayList<>();
         list = new ArrayList<>();
-       // finalorg=new ArrayList<>();
         preferences = getActivity().getSharedPreferences("proj", Context.MODE_PRIVATE);
         sharedPreferencesProjList = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
         sharedPreferencesorg = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         org = getActivity().getSharedPreferences("isManager", Context.MODE_PRIVATE);
-       // sfprojectuserassigned=getActivity().getSharedPreferences("user_assigned_proj",Context.MODE_PRIVATE);
         recyclerView = view.findViewById(R.id.adding_recyclerView);
         refresh_proj.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
