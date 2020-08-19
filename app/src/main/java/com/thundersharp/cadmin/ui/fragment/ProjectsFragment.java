@@ -104,17 +104,6 @@ public class ProjectsFragment extends Fragment {
                 progressproj.setVisibility(View.GONE);
             }
         });
-                     /* refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressproj.setVisibility(View.VISIBLE);
-                fetchProfileFromServer();
-                progressproj.setVisibility(View.GONE);
-            }
-        });
-
-
- */
 
         if (sharedPreferencesorg.getString("selected",null)!= null){
             List<Projects> datapref = loadDataOrgfromPrefs();

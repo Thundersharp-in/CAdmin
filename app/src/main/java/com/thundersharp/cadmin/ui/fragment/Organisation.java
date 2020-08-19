@@ -43,7 +43,7 @@ public class Organisation extends Fragment {
     RecyclerView project_rv;
     List<org_details_model> data,dataorg;
     List<Organisations> finalorg;
-    SharedPreferences preferences,sharedPreferencesOrglist,org;
+    SharedPreferences preferences,sharedPreferencesOrglist;//,org
     SwipeRefreshLayout refresh;
     ProgressBar progressorg;
     ImageView imageView;
@@ -62,7 +62,7 @@ public class Organisation extends Fragment {
 
         data=new ArrayList<>();
         finalorg = new ArrayList<>();
-        org = getActivity().getSharedPreferences("organisations", Context.MODE_PRIVATE);
+        //org = getActivity().getSharedPreferences("organisations", Context.MODE_PRIVATE);
         preferences = getActivity().getSharedPreferences("org", Context.MODE_PRIVATE);
         sharedPreferencesOrglist = getActivity().getSharedPreferences("all_organisation",Context.MODE_PRIVATE);
         project_rv=root.findViewById(R.id.project_rv);

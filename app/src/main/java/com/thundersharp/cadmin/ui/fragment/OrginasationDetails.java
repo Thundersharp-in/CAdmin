@@ -447,7 +447,7 @@ public class OrginasationDetails extends Fragment {
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         if (snapshot.exists()){
                                                             userData=snapshot.getValue(UserData.class);
-                                                            String users_data =userData.getName()+"\n"+userData.getEmail()+"\n"+userData.getPhone_no()+"\n"+userData.getUid();
+                                                            String users_data =userData.getName()+"\n"+userData.getPhone_no()+"\n"+userData.getEmail();
                                                             manager(org_id,users_data,user_uid);
                                                         }
                                                     }
@@ -573,7 +573,7 @@ public class OrginasationDetails extends Fragment {
                                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                         if (snapshot.exists()){
                                                             userData=snapshot.getValue(UserData.class);
-                                                            String users_data =userData.getName()+"\n"+userData.getEmail()+"\n"+userData.getPhone_no()+"\n"+userData.getUid();
+                                                            String users_data =userData.getName()+"\n"+userData.getPhone_no()+"\n"+userData.getEmail();
                                                             user(org_id,users_data,user_uid);
                                                         }
                                                     }

@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.MediaRouteButton;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -27,6 +28,10 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
@@ -110,7 +115,59 @@ public class HomeFragment extends Fragment  {
         textView1 = root.findViewById(R.id.tv2);
         imageView1 = root.findViewById(R.id.imageView2);
         loadOrganisation();
-        loadLatestproject();
+        if (sf1.getString("proj_name","no project till").equals("no project till")){
+            textView1.setVisibility(View.VISIBLE);
+            imageView1.setVisibility(View.VISIBLE);
+        }else {
+            textView1.setVisibility(View.GONE);
+            imageView1.setVisibility(View.GONE);
+            proj_name=sf1.getString("proj_name","no project till");
+            proj_id=sf1.getString("proj_id","no project till");
+            org_id=sf1.getString("org_id","no project till");
+            proj_desc=sf1.getString("proj_desc","no project till");
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("organisation")
+                    .child(org_id)
+                    .child("description")
+                    .child("company_logo")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                org_image.setImageURI(Uri.parse(snapshot.getValue().toString()));
+                            }else {
+                                org_image=null;
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+            txt_proj_name.setText(proj_name);
+            txt_proj_id.setText(proj_id);
+            txt_org_id.setText(org_id);
+            txt_desc.setText(proj_desc);
+            btn_proj_detail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProjectDetails details=new ProjectDetails();
+                    Bundle bundle = new Bundle();
+                    // AddProject_model detail=data.get(getAdapterPosition());
+                    bundle.putString("proj_name",proj_name);
+                    bundle.putString("proj_desc",proj_desc);
+                    bundle.putString("proj_id",proj_id);
+                    bundle.putString("org_id",org_id);
+                    bundle.putString("org_image",org_image.toString());//TODO images not set
+                    bundle.putBoolean("proj_status",false);//TODO status not set
+                    details.setArguments(bundle);
+                    MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
+                }
+            });
+
+        }
 
         relq.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,43 +202,6 @@ public class HomeFragment extends Fragment  {
         faqholder.setAdapter(listAdapter);
 
         return root;
-    }
-
-    private void loadLatestproject() {
-
-        if (sf1.getString("proj_name","no project till").equals("no project till")){
-            textView1.setVisibility(View.VISIBLE);
-            imageView1.setVisibility(View.VISIBLE);
-        }else {
-            textView1.setVisibility(View.GONE);
-            imageView1.setVisibility(View.GONE);
-            proj_name=sf1.getString("proj_name","no project till");
-            proj_id=sf1.getString("proj_id","no project till");
-            org_id=sf1.getString("org_id","no project till");
-            proj_desc=sf1.getString("proj_desc","no project till");
-            txt_proj_name.setText(proj_name);
-            txt_proj_id.setText(proj_id);
-            txt_org_id.setText(org_id);
-            txt_desc.setText(proj_desc);
-            btn_proj_detail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ProjectDetails details=new ProjectDetails();
-                    Bundle bundle = new Bundle();
-                   // AddProject_model detail=data.get(getAdapterPosition());
-                    bundle.putString("proj_name",proj_name);
-                    bundle.putString("proj_desc",proj_desc);
-                    bundle.putString("proj_id",proj_id);
-                    bundle.putString("org_id",org_id);
-                    bundle.putString("org_image","org_image");//TODO images not set
-                    bundle.putBoolean("proj_status",false);//TODO status not set
-                    details.setArguments(bundle);
-                    MainActivity.navController.navigate(R.id.nav_proj_info,bundle);
-                }
-            });
-
-        }
-
     }
 
     @Override
@@ -303,7 +323,6 @@ public class HomeFragment extends Fragment  {
             return gson.fromJson(data,type);
         }else return null;
     }
-
 
     private void initData() {
 
