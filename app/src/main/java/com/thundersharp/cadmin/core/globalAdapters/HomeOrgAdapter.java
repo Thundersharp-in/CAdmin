@@ -29,7 +29,6 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
     public HomeOrgAdapter(Context context, List<org_details_model> data ) {
         this.context = context;
         this.data = data;
-
     }
 
     @NonNull
@@ -47,6 +46,7 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
         final org_details_model model=data.get(position);
         final SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+        final SharedPreferences preferences1=context.getSharedPreferences("isManager",Context.MODE_PRIVATE);
         String checked=preferences.getString("selected","null");
 
         if (checked.equalsIgnoreCase("null")){
@@ -55,6 +55,9 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("selected",model.getOrganisation_id());
                 editor.apply();
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putBoolean("selected",holder.ismanager);
+                editor1.apply();
             }else {
                 holder.radioselector.setChecked(false);
             }
@@ -73,6 +76,9 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("selected",model.getOrganisation_id());
                 editor.apply();
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putBoolean("selected",holder.ismanager);
+                editor1.apply();
                 notifyDataSetChanged();
                 notifyItemChanged(position);
             }
@@ -95,6 +101,7 @@ public class HomeOrgAdapter extends RecyclerView.Adapter<HomeOrgAdapter.CustomVi
         TextView org_name,orgid;
         RadioButton radioselector;
         SharedPreferences sharedPreferences;
+        Boolean ismanager=false;
 
         public CustomViewHolder(View itemView) {
             super(itemView);

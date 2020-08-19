@@ -94,7 +94,6 @@ public class ProjectsFragment extends Fragment {
             List<Projects> datapref = loadDataOrgfromPrefs();
             progressproj.setVisibility(View.VISIBLE);
             if (datapref == null){
-
                 Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
                 fetchProfileFromServer();
 
@@ -144,33 +143,6 @@ public class ProjectsFragment extends Fragment {
         });
         return view;
     }
-/*
-  private void fetchorgfromserver() {
-        finalorg.clear();
-        FirebaseDatabase.getInstance().getReference("users")
-                .child(FirebaseAuth.getInstance().getUid())
-                .child("organisations")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                                Organisations organisations = new Organisations(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
-                                finalorg.add(organisations);
-                            }
-                            SaveorgstoSharedPrefs(finalorg);
-                        }else {
-                            SaveorgstoSharedPrefs(null);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
- */
 
   /*
   FirebaseDatabase.getInstance().getReference("users")
@@ -221,12 +193,14 @@ public class ProjectsFragment extends Fragment {
                                 textView.setVisibility(View.VISIBLE);
                                 imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageResource(R.drawable.sad);
+                                refresh_proj.setRefreshing(false);
                             }
                             else if (snapshot.exists()){
                                 textView.setVisibility(View.GONE);
                                 imageView.setVisibility(View.GONE);
                                 dataorg.add(snapshot.getValue(AddProject_model.class));
                                 savefetchListofAllProjects(dataorg);
+                                refresh_proj.setRefreshing(false);
                                 //checking the size
                             }
                             AddProjectViewAdapter addProjectViewAdapter = new AddProjectViewAdapter(getActivity(),dataorg);
@@ -251,8 +225,11 @@ public class ProjectsFragment extends Fragment {
         editor.apply();
     }
 
+/*
 
+ */
     private void fetchProfileFromServer(){
+        list.clear();
         FirebaseDatabase
                 .getInstance()
                 .getReference("users")
@@ -268,7 +245,9 @@ public class ProjectsFragment extends Fragment {
                                 progressproj.setVisibility(View.GONE);
                             }
                             SavetoSharedPrefs(list);
-                        }
+                        }else {
+                             SavetoSharedPrefs(null);
+                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -282,9 +261,8 @@ public class ProjectsFragment extends Fragment {
         String data;
         Gson gson = new Gson();
         data = preferences.getString("id","null");
-        if (data.equalsIgnoreCase("null")){
+        if (data.equals("null")){
             Type type = new TypeToken<ArrayList<Projects>>(){}.getType();
-
             return gson.fromJson(data,type);
         } else {
             return null;
@@ -293,7 +271,26 @@ public class ProjectsFragment extends Fragment {
 
     private void SavetoSharedPrefs(List<Projects> projectsList){
         Gson gson = new Gson();
-        List<Projects> dataprevious = getData();
+       // List<Projects> dataprevious = getData();
+        String data = gson.toJson(projectsList);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString("id",data);
+        editor.apply();
+
+        if (projectsList==null){
+            SharedPreferences.Editor editor1=preferences.edit();
+            SharedPreferences.Editor editor2 = sharedPreferencesProjList.edit();
+            editor1.clear();
+            editor2.clear();
+            editor1.apply();
+            editor2.apply();
+        }else {
+            fetchListofAllProject(projectsList);
+        }
+
+
+       /*
         if (dataprevious == null){
             String data = gson.toJson(projectsList);
             SharedPreferences.Editor editor = preferences.edit();
@@ -313,6 +310,7 @@ public class ProjectsFragment extends Fragment {
 
             fetchListofAllProject(projectsList);
         }
+        */
     }
 
     private List<Projects> getData(){

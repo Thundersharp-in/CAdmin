@@ -66,27 +66,11 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
         holder.manager.setText(model.getOrganiser_name());
 
-       /*
-        holder.reference1.child(model.getOrganisation_id())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()){
-                            holder.ismanager=(Boolean) snapshot.getValue();
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-        */
 
         final SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
         final SharedPreferences preferences1=context.getSharedPreferences("isManager",Context.MODE_PRIVATE);
         String checked=preferences.getString("selected","null");
-        //final Boolean isManager=preferences1.getBoolean("manager",false);
 
         if (checked.equalsIgnoreCase("null")){
             if (position == 0){
@@ -138,7 +122,6 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView org_logo;
         TextView org_name,org_id,manager;
-        DatabaseReference reference1,reference2;
         FirebaseUser mCurrent;
         String user_uid;
         RadioButton radioButton;
@@ -149,21 +132,13 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
             mCurrent= FirebaseAuth.getInstance().getCurrentUser();
             user_uid=mCurrent.getUid();
             org_logo=itemView.findViewById(R.id.org_logo);
-
             org_name=itemView.findViewById(R.id.org_name);
             org_id=itemView.findViewById(R.id.org_id);
             radioButton = itemView.findViewById(R.id.radioorg);
 
             manager=itemView.findViewById(R.id.manager);
 
-            reference1= FirebaseDatabase.getInstance().getReference()
-                    .child("users")
-                    .child(FirebaseAuth.getInstance().getUid())
-                    .child("organisations");
-            reference2=FirebaseDatabase
-                    .getInstance()
-                    .getReference()
-                    .child("organisation");
+
             itemView.setOnClickListener(this);
         }
 
