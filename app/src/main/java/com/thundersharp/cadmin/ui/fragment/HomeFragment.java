@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment  {
         txt_desc =root.findViewById(R.id.txt_desc);
         org_image =root.findViewById(R.id.org_image);
         btn_proj_detail =root.findViewById(R.id.btn_proj_detail);
-        cv =root.findViewById(R.id.latest);
+        cv =root.findViewById(R.id.qqq);
         textView = root.findViewById(R.id.tv1);
         imageView = root.findViewById(R.id.imageView1);
         textView1 = root.findViewById(R.id.tv2);
