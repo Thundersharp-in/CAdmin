@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.org_details_model;
@@ -31,11 +34,13 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     private Context context;
     private List<org_details_model> data;
     private List<Organisations> organisations;
+    private Boolean manager;
 
-    public OrganisationAdapter(Context context, List<org_details_model> data , List<Organisations> organisations) {
+    public OrganisationAdapter(Context context, List<org_details_model> data , List<Organisations> organisations,Boolean manager) {
         this.context = context;
         this.data = data;
         this.organisations=organisations;
+        this.manager=manager;
     }
 
 
@@ -45,14 +50,14 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_organisation,parent,false);
-
-
         return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final CustomViewHolder holder, final int position) {
         final org_details_model model=data.get(position);
+       // Boolean val=manager;
+        holder.ismanager=manager;
 
         Glide.with(context).load(model.getCompany_logo()).into(holder.org_logo);
 
@@ -61,8 +66,27 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
 
         holder.manager.setText(model.getOrganiser_name());
 
+       /*
+        holder.reference1.child(model.getOrganisation_id())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            holder.ismanager=(Boolean) snapshot.getValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        */
+
         final SharedPreferences preferences=context.getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+        final SharedPreferences preferences1=context.getSharedPreferences("isManager",Context.MODE_PRIVATE);
         String checked=preferences.getString("selected","null");
+        //final Boolean isManager=preferences1.getBoolean("manager",false);
 
         if (checked.equalsIgnoreCase("null")){
             if (position == 0){
@@ -70,6 +94,10 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("selected",model.getOrganisation_id());
                 editor.apply();
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putBoolean("selected",holder.ismanager);
+                editor1.apply();
+
             }else {
                 holder.radioButton.setChecked(false);
             }
@@ -89,6 +117,9 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("selected",model.getOrganisation_id());
                 editor.apply();
+                SharedPreferences.Editor editor1 = preferences1.edit();
+                editor1.putBoolean("selected",holder.ismanager);
+                editor1.apply();
                 notifyDataSetChanged();
                 notifyItemChanged(position);
 
@@ -111,6 +142,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         FirebaseUser mCurrent;
         String user_uid;
         RadioButton radioButton;
+        Boolean ismanager=false;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
@@ -128,7 +160,10 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
                     .child("users")
                     .child(FirebaseAuth.getInstance().getUid())
                     .child("organisations");
-            reference2=FirebaseDatabase.getInstance().getReference().child("organisation");
+            reference2=FirebaseDatabase
+                    .getInstance()
+                    .getReference()
+                    .child("organisation");
             itemView.setOnClickListener(this);
         }
 

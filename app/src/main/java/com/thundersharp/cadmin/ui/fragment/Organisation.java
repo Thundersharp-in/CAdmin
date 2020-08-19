@@ -127,6 +127,8 @@ public class Organisation extends Fragment {
 
         for (int i=0;i<organisations.size();i++){
 
+           // final Boolean[] manager = {false};
+             final int pos=i;
             FirebaseDatabase
                     .getInstance()
                     .getReference("organisation")
@@ -135,7 +137,7 @@ public class Organisation extends Fragment {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                     Boolean value=false;
                     if (!snapshot.exists()){
                         textView.setVisibility(View.VISIBLE);
                         imageView.setVisibility(View.VISIBLE);
@@ -146,9 +148,11 @@ public class Organisation extends Fragment {
                         imageView.setVisibility(View.GONE);
                         //dataorg.clear();
                         dataorg1.add(snapshot.getValue(org_details_model.class));
+                        value=organisations.get(pos).isManager();
+                        //manager[0] =organisations.get(pos).manager;
                         savefetchListofAllOrganisation(dataorg1);
                     }
-                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg1,organisations);
+                    OrganisationAdapter organisationAdapter = new OrganisationAdapter(getActivity(),dataorg1,organisations,value);
                     project_rv.setAdapter(organisationAdapter);
                     refresh.setRefreshing(false);
                 }
@@ -176,8 +180,9 @@ public class Organisation extends Fragment {
                 Type type = new TypeToken<ArrayList<org_details_model>>(){}.getType();
 
                 dataorg =  gson.fromJson(data,type);
-
-                OrganisationAdapter organisationAdapter =new OrganisationAdapter(getActivity(),dataorg,model);
+                SharedPreferences sf=getActivity().getSharedPreferences("isManager",Context.MODE_PRIVATE);
+                Boolean manager= sf.getBoolean("selected",false);
+                OrganisationAdapter organisationAdapter =new OrganisationAdapter(getActivity(),dataorg,model,manager);
                 project_rv.setAdapter(organisationAdapter);
         }
             //dataorg.add(loadOrgdetailfromPrefs().size(),org_details_model.class);

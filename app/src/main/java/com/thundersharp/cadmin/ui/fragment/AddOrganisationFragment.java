@@ -213,6 +213,7 @@ public class AddOrganisationFragment extends Fragment {
                     organisations.clear();
                     Organisations organisations1 = new Organisations(key,true);
                     organisations.add(organisations1);
+
                     SavetoSharedPrefs(organisations);
                     MainActivity.navController.navigate(R.id.nav_organisation);
                     getActivity().sendBroadcast(new Intent("refreshPref"));

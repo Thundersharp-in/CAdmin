@@ -24,10 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.thundersharp.cadmin.R;
-import com.thundersharp.cadmin.core.globalAdapters.ProjectDesc;
 import com.thundersharp.cadmin.core.globalAdapters.WorkForceAdapter;
 import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
-import com.thundersharp.cadmin.core.globalmodels.ProjectIds;
 import com.thundersharp.cadmin.core.globalmodels.WorkforceModel;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 

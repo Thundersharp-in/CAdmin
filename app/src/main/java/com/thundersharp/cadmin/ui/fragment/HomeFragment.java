@@ -52,7 +52,6 @@ import static com.thundersharp.cadmin.ui.activity.MainActivity.floatingActionBut
 
 public class HomeFragment extends Fragment  {
 
-
     CardView relq,c1,c3,c4;
     ImageView fn1,fn2,fn3,fn4;
     RecyclerView recyclervieworg;
@@ -109,7 +108,7 @@ public class HomeFragment extends Fragment  {
         txt_desc =root.findViewById(R.id.txt_desc);
         org_image =root.findViewById(R.id.org_image);
         btn_proj_detail =root.findViewById(R.id.btn_proj_detail);
-        cv =root.findViewById(R.id.cv);
+        cv =root.findViewById(R.id.latest);
         textView = root.findViewById(R.id.tv1);
         imageView = root.findViewById(R.id.imageView1);
         textView1 = root.findViewById(R.id.tv2);
@@ -118,6 +117,8 @@ public class HomeFragment extends Fragment  {
         if (sf1.getString("proj_name","no project till").equals("no project till")){
             textView1.setVisibility(View.VISIBLE);
             imageView1.setVisibility(View.VISIBLE);
+            imageView1.setImageResource(R.drawable.sad);
+            cv.setVisibility(View.GONE);
         }else {
             textView1.setVisibility(View.GONE);
             imageView1.setVisibility(View.GONE);

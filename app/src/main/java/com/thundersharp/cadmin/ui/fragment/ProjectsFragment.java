@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.AddProjectViewAdapter;
+import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.Projects;
 import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
@@ -45,13 +46,16 @@ public class ProjectsFragment extends Fragment {
     ProgressBar progressproj;
     RelativeLayout cont;
     RecyclerView recyclerView;
+    Boolean orgmanager=false;
     List<AddProject_model> data;
     List<Projects> list;
+
+   // List<Organisations> finalorg;
     SwipeRefreshLayout refresh_proj;
     SharedPreferences
             preferences,
             sharedPreferencesProjList,
-            sharedPreferencesorg;
+            sharedPreferencesorg,org;//,sfprojectuserassigned
 
 
     @Override
@@ -67,34 +71,16 @@ public class ProjectsFragment extends Fragment {
         refresh_proj=view.findViewById(R.id.refresh_project);
         refresh_proj.setRefreshing(true);
         floatingActionButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_playlist_add_24, getActivity().getTheme()));
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                if (sharedPreferencesorg.getString("selected",null)== null){
-                    progressproj.setVisibility(View.VISIBLE);
-                   // Snackbar.make(view,"You don't have any project !",Snackbar.LENGTH_LONG).show();
-                    Snackbar.make(cont,"No organisation found create one first",Snackbar.LENGTH_LONG)
-                            .setAction("CREATE", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            MainActivity.navController.navigate(R.id.nav_org);
-                        }
-                    }).setActionTextColor(getResources().getColor(R.color.white)).show();
 
-                    progressproj.setVisibility(View.GONE);
-                    refresh_proj.setRefreshing(false);
-                }else {
-                    MainActivity.navController.navigate(R.id.nav_add_project);
-                }
-
-            }
-        });
 
         data = new ArrayList<>();
         list = new ArrayList<>();
+       // finalorg=new ArrayList<>();
         preferences = getActivity().getSharedPreferences("proj", Context.MODE_PRIVATE);
         sharedPreferencesProjList = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
         sharedPreferencesorg = getActivity().getSharedPreferences("selected_org",Context.MODE_PRIVATE);
+        org = getActivity().getSharedPreferences("isManager", Context.MODE_PRIVATE);
+       // sfprojectuserassigned=getActivity().getSharedPreferences("user_assigned_proj",Context.MODE_PRIVATE);
         recyclerView = view.findViewById(R.id.adding_recyclerView);
         refresh_proj.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -127,8 +113,93 @@ public class ProjectsFragment extends Fragment {
             refresh_proj.setRefreshing(false);
         }
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                if (sharedPreferencesorg.getString("selected",null)== null){
+                    progressproj.setVisibility(View.VISIBLE);
+
+                    Snackbar.make(cont,"No organisation found create one first",Snackbar.LENGTH_LONG)
+                            .setAction("CREATE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    MainActivity.navController.navigate(R.id.nav_org);
+                                }
+                            }).setActionTextColor(getResources().getColor(R.color.white)).show();
+
+                    progressproj.setVisibility(View.GONE);
+                    refresh_proj.setRefreshing(false);
+                }else {
+                    //todo checking the org manager
+
+                    boolean manag=org.getBoolean("selected",false);
+                    if (manag){
+                        Toast.makeText(getActivity(), "manager", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getActivity(), "Not manager", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+            }
+        });
         return view;
     }
+/*
+  private void fetchorgfromserver() {
+        finalorg.clear();
+        FirebaseDatabase.getInstance().getReference("users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("organisations")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                Organisations organisations = new Organisations(dataSnapshot.getKey(),dataSnapshot.getValue(Boolean.class));
+                                finalorg.add(organisations);
+                            }
+                            SaveorgstoSharedPrefs(finalorg);
+                        }else {
+                            SaveorgstoSharedPrefs(null);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+ */
+
+  /*
+  FirebaseDatabase.getInstance().getReference("users")
+                            .child(FirebaseAuth.getInstance().getUid())
+                            .child("organisations")
+                            .child(sharedPreferencesorg.getString("selected",null))
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        orgmanager=(Boolean) snapshot.getValue();
+                                    }else {
+                                        orgmanager=false;
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                    if (orgmanager){
+                        MainActivity.navController.navigate(R.id.nav_add_project);
+                    }else {
+                        Toast.makeText(getActivity(), "Sorry you can't perform this action . Kindly ask the manager to perform !", Toast.LENGTH_SHORT).show();
+                    }
+   */
+
 
     private void fetchListofAllProject(@NonNull List<Projects> projects){
 
@@ -181,8 +252,11 @@ public class ProjectsFragment extends Fragment {
         editor.apply();
     }
 
+
     private void fetchProfileFromServer(){
-        FirebaseDatabase.getInstance().getReference("users")
+        FirebaseDatabase
+                .getInstance()
+                .getReference("users")
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("projects")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -232,7 +306,6 @@ public class ProjectsFragment extends Fragment {
 
         }else {
             dataprevious.addAll(projectsList);
-
             String data = gson.toJson(dataprevious);
             SharedPreferences.Editor editor = preferences.edit();
             editor.clear();
@@ -255,4 +328,5 @@ public class ProjectsFragment extends Fragment {
         }
         return dummy;
     }
+
 }

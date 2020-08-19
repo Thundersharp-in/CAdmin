@@ -1,4 +1,4 @@
-package com.thundersharp.cadmin.core.globalAdapters;
+package com.thundersharp.cadmin.core.globalmodels;
 
 public class ProjectDesc {
     public ProjectDesc(){}

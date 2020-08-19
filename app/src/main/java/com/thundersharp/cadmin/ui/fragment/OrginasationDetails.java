@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -110,6 +112,7 @@ public class OrginasationDetails extends Fragment {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_supervised_user_circle_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_menu_gallery);
+
 
         final Bundle bundle = this.getArguments();
         if (getArguments() != null) {
@@ -521,6 +524,7 @@ public class OrginasationDetails extends Fragment {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
                                         Toast.makeText(getActivity(), "All things are done ", Toast.LENGTH_SHORT).show();
+
                                     }else {
                                         Toast.makeText(getActivity(), "This user have problem", Toast.LENGTH_SHORT).show();
                                     }

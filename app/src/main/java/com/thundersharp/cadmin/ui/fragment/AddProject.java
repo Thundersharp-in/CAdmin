@@ -94,7 +94,6 @@ public class AddProject extends Fragment {
             @Override
             public void onClick(View v) {
 
-
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
                 builder.setTitle("Delete");
                 builder.setMessage("Are You Really Going To Delete This Data???");
