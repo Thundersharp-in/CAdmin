@@ -36,6 +36,7 @@ import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalmodels.Projects;
 import com.thundersharp.cadmin.core.globalmodels.UserData;
 import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
+import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.lang.reflect.Type;
@@ -172,8 +173,6 @@ public class AddProject extends Fragment {
 
                         createProject(addProjectModel);
                     }else {
-                        //TODO add snackbar
-
                         Snackbar.make(getView(),"No organisation found create one first",Snackbar.LENGTH_LONG).setAction("CREATE", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -313,7 +312,7 @@ public class AddProject extends Fragment {
                                 Toast.makeText(getActivity(),String.valueOf("trurgfhcgfdfgchjfhdffnjhgghghhgfgfhgfhgfhghgvh"+snapshot.getValue(AddProject_model.class).projectDesc),Toast.LENGTH_SHORT).show();
                                 storetosharedpref(modelList);
                             }else {
-
+                                Toast.makeText(getActivity(), "No such project found", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -326,12 +325,35 @@ public class AddProject extends Fragment {
     }
 
     private void storetosharedpref(List<AddProject_model> addProject_models){
-        Gson gson = new Gson();
-        String data = gson.toJson(addProject_models);
-        SharedPreferences.Editor editor = sharedPreference.edit();
-        editor.clear();
-        editor.putString("proj",data);
-        editor.apply();
+        List<AddProject_model> projectdetails = getPreviousProjects();
+        if (projectdetails==null|| projectdetails.isEmpty()){
+            Gson gson = new Gson();
+            String data=gson.toJson(addProject_models);
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.clear();
+            editor.putString("proj",data);
+            editor.apply();
+        }else {
+            Gson gson = new Gson();
+            addProject_models.addAll(projectdetails);
+            String data = gson.toJson(addProject_models);
+            SharedPreferences.Editor editor = sharedPreference.edit();
+            editor.clear();
+            editor.putString("proj",data);
+            editor.apply();
+
+        }
+    }
+
+    private List<AddProject_model> getPreviousProjects() {
+        Gson gson =new Gson();
+
+        if (!sharedPreference.getString("proj","null").equals("null")){
+            String data = sharedPreference.getString("proj","null");
+            Type type = new TypeToken<ArrayList<AddProject_model>>(){}.getType();
+            return gson.fromJson(data,type);
+
+        }else return null;
     }
 
     private List<Projects> getData(){

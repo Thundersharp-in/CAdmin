@@ -346,7 +346,7 @@ public class AddOrganisationFragment extends Fragment {
 
         Gson gson =new Gson();
 
-        if (!pref.getString("id","null").equals("null")){
+        if (!pref.getString("id","null").equalsIgnoreCase("null")){
             String data = pref.getString("id","null");
             Type type = new TypeToken<ArrayList<Organisations>>(){}.getType();
             return gson.fromJson(data,type);

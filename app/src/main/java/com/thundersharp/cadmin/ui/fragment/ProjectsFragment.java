@@ -28,9 +28,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thundersharp.cadmin.R;
 import com.thundersharp.cadmin.core.globalAdapters.AddProjectViewAdapter;
+import com.thundersharp.cadmin.core.globalAdapters.OrganisationAdapter;
 import com.thundersharp.cadmin.core.globalmodels.Organisations;
 import com.thundersharp.cadmin.core.globalmodels.Projects;
 import com.thundersharp.cadmin.core.globalmodels.AddProject_model;
+import com.thundersharp.cadmin.core.globalmodels.org_details_model;
 import com.thundersharp.cadmin.ui.activity.MainActivity;
 
 import java.lang.reflect.Type;
@@ -74,7 +76,7 @@ public class ProjectsFragment extends Fragment {
                                 .ic_baseline_playlist_add_24
                                 ,getActivity().getTheme()));
 
-        data = new ArrayList<>();
+       // data = new ArrayList<>();
         list = new ArrayList<>();
         preferences = getActivity().getSharedPreferences("proj", Context.MODE_PRIVATE);
         sharedPreferencesProjList = getActivity().getSharedPreferences("all_projects",Context.MODE_PRIVATE);
@@ -91,24 +93,30 @@ public class ProjectsFragment extends Fragment {
         });
 
         if (sharedPreferencesorg.getString("selected",null)!= null){
-            List<Projects> datapref = loadDataOrgfromPrefs();
+            List<Projects> datapref =getData();// loadDataOrgfromPrefs()
             progressproj.setVisibility(View.VISIBLE);
             if (datapref == null){
-                Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
+               Toast.makeText(getActivity(), "server", Toast.LENGTH_SHORT).show();
                 fetchProfileFromServer();
 
             }else {
-                Toast.makeText(getActivity(), "Loaded from shared prefs", Toast.LENGTH_SHORT).show();
-                fetchListofAllProject(loadDataOrgfromPrefs());
+              //  Toast.makeText(getActivity(), "Loaded from shared prefs" + String.valueOf(getData().size()), Toast.LENGTH_SHORT).show();
+                getprojdetailfromPref(getData());//getData()
+                //fetchListofAllProject(getData());//loadDataOrgfromPrefs()
             }
+            textView.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
             refresh_proj.setRefreshing(false);
             progressproj.setVisibility(View.GONE);
         }else {
-
-            progressproj.setVisibility(View.VISIBLE);
-            Snackbar.make(cont,"No data found",Snackbar.LENGTH_LONG).show();
-            progressproj.setVisibility(View.GONE);
             refresh_proj.setRefreshing(false);
+           // progressproj.setVisibility(View.VISIBLE);
+             textView.setVisibility(View.VISIBLE);
+             imageView.setVisibility(View.VISIBLE);
+             imageView.setImageResource(R.drawable.sad);
+            Snackbar.make(cont,"No data found",Snackbar.LENGTH_LONG).show();
+           // progressproj.setVisibility(View.GONE);
+
         }
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -171,15 +179,58 @@ public class ProjectsFragment extends Fragment {
                     }
    */
 
+    private void getprojdetailfromPref(@NonNull List<Projects> projects){
 
+        List<AddProject_model> datapref = loadProjdetailfromPrefs();
+        List<AddProject_model> dataorg1=new ArrayList<>();
+        if (projects.size()!=0){
+            if (datapref==null){
+                fetchListofAllProject(projects);
+            }else{
+                List<AddProject_model> dataorg =new ArrayList<>() ;
+
+                for (int i=0;i<projects.size();i++){
+                    //dataorg.clear();
+                    if (projects.get(i).getProject_org().equals(sharedPreferencesorg.getString("selected",null))){
+                        for (int j=0;j<datapref.size();j++){
+                            Gson gson=new Gson();
+                            String data2=sharedPreferencesProjList.getString("proj","null");
+                            Type type = new TypeToken<ArrayList<AddProject_model>>(){}.getType();
+                             dataorg1 =  gson.fromJson(data2,type);//dataorg
+                           // Toast.makeText(getActivity(), projects.get(i).getProjectKey(), Toast.LENGTH_SHORT).show();
+                            if (datapref.get(j).organisation_id.equalsIgnoreCase(projects.get(i).getProject_org())){
+                                dataorg.add(dataorg1.get(j));
+
+                            }else {
+
+                            }
+
+                        }
+                        Toast.makeText(getActivity(), "test "+String.valueOf(dataorg.size()), Toast.LENGTH_SHORT).show();
+                        AddProjectViewAdapter adapter =new AddProjectViewAdapter(getActivity(),dataorg);
+                        recyclerView.setAdapter(adapter);
+
+                    }else {
+                        refresh_proj.setRefreshing(false);
+                    }
+
+                }
+
+            }
+        }else {
+            Toast.makeText(getActivity(), "No Projects available", Toast.LENGTH_SHORT).show();
+        }
+
+    }
     private void fetchListofAllProject(@NonNull List<Projects> projects){
 
         final List<AddProject_model> dataorg = new ArrayList<>();
 
+        Toast.makeText(getActivity(), String.valueOf(projects.size()), Toast.LENGTH_SHORT).show();
         for (int i = 0; i<projects.size(); i++){
 
-           //checking the project keys
-
+            //checking the project keys
+           // Toast.makeText(getActivity(), projects.get(i).getProjectKey(), Toast.LENGTH_SHORT).show();
             FirebaseDatabase.getInstance()
                     .getReference("organisation")
                     .child(sharedPreferencesorg.getString("selected",null))
@@ -190,22 +241,23 @@ public class ProjectsFragment extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (!snapshot.exists()){
-                                textView.setVisibility(View.VISIBLE);
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageResource(R.drawable.sad);
+                                // textView.setVisibility(View.VISIBLE);
+                                // imageView.setVisibility(View.VISIBLE);
+                                // imageView.setImageResource(R.drawable.sad);
                                 refresh_proj.setRefreshing(false);
                             }
                             else if (snapshot.exists()){
                                 textView.setVisibility(View.GONE);
                                 imageView.setVisibility(View.GONE);
                                 dataorg.add(snapshot.getValue(AddProject_model.class));
-                                savefetchListofAllProjects(dataorg);
+                               // savefetchListofAllProjects(dataorg);
                                 refresh_proj.setRefreshing(false);
                                 //checking the size
+                            }else {
+                                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
                             AddProjectViewAdapter addProjectViewAdapter = new AddProjectViewAdapter(getActivity(),dataorg);
                             recyclerView.setAdapter(addProjectViewAdapter);
-
                         }
 
                         @Override
@@ -214,6 +266,43 @@ public class ProjectsFragment extends Fragment {
                         }
                     });
         }
+        //Todo just checking here
+        final List<AddProject_model> dataorg1 = new ArrayList<>();
+        for (int j = 0; j<projects.size(); j++){
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("organisation")
+                    .child(projects.get(j).project_org)
+                    .child("projects")
+                    .child(projects.get(j).getProjectKey())
+                    .child("description")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()){
+                                dataorg1.add(snapshot.getValue(AddProject_model.class));
+                                savefetchListofAllProjects(dataorg1);
+                            }else {
+                                Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+    }
+
+    private List<AddProject_model> loadProjdetailfromPrefs() {
+        String data1;
+        Gson gson=new Gson();
+        data1=sharedPreferencesProjList.getString("proj","null");
+        if (!data1.equalsIgnoreCase("null")){
+            Type type=new TypeToken<ArrayList<AddProject_model>>(){}.getType();
+            return gson.fromJson(data1,type);
+        }else return null;
     }
 
     private void savefetchListofAllProjects(List<AddProject_model> addProjectModels){
@@ -225,9 +314,6 @@ public class ProjectsFragment extends Fragment {
         editor.apply();
     }
 
-/*
-
- */
     private void fetchProfileFromServer(){
         list.clear();
         FirebaseDatabase
@@ -258,20 +344,19 @@ public class ProjectsFragment extends Fragment {
 
     private List<Projects> loadDataOrgfromPrefs(){
 
-        String data;
         Gson gson = new Gson();
-        data = preferences.getString("id","null");
-        if (data.equals("null")){
+        String data1 = preferences.getString("id","null");
+        if (data1.equalsIgnoreCase("null")){
             Type type = new TypeToken<ArrayList<Projects>>(){}.getType();
-            return gson.fromJson(data,type);
+            return gson.fromJson(data1,type);
         } else {
             return null;
         }
     }
 
     private void SavetoSharedPrefs(List<Projects> projectsList){
+
         Gson gson = new Gson();
-       // List<Projects> dataprevious = getData();
         String data = gson.toJson(projectsList);
         SharedPreferences.Editor editor = preferences.edit();
 
@@ -282,48 +367,77 @@ public class ProjectsFragment extends Fragment {
             SharedPreferences.Editor editor1=preferences.edit();
             SharedPreferences.Editor editor2 = sharedPreferencesProjList.edit();
             editor1.clear();
-            editor2.clear();
             editor1.apply();
+            editor2.clear();
             editor2.apply();
         }else {
             fetchListofAllProject(projectsList);
         }
 
+  /*
+        List<Projects> dataprevious = getData();
+        Gson gson=new Gson();
 
-       /*
-        if (dataprevious == null){
-            String data = gson.toJson(projectsList);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.putString("id",data);
-            editor.apply();
-
-            fetchListofAllProject(projectsList);
-
+       */
+/*
+ if (projectsList==null){
+            SharedPreferences.Editor editor1=preferences.edit();
+            SharedPreferences.Editor editor2 = sharedPreferencesProjList.edit();
+            editor1.clear();
+            editor1.apply();
+            editor2.clear();
+            editor2.apply();
         }else {
-            dataprevious.addAll(projectsList);
-            String data = gson.toJson(dataprevious);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.clear();
-            editor.putString("id",data);
-            editor.apply();
+            if (dataprevious == null){
+                String data = gson.toJson(projectsList);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.putString("id",data);
+                editor.apply();
 
-            fetchListofAllProject(projectsList);
+                // fetchListofAllProject(projectsList);
+
+            }else {
+                dataprevious.addAll(projectsList);
+                String data = gson.toJson(dataprevious);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.putString("id",data);
+                editor.apply();
+
+                fetchListofAllProject(projectsList);
+            }
         }
-        */
+ */
+
     }
 
     private List<Projects> getData(){
+        String data1;
         Gson gson = new Gson();
-        List<Projects> dummy;
-        if (preferences.getString("id","null").equals("null")){
-            String data = preferences.getString("id","null");
+       // List<Projects> dummy;
+        data1=preferences.getString("id","null");//
+
+        if (!data1.equalsIgnoreCase("null")){  //equalsIgnoreCase("null")
             Type type = new TypeToken<ArrayList<Projects>>(){}.getType();
-            dummy = gson.fromJson(data,type);
+            return gson.fromJson(data1,type);
+        }else
+            return null;
+
+        /*
+         if (!preferences.getString("id","null").equals("null")){  //preferences.getString("id","null").equals("null")
+           // String data1 = preferences.getString("id","null");
+            Type type = new TypeToken<ArrayList<Projects>>(){}.getType();
+            dummy = gson.fromJson(data1,type);
+
         }else {
             dummy = new ArrayList<>();
         }
-        return dummy;
+         */
+
+
+      // return dummy;
     }
+
 
 }
